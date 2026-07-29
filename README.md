@@ -22,7 +22,7 @@ Grok Build:
 
 ```sh
 grok plugin marketplace add johnkueh/agent-skills
-grok plugin install agent-skills@johnkueh-agent-skills --trust
+grok plugin install agent-skills@agent-skills --trust
 ```
 
 Want just one? Every skill is also its own plugin:
@@ -30,7 +30,7 @@ Want just one? Every skill is also its own plugin:
 ```sh
 claude plugin install media-icon-search@johnkueh-agent-skills
 codex plugin add marketing-reddit@johnkueh-agent-skills
-grok plugin install brand-design@johnkueh-agent-skills --trust
+grok plugin install brand-design@agent-skills --trust
 ```
 
 ## Why skills
