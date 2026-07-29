@@ -1,6 +1,6 @@
 ---
 name: marketing-aeo
-description: Track AI chatbot citations (ChatGPT, Perplexity, Google AI Overview, Claude) for any project. Use when the user wants to monitor brand/domain mentions in AI search, track which queries cite their site, set up AEO/GEO monitoring, or measure visibility in chatbot responses. Triggers on "track AI citations", "monitor ChatGPT mentions", "AEO monitoring", "GEO tracking", "AI search visibility", "are we cited in ChatGPT", "what do chatbots say about us", "track mentions in Perplexity", or any project-level question about appearing in AI answers.
+description: "Track brand and domain citations in ChatGPT, Perplexity, Google AI Overview, and Claude. Use for AEO/GEO monitoring, AI-search visibility, chatbot mentions, citation queries, or project-level AI answer tracking."
 ---
 
 # AEO Monitor

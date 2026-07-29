@@ -1,7 +1,7 @@
 {
   "name": "marketing-aeo",
-  "version": "2.0.0",
-  "description": "Track AI chatbot citations (ChatGPT, Perplexity, Google AI Overview, Claude) for any project. Use when the user wants to monitor brand/domain mentions in AI search, track which queries cite their site, set up AEO/GEO monitoring, or measure visibility in chatbot responses. Triggers on \"track AI citations\", \"monitor ChatGPT mentions\", \"AEO monitoring\", \"GEO tracking\", \"AI search visibility\", \"are we cited in ChatGPT\", \"what do chatbots say about us\", \"track mentions in Perplexity\", or any project-level question about appearing in AI answers.",
+  "version": "2.0.1",
+  "description": "Track brand and domain citations in ChatGPT, Perplexity, Google AI Overview, and Claude. Use for AEO/GEO monitoring, AI-search visibility, chatbot mentions, citation queries, or project-level AI answer tracking.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"
@@ -11,7 +11,7 @@
   "interface": {
     "displayName": "Marketing Aeo",
     "shortDescription": "Use the Marketing Aeo skill collection",
-    "longDescription": "Track AI chatbot citations (ChatGPT, Perplexity, Google AI Overview, Claude) for any project. Use when the user wants to monitor brand/domain mentions in AI search, track which queries cite their site, set up AEO/GEO monitoring, or measure visibility in chatbot responses. Triggers on \"track AI citations\", \"monitor ChatGPT mentions\", \"AEO monitoring\", \"GEO tracking\", \"AI search visibility\", \"are we cited in ChatGPT\", \"what do chatbots say about us\", \"track mentions in Perplexity\", or any project-level question about appearing in AI answers.",
+    "longDescription": "Track brand and domain citations in ChatGPT, Perplexity, Google AI Overview, and Claude. Use for AEO/GEO monitoring, AI-search visibility, chatbot mentions, citation queries, or project-level AI answer tracking.",
     "developerName": "John Kueh",
     "category": "Developer Tools",
     "capabilities": [

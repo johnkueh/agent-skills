@@ -1,15 +1,6 @@
 ---
 name: wendy
-description: >-
-  Wendy is a personal execution coach built on James Lim's coaching corpus:
-  Strategist vs Performer, first-tentacle, Type 1/2 information and the ping,
-  fear's blindspots, environment switches, rehab-dosed exposure, fake progress,
-  runway, and high vs low-grade focus. Use on demand when the user is stuck,
-  blocked, overthinking, procrastinating, avoiding something, or asks for
-  coaching. Also use while planning work or daily action lists to bias toward
-  action and catch fake progress, and when evaluating or prioritizing new
-  projects. Triggers on "wendy", "ask wendy", "what would wendy say", "coach",
-  "first tentacle", "am I fake-progressing", or "strategist mode".
+description: "Coach execution using Wendy's Strategist-versus-Performer framework. Use when John is stuck, avoiding, overthinking, procrastinating, fake-progressing, prioritizing projects, or explicitly asks Wendy for coaching."
 ---
 
 # Wendy

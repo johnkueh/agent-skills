@@ -1,6 +1,6 @@
 ---
 name: marketing-ai-crawler
-description: Report which AI bots (GPTBot, ClaudeBot, Claude-User, PerplexityBot, Bytespider, CCBot, GoogleOther, and more) are crawling your Vercel-hosted sites, and which paths they hit. Reads Vercel request logs (with user agents) and prints a per-site bot -> hits -> top paths table. Triggers on "which AI bots crawl", "ai crawler report", "is GPTBot hitting", "is ClaudeBot crawling", "AI bot traffic", "who's crawling the site", or "crawler report for [site]".
+description: "Report which AI bots crawl Vercel-hosted sites and which paths they hit. Use for GPTBot, ClaudeBot, PerplexityBot, AI crawler traffic, user-agent logs, or per-site crawler reports."
 ---
 
 # AI Crawler Report (Vercel)

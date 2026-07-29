@@ -1,6 +1,6 @@
 ---
 name: media-icon-search
-description: Find the right icon across many icon libraries (Lucide, Phosphor, Tabler, Heroicons, HugeIcons — 14k+ icons, more coming) using natural language, and get a paste-ready, per-package React import + JSX back. Scopes to the icon sets a project actually installed (no hallucinated names), with an instant local fuzzy pass and a Gemini Flash semantic pass for concept/synonym queries ("vegetarian", "delete a recipe"). Always appends icon-selection heuristics (NN/g, WCAG). Optional PNG contact-sheet preview. Triggers on "find an icon for", "which icon", "icon for X", "search icons", "what icon should I use".
+description: "Find valid installed React icons across Lucide, Phosphor, Tabler, Heroicons, HugeIcons, and related sets. Use for icon selection, natural-language icon searches, paste-ready imports, or contact-sheet previews."
 ---
 
 # media-icon-search

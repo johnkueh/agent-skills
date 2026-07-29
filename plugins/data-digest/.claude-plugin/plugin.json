@@ -1,7 +1,7 @@
 {
   "name": "data-digest",
-  "version": "2.0.0",
-  "description": "Per-project daily digest of new signups, top user activities, API/LLM costs, and recently-changed initiative docs — pulled from bq-analytics where available, plus git activity and the latest x-monitor run. Use when the user wants a \"morning digest\" across their projects, says \"give me yesterday's roundup\", or asks for a recurring summary across your projects. Designed to be invoked daily via `/loop`.",
+  "version": "2.0.1",
+  "description": "Build a per-project digest of signups, product activity, API costs, initiative changes, git activity, and monitoring. Use for morning, daily, yesterday, or recurring cross-project roundups.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"

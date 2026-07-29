@@ -1,15 +1,6 @@
 ---
 name: drafty-proof-canvas
-description: >
-  Publish proof-of-work screenshots to a private drafty canvas so John can eye
-  visual results from any device and annotate directly on the images. Use at
-  the END of any task whose correctness is visual (UI, layout, component,
-  email render, chart, design) — the proof canvas IS part of the deliverable.
-  NOT for work that
-  merely renders somewhere (README/doc/copy/config changes) — if John doesn't
-  need to look at pixels to judge it, skip the canvas.
-  Triggers: finishing visual work, "proof canvas", "proof image", "show me",
-  "where's the proof", or re-pushing updated proof after addressing feedback.
+description: "Publish visual verification screenshots to a private Drafty canvas. Use at the end of UI, layout, component, email-render, chart, or design work that John must inspect; skip text-only changes."
 ---
 
 # Proof canvas

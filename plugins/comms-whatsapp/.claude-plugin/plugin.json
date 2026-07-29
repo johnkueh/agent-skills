@@ -1,7 +1,7 @@
 {
   "name": "comms-whatsapp",
-  "version": "2.0.0",
-  "description": "Read and send WhatsApp messages from the command line via wacli (steipete/wacli, whatsmeow-based). Use when the user asks to search WhatsApp messages, send a WhatsApp message, list chats/groups/contacts, look up a thread, or download WhatsApp media. Triggers on 'WhatsApp', 'wacli', 'send a wa message', 'find that WhatsApp thread', 'WA chats', 'who said X on WhatsApp'.",
+  "version": "2.0.1",
+  "description": "Read and send WhatsApp messages with wacli. Use to search messages, list chats, groups, or contacts, fetch threads or media, or send WhatsApp messages.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"

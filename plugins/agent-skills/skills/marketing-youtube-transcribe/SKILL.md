@@ -1,6 +1,6 @@
 ---
 name: marketing-youtube-transcribe
-description: Transcribe YouTube videos. Tries auto/manual captions first via yt-dlp; if they're missing or empty, downloads audio and transcribes with Gemini 2.5 Flash. Use when processing YouTube URLs for content, fact-checking, or research. Triggers on YouTube URLs, "get transcript", "fetch captions", "youtube transcript", or "transcribe this video".
+description: "Transcribe YouTube videos using captions first and Gemini audio fallback. Use for YouTube URLs or requests to fetch captions, get a transcript, transcribe, fact-check, or research a video."
 ---
 
 # YouTube Transcribe

@@ -1,6 +1,6 @@
 ---
 name: media-image-gen
-description: Generate images, illustrations, logos, infographics, photoreal shots, UI mockups, and ads with OpenAI's GPT Image 2. Translates the user's loose request into a cookbook-aligned prompt, supports reference images / moodboards for style transfer, and logs token usage + actual $ cost per call. Triggers on "make me a logo", "generate an image of…", "create an illustration", "design a poster", "gpt-image-gen", "gpt image", "image generation", "moodboard", "style transfer from this image", or any visual asset request.
+description: "Generate or edit visual assets with OpenAI GPT Image, including logos, illustrations, ads, infographics, mockups, and photoreal images. Use for image generation, moodboards, reference-image work, or style transfer."
 ---
 
 # media-image-gen

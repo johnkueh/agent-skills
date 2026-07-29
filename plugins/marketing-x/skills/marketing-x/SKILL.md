@@ -1,6 +1,6 @@
 ---
 name: marketing-x
-description: Monitor X (Twitter) profiles for new posts and emit daily digest summaries. Use when the user wants to subscribe to an X handle (e.g. https://x.com/bcherny), poll for new posts, run a recurring digest via /loop, query past posts from the local archive, or set up the skill on a new machine. Triggers on "monitor X handle", "watch this twitter user", "x-monitor", "subscribe to twitter", "daily digest of @user", "what did @user say about X", "set up x-monitor", "configure x-monitor", "install x-monitor on this Mac", or "share x-monitor across my machines".
+description: "Monitor X profiles, archive new posts, and produce digests. Use to subscribe to handles, poll timelines, query the archive, run X-monitor, configure recurring X digests, or install monitoring on a Mac."
 ---
 
 # marketing-x

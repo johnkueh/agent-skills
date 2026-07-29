@@ -1,6 +1,6 @@
 ---
 name: marketing-serp
-description: DataForSEO SERP analysis for geo-targeted search result analysis. See who ranks for keywords in specific locations (Australia, US, UK, etc.), identify content gaps, analyze SERP features (featured snippets, PAA), and find competitor domains. Supports --dry-run to preview costs. Triggers on "who ranks for", "SERP analysis", "search results for", "Google results for [keyword]", "competitors for [keyword]", "featured snippet", "people also ask", "ranking domains", "top 10 for", or "SERP features".
+description: "Analyze geo-targeted Google SERPs with DataForSEO, including rankings, competitors, snippets, PAA, and content gaps. Use for who-ranks queries, SERP analysis, ranking domains, or search-result research; supports dry-run costs."
 ---
 
 # SERP Data (DataForSEO)

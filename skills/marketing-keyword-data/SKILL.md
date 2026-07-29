@@ -1,6 +1,6 @@
 ---
 name: marketing-keyword-data
-description: DataForSEO keyword research for SEO and content planning. Get search volume, search intent, keyword difficulty, CPC, and keyword suggestions. Use for keyword research, content planning, and SEO strategy. Supports --dry-run to preview costs before executing. Triggers on "keyword research", "search volume", "keyword difficulty", "CPC for", "keyword ideas for", "keyword suggestions", "long-tail keywords", "what do people search for", "search intent for", or "SEO opportunity for [topic]".
+description: "Research keywords with DataForSEO, including volume, intent, difficulty, CPC, and suggestions. Use for SEO research, content planning, long-tail ideas, search intent, or keyword opportunities; supports dry-run cost previews."
 ---
 
 # Keyword Data (DataForSEO)

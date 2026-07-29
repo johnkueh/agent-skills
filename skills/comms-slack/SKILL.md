@@ -1,6 +1,6 @@
 ---
 name: comms-slack
-description: Search Slack messages and fetch threads. Use when the user asks to find Slack conversations, look up a colleague, list channels, or pull a specific thread by URL. Personal-token-based (xoxp-...). Triggers on "search Slack", "find that Slack thread", "what did X say in Slack", "Slack DM history", "pull this Slack URL", "who in [channel]", "Slack message about", "look up [name] on Slack", or any Slack permalink (slack.com/archives/...).
+description: "Search Slack messages, people, channels, DMs, and threads using John's personal token. Use for Slack permalinks or requests to find a conversation, colleague, message, channel, or thread."
 ---
 
 # comms-slack

@@ -1,6 +1,6 @@
 ---
 name: system-memory-cleanup
-description: Monitor and clean up system resources on macOS. Use when the user wants to check CPU/memory usage, find resource hogs, kill orphaned processes, or free up system resources. Triggers on requests like "what's using CPU", "memory hogs", "clean up processes", "kill Chrome", "system slow", or "activity monitor".
+description: "Inspect and clean macOS CPU and memory usage. Use for a slow Mac, resource hogs, orphaned processes, high CPU, memory pressure, or process cleanup."
 ---
 
 # System Cleanup

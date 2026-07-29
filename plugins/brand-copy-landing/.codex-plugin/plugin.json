@@ -1,7 +1,7 @@
 {
   "name": "brand-copy-landing",
-  "version": "2.0.0",
-  "description": "The \"boring marketer\" conversion-copy framework — proven fundamentals for landing pages, sales pages, hero sections, and persuasive marketing copy that sounds like a person and converts. The product-voice sibling of brand-copy (in-app house style). Use when writing or reviewing a landing or sales page, headline, opening line, feature description, or testimonial, or when asked to \"use boring marketer copy tips\", \"boring marketer\", \"make this convert\", \"write the landing copy\", \"write the headline\", \"fix this marketing copy\". Triggers on \"use boring marketer copy tips\", \"boring marketer\", \"landing page copy\", \"sales page\", \"hero copy\", \"headline formula\", \"so what chain\", \"make this convert\", \"write a testimonial\", \"pain quantification\".",
+  "version": "2.0.1",
+  "description": "Write conversion-focused landing and sales copy using the boring-marketer framework. Use for heroes, headlines, features, testimonials, pain framing, VoC, or requests to make marketing copy convert.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"
@@ -11,7 +11,7 @@
   "interface": {
     "displayName": "Brand Copy Landing",
     "shortDescription": "Use the Brand Copy Landing skill collection",
-    "longDescription": "The \"boring marketer\" conversion-copy framework — proven fundamentals for landing pages, sales pages, hero sections, and persuasive marketing copy that sounds like a person and converts. The product-voice sibling of brand-copy (in-app house style). Use when writing or reviewing a landing or sales page, headline, opening line, feature description, or testimonial, or when asked to \"use boring marketer copy tips\", \"boring marketer\", \"make this convert\", \"write the landing copy\", \"write the headline\", \"fix this marketing copy\". Triggers on \"use boring marketer copy tips\", \"boring marketer\", \"landing page copy\", \"sales page\", \"hero copy\", \"headline formula\", \"so what chain\", \"make this convert\", \"write a testimonial\", \"pain quantification\".",
+    "longDescription": "Write conversion-focused landing and sales copy using the boring-marketer framework. Use for heroes, headlines, features, testimonials, pain framing, VoC, or requests to make marketing copy convert.",
     "developerName": "John Kueh",
     "category": "Developer Tools",
     "capabilities": [

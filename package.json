@@ -1,6 +1,6 @@
 {
   "name": "agent-skills-workspace",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "packageManager": "pnpm@10.4.1",
   "scripts": {

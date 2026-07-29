@@ -1,6 +1,6 @@
 ---
 name: dev-instantdb
-description: Build complete, functional React, vanilla JS, or Expo apps with InstantDB as the realtime backend. Use when the user has explicitly chosen InstantDB, asks for a quick realtime/collaborative prototype, or wants a local-first multiplayer app. Triggers on "instantdb", "instant database", "instant.db", "realtime collab app", "multiplayer prototype", "local-first app", "build app with instant", or when the user pastes an InstantDB app ID / schema and asks for an app around it.
+description: "Build React, JavaScript, or Expo apps with InstantDB as the realtime backend. Use when InstantDB is chosen for a realtime, collaborative, multiplayer, or local-first prototype."
 ---
 
 Act as a world-class senior frontend engineer with deep expertise in InstantDB

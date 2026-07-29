@@ -1,7 +1,7 @@
 {
   "name": "brand-copy",
-  "version": "2.0.0",
-  "description": "House copy style guide adapted from Mailchimp. Use whenever writing or reviewing copy for app surfaces (UI strings, buttons, errors, empty states, onboarding, push notifications) and for websites, marketing pages, App Store descriptions, release notes, and emails. Covers voice, tone, grammar, microcopy, accessibility, and inclusive-language rules. Triggers on \"house style\", \"copy style\", \"write copy\", \"rewrite this\", \"review this string\", \"button text\", \"error message\", \"empty state\", \"onboarding copy\", \"UI copy\", \"microcopy\", \"push notification\", \"release notes\", \"App Store copy\", \"email subject\", \"style guide\", or by name — \"mailchimp\", \"mailchimp copy\", \"mailchimp style\", \"copy style guide\", \"brand-copy\", \"mailchimp-copy-style\".",
+  "version": "2.0.1",
+  "description": "Write and review clear house-style product and marketing copy. Use for UI strings, buttons, labels, errors, onboarding, release notes, App Store copy, emails, or copy rewrites.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"
@@ -11,7 +11,7 @@
   "interface": {
     "displayName": "Brand Copy",
     "shortDescription": "Use the Brand Copy skill collection",
-    "longDescription": "House copy style guide adapted from Mailchimp. Use whenever writing or reviewing copy for app surfaces (UI strings, buttons, errors, empty states, onboarding, push notifications) and for websites, marketing pages, App Store descriptions, release notes, and emails. Covers voice, tone, grammar, microcopy, accessibility, and inclusive-language rules. Triggers on \"house style\", \"copy style\", \"write copy\", \"rewrite this\", \"review this string\", \"button text\", \"error message\", \"empty state\", \"onboarding copy\", \"UI copy\", \"microcopy\", \"push notification\", \"release notes\", \"App Store copy\", \"email subject\", \"style guide\", or by name — \"mailchimp\", \"mailchimp copy\", \"mailchimp style\", \"copy style guide\", \"brand-copy\", \"mailchimp-copy-style\".",
+    "longDescription": "Write and review clear house-style product and marketing copy. Use for UI strings, buttons, labels, errors, onboarding, release notes, App Store copy, emails, or copy rewrites.",
     "developerName": "John Kueh",
     "category": "Developer Tools",
     "capabilities": [

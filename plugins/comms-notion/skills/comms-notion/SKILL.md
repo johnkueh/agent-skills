@@ -1,6 +1,6 @@
 ---
 name: comms-notion
-description: Read the full content of a Notion page from a URL or page ID. Returns title, metadata, and the page body as markdown. Use when the user pastes a Notion link or asks to read, summarize, or extract content from a Notion page. Triggers on notion.so URLs, "read this notion page", "fetch from notion", "what's in this notion doc".
+description: "Read a Notion page from its URL or ID and return its title, metadata, and body. Use for Notion links or requests to read, summarize, fetch, or extract a Notion document."
 ---
 
 # Notion Page

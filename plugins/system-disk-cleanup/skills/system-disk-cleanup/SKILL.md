@@ -1,6 +1,6 @@
 ---
 name: system-disk-cleanup
-description: Scan and clean up disk space on macOS. Use when the user asks about disk space, storage, freeing up space, cleaning their Mac, or mentions their disk is full. Triggers on requests like "check disk space", "free up space", "what's using my disk", "clean up my Mac", "disk is full", or "storage hogs".
+description: "Inspect and clean macOS disk usage. Use for low storage, disk-full problems, finding storage hogs, checking free space, or safely freeing space."
 ---
 
 # Disk Cleanup for macOS

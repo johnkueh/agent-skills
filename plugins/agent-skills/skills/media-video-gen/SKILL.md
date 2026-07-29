@@ -1,6 +1,6 @@
 ---
 name: media-video-gen
-description: Generate cinematic videos with Google's Veo 3.1 (Gemini API) — text→video and image→video, pairing with the media-image-gen still as the first frame. Quotes the exact $ cost before every call (flat per-second), supports true-loop (first=last frame) and web-ready MP4/WebM/poster output, and bakes in the play-once hero pattern and RAI-wording guidance. Triggers on "generate a video", "veo", "animate this image", "image to video", "cinematic hero video", "make a background video", "loop this image", "video from a still", or any motion/clip request.
+description: "Generate text-to-video or image-to-video clips with Google Veo, with explicit cost quotes and web-ready outputs. Use for cinematic clips, hero videos, loops, background video, or animating a still."
 ---
 
 # media-video-gen

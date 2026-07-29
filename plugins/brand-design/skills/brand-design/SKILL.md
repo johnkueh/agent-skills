@@ -1,6 +1,6 @@
 ---
 name: brand-design
-description: House UI/UX design playbook distilled from Kole Jain's design tutorials. Use whenever designing or reviewing an app/website interface — dashboards, mobile screens, landing pages, settings, modals, empty states, charts, micro-interactions, or pricing pages. Covers typography, color, spacing, dark mode, components, motion, mobile patterns, dashboard structure, presentation, and the "vibe-coded" smell test. Triggers on "design this screen", "review this UI", "make this look professional", "fix this dashboard", "improve this layout", "color palette", "dark mode", "spacing", "rounded corners", "font size", "Figma", "mobile screen", "bottom sheet", "empty state", "micro-interaction", "looks AI-generated", "make this less generic", "vibe coded", or by name — "kole", "kole design", "kole design tips", "design tips", "brand-design", "kole-design-tips".
+description: "Design and review polished UI/UX using John's house playbook. Use for app or web screens, dashboards, layouts, components, typography, color, spacing, dark mode, motion, mobile patterns, or generic-looking UI."
 ---
 
 # Kole Design Tips
