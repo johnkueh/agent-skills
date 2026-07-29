@@ -1,0 +1,11 @@
+{
+  "name": "agent-skills-workspace",
+  "version": "2.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.4.1",
+  "scripts": {
+    "build": "node scripts/build-packages.mjs",
+    "check": "node scripts/validate.mjs",
+    "test": "pnpm build && pnpm check"
+  }
+}

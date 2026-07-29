@@ -31,7 +31,7 @@ description: >-
 - Lead with what the skill does and when to use it (one or two sentences).
 - End with `Triggers on "...", "...", ...` — 5–10 phrases, including at least one
   short colloquial form ("is GPTBot hitting", not only "AI crawler analysis").
-- Name the things the skill is scoped to (APIs, sites, tools) so Claude doesn't
+- Name the things the skill is scoped to (APIs, sites, tools) so the agent doesn't
   fire it for lookalike requests.
 
 ## SKILL.md line budget

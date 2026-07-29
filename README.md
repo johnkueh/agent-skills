@@ -1,24 +1,41 @@
 <p align="center">
-  <img src="assets/hero.png" alt="claude-skills — skills that make Claude Code actually useful" width="1100" />
+  <img src="assets/hero.png" alt="agent-skills — reusable skills for Claude, Codex, and Grok" width="1100" />
 </p>
 
-**claude-skills** is a collection of [Claude Code](https://docs.claude.com/en/docs/claude-code) skills I've built and use every day — to mine Reddit, do keyword and SERP research, query analytics, ship Expo builds, generate images and video, and keep my Mac clean. Install the whole set in one command, or add a single skill on its own.
+**agent-skills** is a collection of portable skills I use across Claude Code, OpenAI Codex, and Grok Build—to mine Reddit, do keyword and SERP research, query analytics, generate media, and keep my Mac clean. Install the whole set or take one skill.
 
-```
-/plugin marketplace add johnkueh/claude-skills
-/plugin install claude-skills@johnkueh-skills
+Claude Code:
+
+```sh
+claude plugin marketplace add johnkueh/agent-skills
+claude plugin install agent-skills@johnkueh-agent-skills
 ```
 
-That's the full collection. Want just one? Every skill is its own plugin:
+Codex:
 
+```sh
+codex plugin marketplace add johnkueh/agent-skills
+codex plugin add agent-skills@johnkueh-agent-skills
 ```
-/plugin install media-icon-search@johnkueh-skills
-/plugin install marketing-reddit@johnkueh-skills
+
+Grok Build:
+
+```sh
+grok plugin marketplace add johnkueh/agent-skills
+grok plugin install agent-skills@johnkueh-agent-skills --trust
+```
+
+Want just one? Every skill is also its own plugin:
+
+```sh
+claude plugin install media-icon-search@johnkueh-agent-skills
+codex plugin add marketing-reddit@johnkueh-agent-skills
+grok plugin install brand-design@johnkueh-agent-skills --trust
 ```
 
 ## Why skills
 
-A skill teaches Claude Code a job you'd otherwise re-explain every session — which API to call, which flags matter, what the output should look like. Claude loads the right one on its own when your request matches, so "find me an icon for a vegetarian recipe" or "what are people asking about retatrutide on Reddit" just works, with the real tool behind it instead of a guess.
+A skill teaches an agent a job you'd otherwise re-explain every session—which API to call, which flags matter, and what the output should look like. Each harness can load the right skill from the same `SKILL.md` source.
 
 These are the ones that earned a permanent spot in my setup. They lean on real keys and CLIs (DataForSEO, the YouTube Data API, `gcloud`, OpenAI, Gemini), so most need a token or two — each skill's `SKILL.md` says exactly what.
 
@@ -77,31 +94,31 @@ These are the ones that earned a permanent spot in my setup. They lean on real k
 
 ## Installing one skill vs. all of them
 
-The `claude-skills` plugin ships every skill above. Each skill is also published as its own plugin, so you can take only what you need:
+The `agent-skills` plugin ships every skill above. Each skill is also published as its own plugin, so you can take only what you need:
 
-```
-/plugin marketplace add johnkueh/claude-skills
-
-/plugin install claude-skills@johnkueh-skills      # everything
-/plugin install exa@johnkueh-skills                # just one
+```sh
+claude plugin install agent-skills@johnkueh-agent-skills
+claude plugin install marketing-reddit@johnkueh-agent-skills
 ```
 
-Use the skill name as the plugin name — `<name>@johnkueh-skills`. Both can coexist; they're alternatives, not a dependency.
+Use the skill name as the plugin name—`<name>@johnkueh-agent-skills`. Bundle and single-skill installs are alternatives, not dependencies.
 
-Once a skill is installed, Claude Code loads it automatically when your request matches its triggers. You don't call it by name — just ask for the thing.
+Once installed, the harness can load a skill automatically from its description or you can invoke it explicitly by name.
 
 ## How this repo is built
 
 Each skill is a folder under `skills/<name>/` with a `SKILL.md` and whatever supporting files it needs. The marketplace manifest is generated, not hand-written:
 
 ```sh
-bun scripts/build-marketplace.ts
+pnpm build
 ```
 
-This walks the committed skill folders, regenerates `.claude-plugin/marketplace.json` (the bundle plus one plugin per skill), and rebuilds the `plugins/` symlink tree each single-skill plugin points at. Add a skill folder, run it, and every install command stays in sync. Verify with:
+This walks the committed canonical skill folders, generates Claude and Codex manifests, adds OpenAI interface metadata, and materializes real-file bundle and single-skill plugins. Real files are deliberate: installed caches remain self-contained across all three harnesses.
 
 ```sh
+pnpm test
 claude plugin validate --strict .
+grok plugin validate plugins/agent-skills
 ```
 
 Writing or changing a skill? Follow [docs/skill-conventions.md](docs/skill-conventions.md) — frontmatter triggers, line budgets, `setup`/`doctor`, secrets handling.

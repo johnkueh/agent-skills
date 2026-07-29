@@ -1,0 +1,26 @@
+{
+  "name": "comms-slack",
+  "version": "2.0.0",
+  "description": "Search Slack messages and fetch threads. Use when the user asks to find Slack conversations, look up a colleague, list channels, or pull a specific thread by URL. Personal-token-based (xoxp-...). Triggers on \"search Slack\", \"find that Slack thread\", \"what did X say in Slack\", \"Slack DM history\", \"pull this Slack URL\", \"who in [channel]\", \"Slack message about\", \"look up [name] on Slack\", or any Slack permalink (slack.com/archives/...).",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Comms Slack",
+    "shortDescription": "Use the Comms Slack skill collection",
+    "longDescription": "Search Slack messages and fetch threads. Use when the user asks to find Slack conversations, look up a colleague, list channels, or pull a specific thread by URL. Personal-token-based (xoxp-...). Triggers on \"search Slack\", \"find that Slack thread\", \"what did X say in Slack\", \"Slack DM history\", \"pull this Slack URL\", \"who in [channel]\", \"Slack message about\", \"look up [name] on Slack\", or any Slack permalink (slack.com/archives/...).",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $comms-slack to help with this request."
+    ]
+  }
+}

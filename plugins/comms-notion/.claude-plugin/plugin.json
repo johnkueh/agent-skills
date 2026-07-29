@@ -1,0 +1,10 @@
+{
+  "name": "comms-notion",
+  "version": "2.0.0",
+  "description": "Read the full content of a Notion page from a URL or page ID. Returns title, metadata, and the page body as markdown. Use when the user pastes a Notion link or asks to read, summarize, or extract content from a Notion page. Triggers on notion.so URLs, \"read this notion page\", \"fetch from notion\", \"what's in this notion doc\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills"
+}

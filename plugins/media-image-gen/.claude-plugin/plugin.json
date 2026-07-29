@@ -1,0 +1,10 @@
+{
+  "name": "media-image-gen",
+  "version": "2.0.0",
+  "description": "Generate images, illustrations, logos, infographics, photoreal shots, UI mockups, and ads with OpenAI's GPT Image 2. Translates the user's loose request into a cookbook-aligned prompt, supports reference images / moodboards for style transfer, and logs token usage + actual $ cost per call. Triggers on \"make me a logo\", \"generate an image of…\", \"create an illustration\", \"design a poster\", \"gpt-image-gen\", \"gpt image\", \"image generation\", \"moodboard\", \"style transfer from this image\", or any visual asset request.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills"
+}

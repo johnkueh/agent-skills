@@ -1,0 +1,26 @@
+{
+  "name": "system-disk-cleanup",
+  "version": "2.0.0",
+  "description": "Scan and clean up disk space on macOS. Use when the user asks about disk space, storage, freeing up space, cleaning their Mac, or mentions their disk is full. Triggers on requests like \"check disk space\", \"free up space\", \"what's using my disk\", \"clean up my Mac\", \"disk is full\", or \"storage hogs\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "System Disk Cleanup",
+    "shortDescription": "Use the System Disk Cleanup skill collection",
+    "longDescription": "Scan and clean up disk space on macOS. Use when the user asks about disk space, storage, freeing up space, cleaning their Mac, or mentions their disk is full. Triggers on requests like \"check disk space\", \"free up space\", \"what's using my disk\", \"clean up my Mac\", \"disk is full\", or \"storage hogs\".",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $system-disk-cleanup to help with this request."
+    ]
+  }
+}

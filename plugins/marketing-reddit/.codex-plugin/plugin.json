@@ -1,0 +1,26 @@
+{
+  "name": "marketing-reddit",
+  "version": "2.0.0",
+  "description": "Pull structured data from Reddit (posts, threads, comments, and question clusters) through a headless browser that bypasses Reddit's JS bot-challenge. Use when Reddit's public .json API is 403-blocked from a server/cloud IP, or when mining a subreddit for content gaps, questions, or post data. Triggers on \"mine reddit\", \"reddit-miner\", \"scrape subreddit\", \"reddit questions\", \"reddit 403\", \"reddit blocked\", \"pull reddit posts/comments\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Marketing Reddit",
+    "shortDescription": "Use the Marketing Reddit skill collection",
+    "longDescription": "Pull structured data from Reddit (posts, threads, comments, and question clusters) through a headless browser that bypasses Reddit's JS bot-challenge. Use when Reddit's public .json API is 403-blocked from a server/cloud IP, or when mining a subreddit for content gaps, questions, or post data. Triggers on \"mine reddit\", \"reddit-miner\", \"scrape subreddit\", \"reddit questions\", \"reddit 403\", \"reddit blocked\", \"pull reddit posts/comments\".",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $marketing-reddit to help with this request."
+    ]
+  }
+}

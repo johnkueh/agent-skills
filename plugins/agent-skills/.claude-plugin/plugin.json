@@ -1,0 +1,10 @@
+{
+  "name": "agent-skills",
+  "version": "2.0.0",
+  "description": "Cross-agent skills for engineering, research, communications, media, design, data, and macOS operations.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "system-memory-cleanup",
+  "version": "2.0.0",
+  "description": "Monitor and clean up system resources on macOS. Use when the user wants to check CPU/memory usage, find resource hogs, kill orphaned processes, or free up system resources. Triggers on requests like \"what's using CPU\", \"memory hogs\", \"clean up processes\", \"kill Chrome\", \"system slow\", or \"activity monitor\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "media-icon-search",
+  "version": "2.0.0",
+  "description": "Find the right icon across many icon libraries (Lucide, Phosphor, Tabler, Heroicons, HugeIcons — 14k+ icons, more coming) using natural language, and get a paste-ready, per-package React import + JSX back. Scopes to the icon sets a project actually installed (no hallucinated names), with an instant local fuzzy pass and a Gemini Flash semantic pass for concept/synonym queries (\"vegetarian\", \"delete a recipe\"). Always appends icon-selection heuristics (NN/g, WCAG). Optional PNG contact-sheet preview. Triggers on \"find an icon for\", \"which icon\", \"icon for X\", \"search icons\", \"what icon should I use\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Media Icon Search",
+    "shortDescription": "Use the Media Icon Search skill collection",
+    "longDescription": "Find the right icon across many icon libraries (Lucide, Phosphor, Tabler, Heroicons, HugeIcons — 14k+ icons, more coming) using natural language, and get a paste-ready, per-package React import + JSX back. Scopes to the icon sets a project actually installed (no hallucinated names), with an instant local fuzzy pass and a Gemini Flash semantic pass for concept/synonym queries (\"vegetarian\", \"delete a recipe\"). Always appends icon-selection heuristics (NN/g, WCAG). Optional PNG contact-sheet preview. Triggers on \"find an icon for\", \"which icon\", \"icon for X\", \"search icons\", \"what icon should I use\".",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $media-icon-search to help with this request."
+    ]
+  }
+}

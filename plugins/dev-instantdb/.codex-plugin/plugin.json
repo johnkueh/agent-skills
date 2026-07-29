@@ -1,0 +1,26 @@
+{
+  "name": "dev-instantdb",
+  "version": "2.0.0",
+  "description": "Build complete, functional React, vanilla JS, or Expo apps with InstantDB as the realtime backend. Use when the user has explicitly chosen InstantDB, asks for a quick realtime/collaborative prototype, or wants a local-first multiplayer app. Triggers on \"instantdb\", \"instant database\", \"instant.db\", \"realtime collab app\", \"multiplayer prototype\", \"local-first app\", \"build app with instant\", or when the user pastes an InstantDB app ID / schema and asks for an app around it.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dev Instantdb",
+    "shortDescription": "Use the Dev Instantdb skill collection",
+    "longDescription": "Build complete, functional React, vanilla JS, or Expo apps with InstantDB as the realtime backend. Use when the user has explicitly chosen InstantDB, asks for a quick realtime/collaborative prototype, or wants a local-first multiplayer app. Triggers on \"instantdb\", \"instant database\", \"instant.db\", \"realtime collab app\", \"multiplayer prototype\", \"local-first app\", \"build app with instant\", or when the user pastes an InstantDB app ID / schema and asks for an app around it.",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $dev-instantdb to help with this request."
+    ]
+  }
+}

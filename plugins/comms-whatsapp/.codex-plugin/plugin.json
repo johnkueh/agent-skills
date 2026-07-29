@@ -1,0 +1,26 @@
+{
+  "name": "comms-whatsapp",
+  "version": "2.0.0",
+  "description": "Read and send WhatsApp messages from the command line via wacli (steipete/wacli, whatsmeow-based). Use when the user asks to search WhatsApp messages, send a WhatsApp message, list chats/groups/contacts, look up a thread, or download WhatsApp media. Triggers on 'WhatsApp', 'wacli', 'send a wa message', 'find that WhatsApp thread', 'WA chats', 'who said X on WhatsApp'.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Comms Whatsapp",
+    "shortDescription": "Use the Comms Whatsapp skill collection",
+    "longDescription": "Read and send WhatsApp messages from the command line via wacli (steipete/wacli, whatsmeow-based). Use when the user asks to search WhatsApp messages, send a WhatsApp message, list chats/groups/contacts, look up a thread, or download WhatsApp media. Triggers on 'WhatsApp', 'wacli', 'send a wa message', 'find that WhatsApp thread', 'WA chats', 'who said X on WhatsApp'.",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $comms-whatsapp to help with this request."
+    ]
+  }
+}

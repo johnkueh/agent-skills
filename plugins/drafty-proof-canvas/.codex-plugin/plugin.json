@@ -1,0 +1,26 @@
+{
+  "name": "drafty-proof-canvas",
+  "version": "2.0.0",
+  "description": "Publish proof-of-work screenshots to a private drafty canvas so John can eye visual results from any device and annotate directly on the images. Use at the END of any task whose correctness is visual (UI, layout, component, email render, chart, design) — the proof canvas IS part of the deliverable. NOT for work that merely renders somewhere (README/doc/copy/config changes) — if John doesn't need to look at pixels to judge it, skip the canvas. Triggers: finishing visual work, \"proof canvas\", \"proof image\", \"show me\", \"where's the proof\", or re-pushing updated proof after addressing feedback.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Drafty Proof Canvas",
+    "shortDescription": "Use the Drafty Proof Canvas skill collection",
+    "longDescription": "Publish proof-of-work screenshots to a private drafty canvas so John can eye visual results from any device and annotate directly on the images. Use at the END of any task whose correctness is visual (UI, layout, component, email render, chart, design) — the proof canvas IS part of the deliverable. NOT for work that merely renders somewhere (README/doc/copy/config changes) — if John doesn't need to look at pixels to judge it, skip the canvas. Triggers: finishing visual work, \"proof canvas\", \"proof image\", \"show me\", \"where's the proof\", or re-pushing updated proof after addressing feedback.",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $drafty-proof-canvas to help with this request."
+    ]
+  }
+}

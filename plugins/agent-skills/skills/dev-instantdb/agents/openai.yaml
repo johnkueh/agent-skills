@@ -1,0 +1,6 @@
+interface:
+  display_name: "Dev Instantdb"
+  short_description: "Use the Dev Instantdb workflow"
+  default_prompt: "Use $dev-instantdb to help with this request."
+policy:
+  allow_implicit_invocation: true

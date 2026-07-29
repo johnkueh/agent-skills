@@ -1,0 +1,10 @@
+{
+  "name": "marketing-youtube-transcribe",
+  "version": "2.0.0",
+  "description": "Transcribe YouTube videos. Tries auto/manual captions first via yt-dlp; if they're missing or empty, downloads audio and transcribes with Gemini 2.5 Flash. Use when processing YouTube URLs for content, fact-checking, or research. Triggers on YouTube URLs, \"get transcript\", \"fetch captions\", \"youtube transcript\", or \"transcribe this video\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills"
+}

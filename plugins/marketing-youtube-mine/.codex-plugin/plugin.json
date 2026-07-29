@@ -1,0 +1,26 @@
+{
+  "name": "marketing-youtube-mine",
+  "version": "2.0.0",
+  "description": "Mine YouTube comments for unanswered questions via yt-dlp — search videos by query or channel, pull top comments, extract question-shaped comments with reply-based answered detection, and cluster the unanswered ones. Output is drop-in compatible with marketing-reddit's mine command, so downstream daily SEO johnkueh-daily SEO loops consume either source identically. No API key (yt-dlp scrapes the public site). Replaces the retired comment-mine YouTube path. Triggers on \"mine youtube\", \"youtube comments for\", \"what are people asking on youtube\", \"youtube questions about\", \"yt mine\", \"pull comments from this video\", \"recent uploads from channel\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Marketing Youtube Mine",
+    "shortDescription": "Use the Marketing Youtube Mine skill collection",
+    "longDescription": "Mine YouTube comments for unanswered questions via yt-dlp — search videos by query or channel, pull top comments, extract question-shaped comments with reply-based answered detection, and cluster the unanswered ones. Output is drop-in compatible with marketing-reddit's mine command, so downstream daily SEO johnkueh-daily SEO loops consume either source identically. No API key (yt-dlp scrapes the public site). Replaces the retired comment-mine YouTube path. Triggers on \"mine youtube\", \"youtube comments for\", \"what are people asking on youtube\", \"youtube questions about\", \"yt mine\", \"pull comments from this video\", \"recent uploads from channel\".",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $marketing-youtube-mine to help with this request."
+    ]
+  }
+}

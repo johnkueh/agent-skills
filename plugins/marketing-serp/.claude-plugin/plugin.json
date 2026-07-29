@@ -1,0 +1,10 @@
+{
+  "name": "marketing-serp",
+  "version": "2.0.0",
+  "description": "DataForSEO SERP analysis for geo-targeted search result analysis. See who ranks for keywords in specific locations (Australia, US, UK, etc.), identify content gaps, analyze SERP features (featured snippets, PAA), and find competitor domains. Supports --dry-run to preview costs. Triggers on \"who ranks for\", \"SERP analysis\", \"search results for\", \"Google results for [keyword]\", \"competitors for [keyword]\", \"featured snippet\", \"people also ask\", \"ranking domains\", \"top 10 for\", or \"SERP features\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills"
+}

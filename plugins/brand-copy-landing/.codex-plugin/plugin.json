@@ -1,0 +1,26 @@
+{
+  "name": "brand-copy-landing",
+  "version": "2.0.0",
+  "description": "The \"boring marketer\" conversion-copy framework — proven fundamentals for landing pages, sales pages, hero sections, and persuasive marketing copy that sounds like a person and converts. The product-voice sibling of brand-copy (in-app house style). Use when writing or reviewing a landing or sales page, headline, opening line, feature description, or testimonial, or when asked to \"use boring marketer copy tips\", \"boring marketer\", \"make this convert\", \"write the landing copy\", \"write the headline\", \"fix this marketing copy\". Triggers on \"use boring marketer copy tips\", \"boring marketer\", \"landing page copy\", \"sales page\", \"hero copy\", \"headline formula\", \"so what chain\", \"make this convert\", \"write a testimonial\", \"pain quantification\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Brand Copy Landing",
+    "shortDescription": "Use the Brand Copy Landing skill collection",
+    "longDescription": "The \"boring marketer\" conversion-copy framework — proven fundamentals for landing pages, sales pages, hero sections, and persuasive marketing copy that sounds like a person and converts. The product-voice sibling of brand-copy (in-app house style). Use when writing or reviewing a landing or sales page, headline, opening line, feature description, or testimonial, or when asked to \"use boring marketer copy tips\", \"boring marketer\", \"make this convert\", \"write the landing copy\", \"write the headline\", \"fix this marketing copy\". Triggers on \"use boring marketer copy tips\", \"boring marketer\", \"landing page copy\", \"sales page\", \"hero copy\", \"headline formula\", \"so what chain\", \"make this convert\", \"write a testimonial\", \"pain quantification\".",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $brand-copy-landing to help with this request."
+    ]
+  }
+}
