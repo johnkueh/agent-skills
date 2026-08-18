@@ -45,6 +45,14 @@ Or leave a follower running in the background to keep the local DB hot:
 wacli sync --follow >/tmp/wacli-sync.log 2>&1 &
 ```
 
+## Shared computer / already paired
+
+- **Check first.** Run `wacli doctor` / `wacli auth status` before pairing. If `AUTHENTICATED true`, do not run `wacli auth` again — that creates another linked device.
+- **Shared machine.** The binary and store live on the shared home directory. Any agent on that computer uses the same `wacli` session. No second install, no second QR.
+- **Linux store.** Default store is `~/.local/state/wacli` (XDG). macOS is `~/.wacli`. Binary is often `~/.local/bin/wacli`.
+- **One lock.** `wacli sync` / `wacli auth` holds a single-writer lock for everyone. Do not leave `wacli sync --follow` running. Reads (`messages search/list`, `chats list`) are fine when unlocked. Stop sync before send.
+- **Install on Linux if missing.** Prefer the GitHub release binary (`openclaw/wacli`, linux_amd64) onto `~/.local/bin/wacli`. Homebrew tap `openclaw/tap/wacli` also works where brew exists.
+
 ## Always pass `--json` when an agent is consuming output
 
 Default output is human-formatted (columns, truncation, **senders shown as bare `@lid` numbers**). `--json` produces structured rows that pipe straight into `jq`. Use it everywhere the result feeds back to Claude — and **never attribute a quote from the human output** (see "Attribution" below).
