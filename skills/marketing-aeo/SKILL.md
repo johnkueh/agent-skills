@@ -31,11 +31,10 @@ Requirements:
 
 When the user first asks to set this up for a project:
 
-1. **Verify env vars are set** — run `aeo doctor`. If any of these are missing, give them the get-it links and stop:
-   - `FIRECRAWL_API_KEY` (firecrawl.dev) — for ChatGPT + Perplexity
-   - `DATAFORSEO_API_KEY` (base64 of `login:password`) — for Google AI Overview
-   - `GEMINI_API_KEY` (aistudio.google.com/apikey) — for structured extraction
-   - `ANTHROPIC_API_KEY` (optional, console.anthropic.com) — for Claude
+1. **Verify env vars are set** — run `aeo doctor`.
+   - `FIRECRAWL_API_KEY` (ChatGPT + Perplexity) and `DATAFORSEO_API_KEY` (Google AI Overview, base64 of `login:password`): on John's shared box these live in bws project `agent-secrets` (`8ebe576c-7164-4cd0-9eec-b4a7000badd5`). If unset, wrap `aeo` with `bws run --project-id 8ebe576c-7164-4cd0-9eec-b4a7000badd5 -- …`. Do not give get-it links and stop. Do not ask John to paste them.
+   - `GEMINI_API_KEY` (aistudio.google.com/apikey) — for structured extraction. Not in this bws project. If missing, give the get-it link and stop.
+   - `ANTHROPIC_API_KEY` (optional, console.anthropic.com) — for Claude. Not in this bws project. Keep existing guidance.
 
 2. **`cd` into the user's project**, then `aeo init`. This creates `<project>/.aeo/runs.sqlite`.
 

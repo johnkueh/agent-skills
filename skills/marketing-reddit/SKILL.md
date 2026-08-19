@@ -45,6 +45,8 @@ bun <this-skill-dir>/cli.ts doctor
 Proxy resolution order: `--proxy` flag → `REDDIT_PROXY` env → `~/.config/reddit-miner/config.json`.
 The proxy secret is never read from or written to the skill repo. Use `--no-proxy` to force direct.
 
+House box: `REDDIT_PROXY` is already in bws project `agent-secrets` (`8ebe576c-7164-4cd0-9eec-b4a7000badd5`). If the env is unset, wrap the miner with `bws run --project-id 8ebe576c-7164-4cd0-9eec-b4a7000badd5 -- …`. Do not ask John to paste the proxy URL.
+
 ## Setup flow — guide the user through this
 
 When the user first asks to set this up, don't dump manual steps — drive it. Run
@@ -74,7 +76,10 @@ handling a proxy secret). `<cli>` below is `bun <this-skill-dir>/cli.ts`.
 5. **`proxy credential resolved` is INFO, not a failure.** Ask the user: do they
    have a residential/ISP proxy? Reddit blocks datacenter IPs, so a cloud/CI box
    needs one; a clean home IP often works direct.
-   - If yes, take the proxy URL and store it for them — never paste it into the repo:
+   - On John's shared box, inject via bws (`REDDIT_PROXY` is in `agent-secrets`). Do
+     not ask John for the URL.
+   - Elsewhere: if yes, take the proxy URL and store it for them — never paste it
+     into the repo:
      ```bash
      <cli> setup --proxy "http://user:pass@host:port"
      ```

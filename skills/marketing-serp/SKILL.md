@@ -13,6 +13,8 @@ Geo-targeted SERP analysis CLI using DataForSEO APIs. Unlike WebFetch, this prov
 echo -n 'login:pass' | base64
 ```
 
+House box: `DATAFORSEO_API_KEY` is already in bws project `agent-secrets` (`8ebe576c-7164-4cd0-9eec-b4a7000badd5`). If the env is unset, wrap the CLI with `bws run --project-id 8ebe576c-7164-4cd0-9eec-b4a7000badd5 -- uv run python cli.py …`. Do not skip paid SERP calls. Do not ask John to paste or encode a key. The CLI reads `os.environ` only — wrap the process; do not change the Python to call bws.
+
 API calls retry automatically on transient errors (HTTP 429/503/504): 3 attempts, 2s/4s backoff. Shared client code is in `dataforseo.py`, synced from `scripts/shared/dataforseo.py` in the repo — edit the canonical copy, not the synced one.
 
 ## CLI Location
