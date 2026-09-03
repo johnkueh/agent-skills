@@ -17,6 +17,8 @@ unless the request explicitly includes factual editing.
 Treat patterns as evidence in combination, not banned tokens. A single em dash,
 formal word, short sentence, or three-item list can be natural. Voice guidance
 and deliberate style outrank a generic word list when clarity remains intact.
+For interface copy, never change established capitalization, terminology, or
+product conventions solely to satisfy this pass.
 
 ## Add specificity before personality
 
@@ -41,9 +43,9 @@ Prioritize structural problems over isolated vocabulary.
 5. **Signposting:** “Here's what you need to know”, “This is the answer”, “Let's dive in”. Start with the information.
 6. **Negative parallelism:** repeated “not X, but Y” or “not just X” pivots. Make the positive claim directly.
 7. **Punctuation tics:** dense em dashes, colons used as dramatic pivots, decorative ellipses. Keep punctuation that clarifies.
-8. **Filler and hedging:** “in order to”, “it is important to note”, stacked “could potentially”. Cut or choose the accurate qualifier.
+8. **Filler and hedging:** automatic “please”, “in order to”, “at this time”, “it is important to note”, or stacked “could potentially”. Cut it or choose the accurate qualifier.
 9. **Puffery:** “groundbreaking”, “renowned”, “vibrant”, “pivotal”, “testament”, “breathtaking”. State what happened or what the product does.
-10. **Copula avoidance:** “serves as”, “functions as”, “stands as”, “boasts”. Prefer “is” or “has” when accurate.
+10. **Inflated diction and copula avoidance:** “utilize”, “serves as”, “functions as”, “stands as”, “boasts”. Prefer “use”, “is”, or “has” when accurate.
 11. **Vague authority:** “experts argue”, “studies show”, “industry reports suggest”. Name and cite the source or remove the claim.
 12. **Name-dropping:** lists of people or outlets without explaining their relevance. Keep the source that supports the point.
 13. **Dangling participles:** “highlighting”, “showcasing”, “ensuring”, or “reflecting” clauses that add no fact. Delete or make the relationship explicit.
@@ -69,9 +71,11 @@ Prioritize structural problems over isolated vocabulary.
 5. Re-read for changed meaning, factual drift, and lost voice.
 6. Ask what still makes the result feel generated and fix only supported issues.
 
-For a substantial review, return concise findings, the revised draft, and a
-before-and-after count of the detectable repeated patterns. For a narrow edit,
-return the rewrite without manufacturing an audit report.
+For a substantial humanizing review, return concise findings, the revised
+draft, and a before-and-after count of the detectable repeated patterns. When
+another loaded skill owns the requested review format, fold relevant edits into
+that review instead of producing a separate humanizing report. For a narrow
+edit, return the rewrite without manufacturing an audit report.
 
 ## Final humanizing check
 

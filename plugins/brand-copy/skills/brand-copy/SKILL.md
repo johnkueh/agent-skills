@@ -17,12 +17,37 @@ understand what happens next.
 
 ## Load the guidance
 
-Load the reference for the surface:
+For interface text, first check the available skills:
 
-| Request | Reference |
-| --- | --- |
-| Buttons, labels, errors, empty states, onboarding, settings, notifications, or other interface text | [references/interface-copy.md](references/interface-copy.md) |
-| Homepage, landing page, sales page, hero, headline, benefit, testimonial, objection, or conversion copy | [references/landing-pages.md](references/landing-pages.md) |
+- If `better-writing` is available, use it for interface patterns and review
+  format. Also read [references/interface-copy.md](references/interface-copy.md)
+  for the complementary Mailchimp-derived voice and editorial rules.
+- If `better-writing` is unavailable, read both
+  [references/interface-copy.md](references/interface-copy.md) and
+  [references/interface-patterns.md](references/interface-patterns.md). The
+  latter is the portable fallback, so do not load it alongside `better-writing`.
+
+For a homepage, landing page, sales page, hero, headline, benefit, testimonial,
+objection, or conversion request, read
+[references/landing-pages.md](references/landing-pages.md).
+
+Use installed companion skills by ownership:
+
+| Concern | Owner when available | `brand-copy` role |
+| --- | --- | --- |
+| Interface wording and UX-writing review | `better-writing` | Brand voice, editorial style, claim integrity, and humanizing |
+| Conversion structure and customer evidence | `brand-copy` | Primary owner |
+| Text rendering, wrapping, and truncation | `better-typography` | Supply final copy and realistic content lengths |
+| Semantics, accessible names, error wiring, and announcements | `better-accessibility` | Supply clear labels and messages |
+| Text expansion and spatial RTL | `better-layout` | Supply complete localizable strings |
+| Rendered contrast and semantic color | `better-colors` | Supply a textual state cue when color is not enough |
+| Visual polish and motion | `better-ui` | Do not let visual treatment rewrite the meaning |
+
+Load a companion only when the request touches its concern. If an environment
+provides a broader design or interface orchestrator, let it coordinate the
+specialist findings and output format; do not produce duplicate parallel
+reviews. Do not assume that a skill named `better-design` exists—inspect the
+available skill list.
 
 Always read [references/humanizing.md](references/humanizing.md) as part of this
 skill. Apply its constraints while drafting, then run its final pass before
@@ -30,8 +55,8 @@ returning any copy. This is not conditional on whether the draft appears to
 contain AI-writing tells. Do not let the model decide whether the pass is needed
 by inspecting its own output.
 
-Load both surface references only when the request genuinely crosses interface
-and marketing copy.
+Load interface and landing-page guidance together only when the request
+genuinely crosses both surfaces.
 
 ## Establish the brief
 
@@ -59,15 +84,9 @@ deadline. Mark placeholders clearly when evidence is missing.
 - **Appropriate:** adjust tone to the stakes without changing the underlying voice.
 - **Human:** vary rhythm and preserve intentional personality without manufacturing quirks.
 
-Voice stays consistent across surfaces. Tone changes with the reader's state:
-
-| Reader state | Tone |
-| --- | --- |
-| Frustrated or blocked | Calm, direct, solution-first |
-| New or uncertain | Patient and orienting |
-| Completing a routine action | Brief and neutral |
-| Facing risk, cost, or data loss | Serious and explicit |
-| Exploring a product | Confident, concrete, and evidence-led |
+Voice stays consistent across surfaces. Tone changes with the reader's state;
+use the selected surface guidance or installed owner rather than applying a
+second generic tone matrix.
 
 ## Deliver the result
 
@@ -76,7 +95,8 @@ rationale, not a brand manifesto. A page may need several genuinely different
 directions. When alternatives help, vary the premise or structure rather than
 swapping adjectives.
 
-For a standalone review, report:
+For a standalone review, report the following unless an installed specialist
+skill defines the review format for its domain:
 
 1. the most important findings, with exact before-and-after copy;
 2. the revised copy; and
