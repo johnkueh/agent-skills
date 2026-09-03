@@ -15,19 +15,23 @@ Write clear, specific copy that sounds like the product has a point of view.
 Preserve accurate claims, established terminology, and the reader's ability to
 understand what happens next.
 
-## Route the request
+## Load the guidance
 
-Load only the reference needed for the surface:
+Load the reference for the surface:
 
 | Request | Reference |
 | --- | --- |
 | Buttons, labels, errors, empty states, onboarding, settings, notifications, or other interface text | [references/interface-copy.md](references/interface-copy.md) |
 | Homepage, landing page, sales page, hero, headline, benefit, testimonial, objection, or conversion copy | [references/landing-pages.md](references/landing-pages.md) |
-| Existing prose that sounds generic, automated, over-polished, or full of AI-writing tells | [references/humanizing.md](references/humanizing.md) |
 
-Use more than one reference when the request genuinely crosses modes, such as
-rewriting a landing page and then removing formulaic language. Do not load every
-reference for a single button or sentence.
+Always read [references/humanizing.md](references/humanizing.md) as part of this
+skill. Apply its constraints while drafting, then run its final pass before
+returning any copy. This is not conditional on whether the draft appears to
+contain AI-writing tells. Do not let the model decide whether the pass is needed
+by inspecting its own output.
+
+Load both surface references only when the request genuinely crosses interface
+and marketing copy.
 
 ## Establish the brief
 
@@ -88,3 +92,4 @@ For a direct writing request, lead with the finished copy.
 - Is the tone appropriate to the stakes?
 - Did any framework become visible in the prose?
 - Does it still sound like the established brand after editing?
+- Did the required humanizing pass catch repeated structures and generic phrasing?

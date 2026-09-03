@@ -1,8 +1,8 @@
 # Humanizing existing copy
 
-Use this reference when a draft sounds generic, automated, over-polished, or
-formulaic. Remove writing tells without flattening the established voice or
-changing facts.
+Use this reference for every `brand-copy` task. Apply it while drafting and as a
+required final pass, including when the copy already appears natural. Remove
+writing tells without flattening the established voice or changing facts.
 
 The pattern catalogue is adapted from the MIT-licensed
 [blader/humanizer](https://github.com/blader/humanizer), which builds on
