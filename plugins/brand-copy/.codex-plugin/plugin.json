@@ -1,7 +1,7 @@
 {
   "name": "brand-copy",
   "version": "2.0.1",
-  "description": "Write and review clear house-style product and marketing copy. Use for UI strings, buttons, labels, errors, onboarding, release notes, App Store copy, emails, or copy rewrites.",
+  "description": "Write and edit product and marketing copy, including interface strings, landing pages, headlines, CTAs, emails, release notes, and de-slopping an existing draft. Use for brand voice and conversion copy, not personal essays or product-behavior decisions. Triggers on \"write the copy\", \"landing page copy\", \"fix this CTA\", \"rewrite this headline\", \"humanize this\", \"remove AI tells\", \"error message\", \"empty state\", and \"make this sound less generic\".",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"
@@ -11,7 +11,7 @@
   "interface": {
     "displayName": "Brand Copy",
     "shortDescription": "Use the Brand Copy skill collection",
-    "longDescription": "Write and review clear house-style product and marketing copy. Use for UI strings, buttons, labels, errors, onboarding, release notes, App Store copy, emails, or copy rewrites.",
+    "longDescription": "Write and edit product and marketing copy, including interface strings, landing pages, headlines, CTAs, emails, release notes, and de-slopping an existing draft. Use for brand voice and conversion copy, not personal essays or product-behavior decisions. Triggers on \"write the copy\", \"landing page copy\", \"fix this CTA\", \"rewrite this headline\", \"humanize this\", \"remove AI tells\", \"error message\", \"empty state\", and \"make this sound less generic\".",
     "developerName": "John Kueh",
     "category": "Developer Tools",
     "capabilities": [

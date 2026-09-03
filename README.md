@@ -83,7 +83,7 @@ These are the ones that earned a permanent spot in my setup. They lean on real k
 | [`media-image-gen`](skills/media-image-gen) | Generate logos, illustrations, photoreal shots, UI mockups, and ads with GPT Image 2 — with cost logged per call. |
 | [`media-video-gen`](skills/media-video-gen) | Generate cinematic videos with Veo 3.1 (text/image→video) — pairs with a still, quotes exact per-second cost up front, true-loop + web MP4/WebM/poster output. |
 | [`brand-design`](skills/brand-design) | A house UI/UX playbook for reviewing app and web screens — typography, spacing, dark mode, motion, the "looks AI-generated" smell test. |
-| [`brand-copy`](skills/brand-copy) | A house copy guide for UI strings, errors, empty states, onboarding, and marketing — voice, tone, and microcopy. |
+| [`brand-copy`](skills/brand-copy) | Write, edit, and humanize interface, landing-page, and marketing copy. |
 
 ### Mac hygiene
 
