@@ -44,16 +44,6 @@
       "source": "./plugins/data-digest"
     },
     {
-      "name": "dev-instantdb",
-      "description": "Build React, JavaScript, or Expo apps with InstantDB as the realtime backend. Use when InstantDB is chosen for a realtime, collaborative, multiplayer, or local-first prototype.",
-      "source": "./plugins/dev-instantdb"
-    },
-    {
-      "name": "drafty-proof-canvas",
-      "description": "Publish visual verification screenshots to a private Drafty canvas. Use at the end of UI, layout, component, email-render, chart, or design work that John must inspect; skip text-only changes.",
-      "source": "./plugins/drafty-proof-canvas"
-    },
-    {
       "name": "marketing-aeo",
       "description": "Track brand and domain citations in ChatGPT, Perplexity, Google AI Overview, and Claude. Use for AEO/GEO monitoring, AI-search visibility, chatbot mentions, citation queries, or project-level AI answer tracking.",
       "source": "./plugins/marketing-aeo"
@@ -117,11 +107,6 @@
       "name": "system-memory-cleanup",
       "description": "Inspect and clean macOS CPU and memory usage. Use for a slow Mac, resource hogs, orphaned processes, high CPU, memory pressure, or process cleanup.",
       "source": "./plugins/system-memory-cleanup"
-    },
-    {
-      "name": "wendy",
-      "description": "Coach execution using Wendy's Strategist-versus-Performer framework. Use when the user asks Wendy for coaching or asks for help getting unstuck and taking a next step.",
-      "source": "./plugins/wendy"
     }
   ]
 }

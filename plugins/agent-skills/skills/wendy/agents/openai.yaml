@@ -1,6 +1,0 @@
-interface:
-  display_name: "Wendy"
-  short_description: "Use the Wendy workflow"
-  default_prompt: "Use $wendy to help with this request."
-policy:
-  allow_implicit_invocation: true

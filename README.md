@@ -62,13 +62,6 @@ These are the ones that earned a permanent spot in my setup. They lean on real k
 | [`comms-whatsapp`](skills/comms-whatsapp) | Read and send WhatsApp messages from the command line — search chats, list groups, grab a thread. |
 | [`comms-notion`](skills/comms-notion) | Read a Notion page from its URL and return the body as markdown. |
 
-### Build & ship
-
-| Skill | What it does |
-|---|---|
-| [`dev-instantdb`](skills/dev-instantdb) | Build a working React, vanilla JS, or Expo app with InstantDB as a realtime, local-first backend. |
-| [`drafty-proof-canvas`](skills/drafty-proof-canvas) | Publish proof-of-work screenshots to a drafty.im canvas so you can review and annotate visual results from any device. |
-
 ### Data
 
 | Skill | What it does |
