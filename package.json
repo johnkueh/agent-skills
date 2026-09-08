@@ -6,6 +6,6 @@
   "scripts": {
     "build": "node scripts/build-packages.mjs",
     "check": "node scripts/validate.mjs",
-    "test": "pnpm build && pnpm check"
+    "test": "pnpm build && pnpm check && bun test skills/marketing-reddit/session.test.ts"
   }
 }

@@ -118,7 +118,10 @@ bun <this-skill-dir>/cli.ts mine --subreddit Retatrutide --time month --threads 
 ```
 
 `--sort`: `top|hot|new|rising|controversial` (`--time` applies to `top`/`controversial`).
-`--keep-open`: leave the browser session running for inspection.
+`--keep-open`: leave the browser session running for inspection. Set
+`REDDIT_MINER_SESSION` to a unique caller-owned name when keeping it open or
+reusing it; otherwise each process gets its own session. Cleanup affects only
+that session.
 `--no-proxy`: force a direct connection even if a proxy is configured.
 `--no-rotate`: keep the proxy's stored `sessid` instead of minting a fresh one (see below).
 

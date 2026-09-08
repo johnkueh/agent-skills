@@ -30,7 +30,7 @@
     },
     {
       "name": "comms-slack",
-      "description": "Search Slack messages, people, channels, DMs, and threads using John's personal token. Use for Slack permalinks or requests to find a conversation, colleague, message, channel, or thread.",
+      "description": "Search Slack messages, people, channels, DMs, and threads using a user token. Use for Slack permalinks or requests to find a conversation, colleague, message, channel, or thread.",
       "source": "./plugins/comms-slack"
     },
     {
