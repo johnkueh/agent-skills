@@ -1,6 +1,6 @@
 {
   "name": "marketing-reddit",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Mine Reddit posts, threads, comments, and question clusters through a bot-challenge-resistant browser. Use for subreddit research, content gaps, unanswered questions, post data, or Reddit 403 blocks.",
   "author": {
     "name": "John Kueh",

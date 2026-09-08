@@ -4,6 +4,11 @@ description: "Mine Reddit posts, threads, comments, and question clusters throug
 ---
 
 # marketing-reddit
+
+This CLI uses `agent-browser`. Honor the host's browser policy: if that tool
+requires an explicit user request, do not invoke this CLI as an indirect bypass.
+Use an available research connector or browser workflow instead.
+
 Reddit hard-blocks the public `.json` API for datacenter/cloud IPs and serves a
 JS bot-challenge to anything automated. The decisive signal is the
 **`HeadlessChrome` token in the User-Agent** — override it to a clean
@@ -24,9 +29,8 @@ Written in TypeScript, run with **bun** (runs `.ts` directly, zero install).
 | User-Agent | `…HeadlessChrome/…` | `…Chrome/…` (clean) | **decisive** — clean UA passes |
 | navigator.webdriver | true | true (unchanged) | not enough alone to block |
 
-`--proxy`/`--user-agent` apply at agent-browser **daemon launch**, so the tool
-runs `agent-browser close --all` at the start of a run to guarantee they take
-effect (this also closes other agent-browser sessions).
+`--proxy`/`--user-agent` apply at agent-browser **daemon launch**, so use an isolated session and verify the installed CLI targets only that session
+when restarting. Do not close other browser sessions.
 
 ## Setup
 
@@ -45,7 +49,9 @@ bun <this-skill-dir>/cli.ts doctor
 Proxy resolution order: `--proxy` flag → `REDDIT_PROXY` env → `~/.config/reddit-miner/config.json`.
 The proxy secret is never read from or written to the skill repo. Use `--no-proxy` to force direct.
 
-House box: `REDDIT_PROXY` is already in bws project `agent-secrets` (`8ebe576c-7164-4cd0-9eec-b4a7000badd5`). If the env is unset, wrap the miner with `bws run --project-id 8ebe576c-7164-4cd0-9eec-b4a7000badd5 -- …`. Do not ask John to paste the proxy URL.
+Resolve credentials through the user’s configured secret manager or environment.
+Keep values out of chat and the repository. Use dry-run estimates when available
+and stay within the authorized scope and budget.
 
 ## Setup flow — guide the user through this
 
@@ -76,8 +82,7 @@ handling a proxy secret). `<cli>` below is `bun <this-skill-dir>/cli.ts`.
 5. **`proxy credential resolved` is INFO, not a failure.** Ask the user: do they
    have a residential/ISP proxy? Reddit blocks datacenter IPs, so a cloud/CI box
    needs one; a clean home IP often works direct.
-   - On John's shared box, inject via bws (`REDDIT_PROXY` is in `agent-secrets`). Do
-     not ask John for the URL.
+   - Prefer injecting an existing credential through the configured secret manager.
    - Elsewhere: if yes, take the proxy URL and store it for them — never paste it
      into the repo:
      ```bash

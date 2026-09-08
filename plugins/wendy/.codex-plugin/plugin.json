@@ -1,7 +1,7 @@
 {
   "name": "wendy",
-  "version": "2.0.1",
-  "description": "Coach execution using Wendy's Strategist-versus-Performer framework. Use when John is stuck, avoiding, overthinking, procrastinating, fake-progressing, prioritizing projects, or explicitly asks Wendy for coaching.",
+  "version": "2.0.2",
+  "description": "Coach execution using Wendy's Strategist-versus-Performer framework. Use when the user asks Wendy for coaching or asks for help getting unstuck and taking a next step.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"
@@ -11,7 +11,7 @@
   "interface": {
     "displayName": "Wendy",
     "shortDescription": "Use the Wendy skill collection",
-    "longDescription": "Coach execution using Wendy's Strategist-versus-Performer framework. Use when John is stuck, avoiding, overthinking, procrastinating, fake-progressing, prioritizing projects, or explicitly asks Wendy for coaching.",
+    "longDescription": "Coach execution using Wendy's Strategist-versus-Performer framework. Use when the user asks Wendy for coaching or asks for help getting unstuck and taking a next step.",
     "developerName": "John Kueh",
     "category": "Developer Tools",
     "capabilities": [

@@ -35,7 +35,7 @@ If the user already gave a complete brief, skip the interview.
 ## Cost — quoted before every call
 
 Pricing is **flat per-second × resolution** (audio included), so the cost is
-**exact**, not a guess. The CLI prints it before every call and on `--dry-run`.
+an estimate based on the configured rate table. The CLI prints it before every call and on `--dry-run`.
 
 | Tier | 720p | 1080p | 4k |
 |---|---|---|---|
@@ -43,8 +43,7 @@ Pricing is **flat per-second × resolution** (audio included), so the cost is
 | Standard | $0.40/s | $0.40/s | $0.60/s |
 | Lite | $0.05/s | $0.08/s | — |
 
-`cost = durationSeconds × rate`. An 8s/720p Fast clip = **$0.80**. A
-**safety-filtered or timed-out** generation is **$0** — the quote is a ceiling.
+`cost = durationSeconds × rate`. An 8s/720p Fast clip = **$0.80**. Do not infer billing from a timeout or rejection; check the provider result before retrying to avoid duplicate jobs.
 The Gemini API returns no `$` in its response, so the CLI computes and logs the
 cost itself (`cost_estimated: true`).
 
@@ -124,11 +123,12 @@ superpower.com. No loop seam to engineer. Wire it as:
 
 ```css
 .hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-@media (prefers-reduced-motion: reduce){.hero{display:none;}}  /* poster shows */
-@media (max-width: 768px){.hero{display:none;}}                /* mobile: poster */
+@media (prefers-reduced-motion: reduce){.hero{display:none;}}
 ```
 
-End the generated clip on a good resting frame; set `poster` to the first frame.
+Provide a separate visible poster image beneath the video; hiding the video also
+hides its own poster. Disable autoplay under reduced motion and preserve access
+to meaningful content. End the clip on a good resting frame.
 
 ## Gotchas (learned shipping the content-site hero)
 

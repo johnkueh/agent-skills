@@ -13,6 +13,10 @@ Geo-targeted SERP analysis CLI using DataForSEO APIs. Unlike WebFetch, this prov
 echo -n 'login:pass' | base64
 ```
 
+Resolve credentials through the user’s configured secret manager or environment.
+Keep values out of chat and the repository. Use dry-run estimates when available
+and stay within the authorized scope and budget.
+
 API calls retry automatically on transient errors (HTTP 429/503/504): 3 attempts, 2s/4s backoff. Shared client code is in `dataforseo.py`, synced from `scripts/shared/dataforseo.py` in the repo — edit the canonical copy, not the synced one.
 
 ## CLI Location

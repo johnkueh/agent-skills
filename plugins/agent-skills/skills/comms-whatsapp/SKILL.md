@@ -20,7 +20,7 @@ So when the user asks "what did Alice send yesterday?" — the answer comes from
 
 ## Critical gotchas
 
-- **Single-writer lock.** The store is locked while `wacli sync` (or any connecting command) holds it. Trying to send while sync is running fails with a lock error. Tell the user to stop sync (`pkill -f 'wacli sync'`) before sending, or run `wacli send ...` in a window where sync isn't running. `wacli doctor` shows lock state.
+- **Single-writer lock.** The store is locked while `wacli sync` (or any connecting command) holds it. Trying to send while sync is running fails with a lock error. Inspect the lock owner and installed CLI capabilities. Wait for a bounded sync or pause only the managed follower for that exact store, then restore it after sending. Do not kill sync processes by a broad name pattern. `wacli doctor` shows lock state.
 - **History is shallow by default.** Initial sync only pulls recent messages from the user's primary device. Older history requires `wacli history backfill --chat <jid> --requests N`. Best-effort, may not return.
 - **JIDs, not phone numbers.** Most read commands take `--chat <jid>` (e.g. `61400000000@s.whatsapp.net` for DMs, `<id>@g.us` for groups). `wacli send text` accepts `--to` as either phone or JID. To find a JID: `wacli chats list --json` or `wacli contacts search "name" --json`.
 - **FTS5 may not be available.** `wacli doctor` shows `FTS5 false` on stock macOS SQLite — search falls back to LIKE, which is slower and less precise. Still usable for typical agent queries.
@@ -39,7 +39,7 @@ After pairing, kick off an initial sync that exits when idle:
 wacli sync --once --idle-exit 30s
 ```
 
-Or leave a follower running in the background to keep the local DB hot:
+For explicitly requested continuous sync on a dedicated store, a follower can keep the local DB current. On a shared store use the existing supervisor and bounded sync instead:
 
 ```sh
 wacli sync --follow >/tmp/wacli-sync.log 2>&1 &
@@ -50,7 +50,7 @@ wacli sync --follow >/tmp/wacli-sync.log 2>&1 &
 - **Check first.** Run `wacli doctor` / `wacli auth status` before pairing. If `AUTHENTICATED true`, do not run `wacli auth` again — that creates another linked device.
 - **Shared machine.** The binary and store live on the shared home directory. Any agent on that computer uses the same `wacli` session. No second install, no second QR.
 - **Linux store.** Default store is `~/.local/state/wacli` (XDG). macOS is `~/.wacli`. Binary is often `~/.local/bin/wacli`.
-- **One lock.** `wacli sync` / `wacli auth` holds a single-writer lock for everyone. Do not leave `wacli sync --follow` running. Reads (`messages search/list`, `chats list`) are fine when unlocked. Stop sync before send.
+- **One lock.** `wacli sync` / `wacli auth` holds a single-writer lock for everyone. Do not start an unmanaged follower on a shared store. Reads (`messages search/list`, `chats list`) are fine when unlocked. Stop sync before send.
 - **Install on Linux if missing.** Prefer the GitHub release binary (`openclaw/wacli`, linux_amd64) onto `~/.local/bin/wacli`. Homebrew tap `openclaw/tap/wacli` also works where brew exists.
 
 ## Always pass `--json` when an agent is consuming output
@@ -219,7 +219,7 @@ wacli messages context --chat <jid> --id <message-id> --before 8 --after 8 --jso
 ### "Send Alice the link to Y"
 
 ```sh
-ALICE=$(wacli contacts search "Alice" --json | jq -r '.data[0].JID')
+ALICE=$(wacli contacts search "Alice" --json | jq -er 'if (.data | length) == 1 then .data[0].JID else error("ambiguous recipient") end')
 wacli send text --to "$ALICE" --message "Y: https://..."
 ```
 

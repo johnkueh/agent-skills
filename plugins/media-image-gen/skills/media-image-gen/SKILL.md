@@ -16,9 +16,9 @@ Usage log at `~/.config/image-gen/usage.jsonl`.
 
 1. **Classify** the request into one of these categories:
    `logo | illustration | photoreal | infographic | ui-mockup | ad | story-panel | style-transfer | edit`
-2. **Interview** the user for anything missing. Ask one short message — no questionnaires. The critical fields by category are listed below.
+2. **Resolve the brief.** Infer routine visual details and generate directly. Ask only for a missing required image or a material ambiguity that prevents a useful result.
 3. **Assemble** the prompt using the structure in `PROMPTING.md`: Scene → Subject → Details → Composition → Constraints. Quote literal text. Spell tricky words letter-by-letter.
-4. **Show the user the final prompt + estimated cost** (`--dry-run` first if you're unsure).
+4. Use the native image-generation tool when available and follow its contract. For this CLI, check the estimated cost against the authorized scope; use `--dry-run` when needed. Do not add a prompt-approval gate.
 5. **Call** `cli.ts generate` or `cli.ts edit` and report the actual cost.
 6. **Iterate small.** Single-change edits — "change only X, keep everything else the same" — and repeat the preserve list each turn (per the cookbook's anti-drift rule).
 

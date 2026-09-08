@@ -20,7 +20,7 @@
     },
     {
       "name": "brand-design",
-      "description": "Design and review polished UI/UX using John's house playbook. Use for app or web screens, dashboards, layouts, components, typography, color, spacing, dark mode, motion, mobile patterns, or generic-looking UI.",
+      "description": "Design and review polished UI/UX using task-focused design principles. Use for app or web screens, dashboards, layouts, components, typography, color, spacing, dark mode, motion, mobile patterns, or generic-looking UI.",
       "source": "./plugins/brand-design"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "name": "wendy",
-      "description": "Coach execution using Wendy's Strategist-versus-Performer framework. Use when John is stuck, avoiding, overthinking, procrastinating, fake-progressing, prioritizing projects, or explicitly asks Wendy for coaching.",
+      "description": "Coach execution using Wendy's Strategist-versus-Performer framework. Use when the user asks Wendy for coaching or asks for help getting unstuck and taking a next step.",
       "source": "./plugins/wendy"
     }
   ]

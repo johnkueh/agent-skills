@@ -20,9 +20,9 @@ Instant provides client-side JS SDKs and an admin SDK:
 - `@instantdb/react-native` --- React Native / Expo
 - `@instantdb/admin` --- backend scripts / servers
 
-When installing, always check what package manager the project uses (npm, pnpm,
-bun) first and then install the latest version of the Instant SDK. If working in
-React use Next and Tailwind unless specified otherwise.
+Use the project’s package manager and compatible SDK version. Preserve the
+existing framework and styling system; do not upgrade dependencies or introduce
+Next/Tailwind merely because this skill was loaded.
 
 # Managing Instant Apps
 
@@ -219,10 +219,9 @@ Notes:
 
 # CRITICAL Storage Guidelines
 
-CRITICAL: If an app displays images or files, use Instant Storage. Do not store
-URLs as string attributes on your entities. This includes seed scripts: do not
-use placeholder image URLs (e.g. picsum.photos) as string attributes to fake
-file support.
+Use Instant Storage for files the application uploads and manages there. External
+asset URLs may remain string attributes when that is the intended data model.
+Do not present placeholder URLs as a working upload feature.
 
 Uploads auto-create `$files` entities. Link them to your data via the schema,
 then query through the relationship to get URLs.
@@ -268,7 +267,7 @@ const { data } = db.useQuery({ posts: { image: {} } });
 Always pass `schema` when initializing Instant to get type safety for queries and transactions
 
 ```tsx
-import schema from '@/instant.schema`
+import schema from '@/instant.schema';
 
 // On client
 import { init } from '@instantdb/react'; // or your relevant Instant SDK
@@ -285,7 +284,7 @@ Always use `id()` to generate ids for new entities
 
 ```tsx
 import { id } from '@instantdb/react'; // or your relevant Instant SDK
-import { clientDb } from '@/lib/clientDb
+import { clientDb } from '@/lib/clientDb';
 clientDb.transact(clientDb.tx.todos[id()].create({ title: 'New Todo' }));
 ```
 

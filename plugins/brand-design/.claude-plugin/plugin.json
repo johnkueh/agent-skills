@@ -1,7 +1,7 @@
 {
   "name": "brand-design",
-  "version": "2.0.1",
-  "description": "Design and review polished UI/UX using John's house playbook. Use for app or web screens, dashboards, layouts, components, typography, color, spacing, dark mode, motion, mobile patterns, or generic-looking UI.",
+  "version": "2.0.2",
+  "description": "Design and review polished UI/UX using task-focused design principles. Use for app or web screens, dashboards, layouts, components, typography, color, spacing, dark mode, motion, mobile patterns, or generic-looking UI.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"

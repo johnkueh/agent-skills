@@ -9,7 +9,8 @@ Fetch a Notion page's title and body content as markdown via the Notion API.
 
 ## Setup
 
-Requires a Notion internal integration token in `.env` (in CWD or in this skill's directory):
+Requires a Notion internal integration token in the environment or a gitignored
+`.env` in the working directory. Do not store credentials in the skill package:
 
 ```
 NOTION_TOKEN=ntn_...
@@ -95,4 +96,4 @@ Headings (1–3), paragraphs, bulleted/numbered lists, to-dos, toggles, quotes, 
 ## Troubleshooting
 
 - **404 / "object_not_found"** — the integration isn't added to the page. Share → Connections → add it.
-- **"NOTION_TOKEN not set"** — drop a `.env` next to `cli.py` or in the directory you're running from.
+- **"NOTION_TOKEN not set"** — inject the variable or use a gitignored `.env` in the working directory, outside the skill package.

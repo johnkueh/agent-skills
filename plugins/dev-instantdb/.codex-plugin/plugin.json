@@ -1,6 +1,6 @@
 {
   "name": "dev-instantdb",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Build React, JavaScript, or Expo apps with InstantDB as the realtime backend. Use when InstantDB is chosen for a realtime, collaborative, multiplayer, or local-first prototype.",
   "author": {
     "name": "John Kueh",

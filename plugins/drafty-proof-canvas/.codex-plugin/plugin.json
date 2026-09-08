@@ -1,6 +1,6 @@
 {
   "name": "drafty-proof-canvas",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Publish visual verification screenshots to a private Drafty canvas. Use at the end of UI, layout, component, email-render, chart, or design work that John must inspect; skip text-only changes.",
   "author": {
     "name": "John Kueh",

@@ -1,6 +1,6 @@
 {
   "name": "media-video-gen",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Generate text-to-video or image-to-video clips with Google Veo, with explicit cost quotes and web-ready outputs. Use for cinematic clips, hero videos, loops, background video, or animating a still.",
   "author": {
     "name": "John Kueh",
