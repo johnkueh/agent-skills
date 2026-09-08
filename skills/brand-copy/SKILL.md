@@ -49,11 +49,9 @@ specialist findings and output format; do not produce duplicate parallel
 reviews. Do not assume that a skill named `better-design` exists—inspect the
 available skill list.
 
-Always read [references/humanizing.md](references/humanizing.md) as part of this
-skill. Apply its constraints while drafting, then run its final pass before
-returning any copy. This is not conditional on whether the draft appears to
-contain AI-writing tells. Do not let the model decide whether the pass is needed
-by inspecting its own output.
+Use [references/humanizing.md](references/humanizing.md) for longer brand copy or
+a humanizing request. For a small label or factual correction, apply the relevant
+voice rules directly without an unrelated editorial pass.
 
 Load interface and landing-page guidance together only when the request
 genuinely crosses both surfaces.
@@ -112,4 +110,4 @@ For a direct writing request, lead with the finished copy.
 - Is the tone appropriate to the stakes?
 - Did any framework become visible in the prose?
 - Does it still sound like the established brand after editing?
-- Did the required humanizing pass catch repeated structures and generic phrasing?
+- Did the applicable editorial pass catch repeated structures and generic phrasing?

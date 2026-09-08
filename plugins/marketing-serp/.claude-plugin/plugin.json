@@ -1,6 +1,6 @@
 {
   "name": "marketing-serp",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Analyze geo-targeted Google SERPs with DataForSEO, including rankings, competitors, snippets, PAA, and content gaps. Use for who-ranks queries, SERP analysis, ranking domains, or search-result research; supports dry-run costs.",
   "author": {
     "name": "John Kueh",

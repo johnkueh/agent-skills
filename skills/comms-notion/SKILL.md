@@ -9,7 +9,8 @@ Fetch a Notion page's title and body content as markdown via the Notion API.
 
 ## Setup
 
-Requires a Notion internal integration token in `.env` (in CWD or in this skill's directory):
+Requires a Notion internal integration token in the environment or a gitignored
+`.env` in the working directory. Do not store credentials in the skill package:
 
 ```
 NOTION_TOKEN=ntn_...
@@ -26,7 +27,7 @@ Run from this skill's base directory.
 ### Read a page (JSON output, default)
 
 ```bash
-uv run python cli.py "https://www.notion.so/Magic-Tags-Product-spec-31a4cb32d18780bbafeaf1e0d7660594?source=copy_link"
+uv run python cli.py "<notion-page-url>"
 ```
 
 ### Read a page (markdown output)
@@ -41,7 +42,7 @@ uv run python cli.py "<url-or-id>" --format md
 uv run python cli.py "<url-or-id>" --max-chars 20000
 ```
 
-Accepts: full URL, dashed page ID (`31a4cb32-d187-80bb-afea-f1e0d7660594`), or bare 32-char hex (`31a4cb32d18780bbafeaf1e0d7660594`).
+Accepts: full URL, dashed page ID (`<dashed-page-id>`), or bare 32-char hex (`<page-id>`).
 
 ### Image handling
 
@@ -60,7 +61,7 @@ uv run python cli.py "<url-or-id>" --images base64
 uv run python cli.py "<url-or-id>" --images strip
 
 # Custom output directory for --images=download
-uv run python cli.py "<url-or-id>" --images download --out-dir /tmp/magic-tags
+uv run python cli.py "<url-or-id>" --images download --out-dir /tmp/notion-export
 ```
 
 When `--images=download`, output also includes `page.md` and `images/img_<hash>.<ext>` next to each other, so the markdown's relative paths resolve.
@@ -70,15 +71,15 @@ When `--images=download`, output also includes `page.md` and `images/img_<hash>.
 ```json
 {
   "url": "https://www.notion.so/...",
-  "page_id": "31a4cb32d18780bbafeaf1e0d7660594",
-  "title": "Magic Tags — Product spec",
+  "page_id": "<page-id>",
+  "title": "Example project specification",
   "created_time": "2026-...",
   "last_edited_time": "2026-...",
   "content": "## Heading\n\nBody as markdown...",
   "content_length": 4823,
   "truncated": false,
   "images_mode": "download",
-  "output_dir": "results/31a4cb32d187_2026-04-28_150833",
+  "output_dir": "results/<page-id>_<timestamp>",
   "markdown_path": "results/.../page.md",
   "images": [
     {"path": ".../img_aa209471db1f.png", "relative": "images/img_aa209471db1f.png", "size": 223152, "mime": "image/png", "source_url": "..."}
@@ -95,4 +96,4 @@ Headings (1–3), paragraphs, bulleted/numbered lists, to-dos, toggles, quotes, 
 ## Troubleshooting
 
 - **404 / "object_not_found"** — the integration isn't added to the page. Share → Connections → add it.
-- **"NOTION_TOKEN not set"** — drop a `.env` next to `cli.py` or in the directory you're running from.
+- **"NOTION_TOKEN not set"** — inject the variable or use a gitignored `.env` in the working directory, outside the skill package.

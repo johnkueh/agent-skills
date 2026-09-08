@@ -1,6 +1,6 @@
 ---
 name: comms-slack
-description: "Search Slack messages, people, channels, DMs, and threads using John's personal token. Use for Slack permalinks or requests to find a conversation, colleague, message, channel, or thread."
+description: "Search Slack messages, people, channels, DMs, and threads using a user token. Use for Slack permalinks or requests to find a conversation, colleague, message, channel, or thread."
 ---
 
 # comms-slack
@@ -98,4 +98,4 @@ Personal user token (xoxp-…) needs:
 
 - **`missing_scope`**: add the missing scope in your Slack App's OAuth settings, then reinstall the app.
 - **`invalid_auth`**: token expired — regenerate at https://api.slack.com/apps.
-- **Token not picked up**: confirm with `printenv SLACK_USER_TOKEN`. If empty, reload the active harness after updating its environment.
+- **Token not picked up**: check presence without printing it: `test -n "$SLACK_USER_TOKEN"`. If empty, reload the active harness after updating its environment.

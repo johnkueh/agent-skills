@@ -98,7 +98,7 @@ When invoked:
 
 3. **Append the x-monitor section** from `digest.x_monitor` — the script already filtered each subscribed handle's archive to the digest window; just summarize per-handle new tweets following the x-monitor skill's bullet format.
 
-4. **One-line takeaway across projects** — what stands out today. Skip if nothing did.
+4. Add analysis only when requested; the default digest ends with the observed data.
 
 5. **State advances automatically.** The next `check` only covers what's happened since this run. Pass `--no-state` to skip the advance for ad-hoc questions ("what's happened in the last 7 days?").
 
@@ -157,14 +157,14 @@ If your project doesn't follow this exact shape, edit `bq_signups`/`bq_costs`/et
 ## Costs
 
 - bq queries scan a few MB per project → free under the 1 TB/mo BQ on-demand quota.
-- x-monitor section reads the **already-archived** latest run, so $0 in API calls. (The actual fresh fetch happens in the x-monitor skill's own `/loop`.)
+- x-monitor section reads the **already-archived** per-handle tweets within the digest window, so $0 in API calls. (The actual fresh fetch happens in the x-monitor skill's own `/loop`.)
 - Total cost of a daily digest across 5 projects with bq-analytics: $0.
 
 ## Troubleshooting
 
-- **`Access Denied: User does not have bigquery.jobs.create permission`** — switch gcloud accounts: `gcloud config set account <email>`. The skill calls `bq` via subprocess, so it inherits whatever account is active.
+- **`Access Denied: User does not have bigquery.jobs.create permission`** — select the account for this process with `CLOUDSDK_CORE_ACCOUNT=<email>`. The skill calls `bq` via subprocess, so it inherits whatever account is active.
 - **`signups.new_users = 0` but you know there were sign-ups** — verify `events.identifies` is being written; some projects only call `track()` and never `identify()`. In that case, treat first-seen-in-`events.raw` as the signup proxy and add a fetcher.
-- **No files flagged `modified_recently`** — mtime floor is 7 days. If recent edits don't appear, the files might have been touched only in git history, not on the local filesystem (e.g. checkout from a different branch). Run `touch` or widen `INITIATIVES_LOOKBACK`.
+- **No files flagged `modified_recently`** — mtime floor is 7 days. If recent edits don't appear, the files might have been touched only in git history, not on the local filesystem (e.g. checkout from a different branch). Inspect Git history or widen `INITIATIVES_LOOKBACK`; do not touch source files to manufacture recency.
 - **x-monitor section says "no runs yet"** — set `X_MONITOR_HOME` to point at the synced folder, or run x-monitor's `setup` + `check` once.
 
 ## Recurring with /loop

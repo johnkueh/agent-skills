@@ -1,6 +1,6 @@
 {
   "name": "brand-copy",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Write and edit product and marketing copy, including interface strings, landing pages, headlines, CTAs, emails, release notes, and de-slopping an existing draft. Use for brand voice and conversion copy, not personal essays or product-behavior decisions. Triggers on \"write the copy\", \"landing page copy\", \"fix this CTA\", \"rewrite this headline\", \"humanize this\", \"remove AI tells\", \"error message\", \"empty state\", and \"make this sound less generic\".",
   "author": {
     "name": "John Kueh",

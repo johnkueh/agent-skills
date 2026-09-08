@@ -1,6 +1,6 @@
 {
   "name": "media-image-gen",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Generate or edit visual assets with OpenAI GPT Image, including logos, illustrations, ads, infographics, mockups, and photoreal images. Use for image generation, moodboards, reference-image work, or style transfer.",
   "author": {
     "name": "John Kueh",

@@ -16,13 +16,13 @@ Only dependency is `yt-dlp` on PATH (`brew install yt-dlp`). No API key, no
 config. Run `doctor` to confirm:
 
 ```bash
-python3 ~/Projects/claude-skills/skills/marketing-youtube-mine/cli.py doctor
+python3 <this-skill-dir>/cli.py doctor
 ```
 
 ## Commands
 
 ```bash
-CLI=~/Projects/claude-skills/skills/marketing-youtube-mine/cli.py
+CLI=<this-skill-dir>/cli.py
 
 # End-to-end mine: search → comments → questions → clusters (the daily-loop entry point)
 python3 $CLI mine --query "retatrutide dosing" --videos 8 --comments 250 \

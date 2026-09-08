@@ -1,6 +1,6 @@
 {
   "name": "media-icon-search",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Find valid installed React icons across Lucide, Phosphor, Tabler, Heroicons, HugeIcons, and related sets. Use for icon selection, natural-language icon searches, paste-ready imports, or contact-sheet previews.",
   "author": {
     "name": "John Kueh",

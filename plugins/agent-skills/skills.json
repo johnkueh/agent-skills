@@ -6,8 +6,6 @@
     "comms-slack",
     "comms-whatsapp",
     "data-digest",
-    "dev-instantdb",
-    "drafty-proof-canvas",
     "marketing-aeo",
     "marketing-ai-crawler",
     "marketing-keyword-data",
@@ -20,7 +18,6 @@
     "media-image-gen",
     "media-video-gen",
     "system-disk-cleanup",
-    "system-memory-cleanup",
-    "wendy"
+    "system-memory-cleanup"
   ]
 }

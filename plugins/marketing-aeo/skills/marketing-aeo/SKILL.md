@@ -31,11 +31,12 @@ Requirements:
 
 When the user first asks to set this up for a project:
 
-1. **Verify env vars are set** — run `aeo doctor`. If any of these are missing, give them the get-it links and stop:
-   - `FIRECRAWL_API_KEY` (firecrawl.dev) — for ChatGPT + Perplexity
-   - `DATAFORSEO_API_KEY` (base64 of `login:password`) — for Google AI Overview
-   - `GEMINI_API_KEY` (aistudio.google.com/apikey) — for structured extraction
-   - `ANTHROPIC_API_KEY` (optional, console.anthropic.com) — for Claude
+1. **Verify env vars are set** — run `aeo doctor`.
+   - Resolve `FIRECRAWL_API_KEY`, `DATAFORSEO_API_KEY`, and optional provider keys
+     from the configured secret manager or environment. Do not request values in chat.
+   - Enable only configured providers needed for the task. If Gemini extraction
+     is unavailable, use the CLI's supported fallback and report its limitations.
+     Missing an optional provider should not block available-provider research.
 
 2. **`cd` into the user's project**, then `aeo init`. This creates `<project>/.aeo/runs.sqlite`.
 
@@ -52,7 +53,7 @@ When the user first asks to set this up for a project:
 
    Don't just list keywords. Phrase them like real people type into ChatGPT.
 
-5. **Confirm queries with the user**, then add them one at a time:
+5. **Add queries within the requested scope.** Ask only if the audience or spending scope remains ambiguous:
    ```
    aeo query add "what is retatrutide and how does it work"
    aeo query add "retatrutide vs mounjaro for weight loss"
@@ -70,9 +71,8 @@ When the user first asks to set this up for a project:
 
 8. **(Optional) Set a budget** if they want a warning when costs rise: `aeo budget set 1000` (= $10/mo).
 
-9. **Suggest a /loop or /schedule** for ongoing monitoring:
-   - `/loop 24h aeo run` for daily checks
-   - Or use the `schedule` skill for cron-based remote runs
+9. Configure recurring monitoring only when requested, using the host's supported
+   scheduler. Do not assume `/loop` or a particular scheduling skill is available.
 
 ## Daily run flow (used by /loop)
 
@@ -118,7 +118,7 @@ Don't just guess. Sources of real questions people ask:
 3. **Reddit/YouTube comments** — pull questions from `comment-mine` skill if available.
 4. **The site's content map** — every major article suggests 2-3 corresponding queries.
 
-Propose, confirm, add. Don't bulk-add without review.
+Inspect the proposed query set, remove duplicates, and add it within existing authorization and budget.
 
 ## Gotchas
 

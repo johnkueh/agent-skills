@@ -14,12 +14,15 @@ Tracks X (Twitter) user profiles for new posts since the last check, archives ev
 
 When the user says any of "set up x-monitor", "configure x-monitor", "install x-monitor on this Mac", "share x-monitor across my machines":
 
-1. **First Mac (the one with credentials):** run `uv run python x_monitor.py setup --share-credentials`. This creates the iCloud cache home, migrates any local data into it, merges `X_MONITOR_HOME` into settings.json, and copies the credentials file into the synced home so the second Mac can pick them up automatically.
-2. **Second Mac:** run `uv run python x_monitor.py setup`. Detects the iCloud-stashed credentials and installs them at `~/.config/x-monitor/credentials.json` (mode 600). No `scp` needed.
-3. After setup completes, tell the user to **restart Claude Code** so `X_MONITOR_HOME` is picked up by future sessions.
-4. If `setup` reports `✗ no credentials`, do **not** proceed — surface the printed instructions and stop.
-
-If the user just says "set up x-monitor" without specifying which Mac, ask which machine they're on (the one with credentials, or a fresh one). On unsure, default to plain `setup` (read-only credential install) — it's safe to run on either machine.
+1. Inspect `doctor`, the cache location, and available credential sources.
+2. Explain the selected cache destination and use plain `setup` for requested
+   setup. It can create directories, migrate cached data, update harness settings,
+   and install a previously synced credential; it is not read-only.
+3. Use `--share-credentials` only when the user explicitly requests copying the
+   credential to the selected sync service. Ordinary setup is not permission to
+   upload credentials. Prefer a configured secret manager for cross-machine auth.
+4. If credentials are missing, use secure authentication and continue independent
+   local archive work. Restart the host only if its environment actually requires it.
 
 ### What `setup` does (manual reference)
 
@@ -62,7 +65,9 @@ By default the cache lives at `~/.cache/x-monitor/`. Set `X_MONITOR_HOME` to sha
 }
 ```
 
-iCloud Drive auto-syncs the small JSON files within seconds. With a daily `/loop` cadence, race conditions are practically impossible. Copy `~/.config/x-monitor/credentials.json` to both machines (or move it inside the synced folder).
+Cloud file sync is not a concurrency lock. Use one writer or serialize runs when
+machines share state; verify conflicts before merging. Share credentials only
+through the separately authorized mechanism described above.
 
 Layout under `X_MONITOR_HOME`:
 
@@ -161,17 +166,12 @@ When invoked (typically by `/loop 1d /x-monitor` or similar):
 
 Keep the digest tight — the user is reading this every day. No marketing language, no "exciting updates," no emojis unless the user asked for them.
 
-## Recurring with /loop
+## Recurring checks
 
-```
-/loop 1d use the x-monitor skill to check for new posts and produce a digest
-```
-
-For self-paced cadence (let the model decide), drop the interval:
-
-```
-/loop use the x-monitor skill to digest new posts whenever appropriate
-```
+Create a schedule only when requested, using the host's supported scheduler.
+Preserve the requested cadence and notification policy. For a monitor, stay quiet
+when unchanged unless periodic status was requested; notify on meaningful updates
+or failures. The CLI itself does not schedule future runs.
 
 ## Costs (empirical)
 

@@ -40,7 +40,7 @@ const CONFIG_PATH = path.join(os.homedir(), ".config", "reddit-miner", "config.j
 // Per-caller override so parallel callers don't share (and clobber) one daemon —
 // a shared session silently ignores the second caller's --proxy/--user-agent and
 // each run's daemon kill takes down a sibling mid-challenge (2026-07-16..23 outage).
-const SESSION = process.env.REDDIT_MINER_SESSION || "reddit-miner";
+const SESSION = process.env.REDDIT_MINER_SESSION || `reddit-miner-${process.pid}`;
 const BLOCK_MARKER = "blocked by network security";
 
 // ----------------------------- NLP: question detection + clustering -----------------------------

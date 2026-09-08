@@ -20,7 +20,7 @@
     },
     {
       "name": "brand-design",
-      "description": "Design and review polished UI/UX using John's house playbook. Use for app or web screens, dashboards, layouts, components, typography, color, spacing, dark mode, motion, mobile patterns, or generic-looking UI.",
+      "description": "Design and review polished UI/UX using task-focused design principles. Use for app or web screens, dashboards, layouts, components, typography, color, spacing, dark mode, motion, mobile patterns, or generic-looking UI.",
       "source": "./plugins/brand-design"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "name": "comms-slack",
-      "description": "Search Slack messages, people, channels, DMs, and threads using John's personal token. Use for Slack permalinks or requests to find a conversation, colleague, message, channel, or thread.",
+      "description": "Search Slack messages, people, channels, DMs, and threads using a user token. Use for Slack permalinks or requests to find a conversation, colleague, message, channel, or thread.",
       "source": "./plugins/comms-slack"
     },
     {
@@ -42,16 +42,6 @@
       "name": "data-digest",
       "description": "Build a per-project digest of signups, product activity, API costs, initiative changes, git activity, and monitoring. Use for morning, daily, yesterday, or recurring cross-project roundups.",
       "source": "./plugins/data-digest"
-    },
-    {
-      "name": "dev-instantdb",
-      "description": "Build React, JavaScript, or Expo apps with InstantDB as the realtime backend. Use when InstantDB is chosen for a realtime, collaborative, multiplayer, or local-first prototype.",
-      "source": "./plugins/dev-instantdb"
-    },
-    {
-      "name": "drafty-proof-canvas",
-      "description": "Publish visual verification screenshots to a private Drafty canvas. Use at the end of UI, layout, component, email-render, chart, or design work that John must inspect; skip text-only changes.",
-      "source": "./plugins/drafty-proof-canvas"
     },
     {
       "name": "marketing-aeo",
@@ -117,11 +107,6 @@
       "name": "system-memory-cleanup",
       "description": "Inspect and clean macOS CPU and memory usage. Use for a slow Mac, resource hogs, orphaned processes, high CPU, memory pressure, or process cleanup.",
       "source": "./plugins/system-memory-cleanup"
-    },
-    {
-      "name": "wendy",
-      "description": "Coach execution using Wendy's Strategist-versus-Performer framework. Use when John is stuck, avoiding, overthinking, procrastinating, fake-progressing, prioritizing projects, or explicitly asks Wendy for coaching.",
-      "source": "./plugins/wendy"
     }
   ]
 }

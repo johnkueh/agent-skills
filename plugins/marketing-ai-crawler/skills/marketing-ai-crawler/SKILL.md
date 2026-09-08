@@ -20,7 +20,7 @@ the repo).
 
 ```bash
 cd <skill-dir>
-python3 cli.py setup --team <team-slug> --projects drafty=drafty.im,myapp=myapp.com
+python3 cli.py setup --team <team-slug> --projects drafty=example.com,myapp=myapp.com
 python3 cli.py doctor   # token + config + live request-log ping per site
 ```
 

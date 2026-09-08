@@ -344,7 +344,7 @@ def main() -> None:
     s.add_argument("--team", required=True, help="Vercel team slug or id")
     s.add_argument(
         "--projects", required=True,
-        help="Comma-separated project=site pairs, e.g. drafty=drafty.im,myapp=myapp.com",
+        help="Comma-separated project=site pairs, e.g. drafty=example.com,myapp=myapp.com",
     )
 
     sub.add_parser("doctor", help="Check token, config, and live request-log access")

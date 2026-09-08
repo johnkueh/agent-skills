@@ -1,7 +1,8 @@
 # Humanizing existing copy
 
-Use this reference for every `brand-copy` task. Apply it while drafting and as a
-required final pass, including when the copy already appears natural. Remove
+Use this reference for longer brand copy or a humanizing request. Apply the
+relevant checks while drafting and reviewing; a small label edit does not need a
+separate editorial pass. Remove
 writing tells without flattening the established voice or changing facts.
 
 The pattern catalogue is adapted from the MIT-licensed
