@@ -73,7 +73,7 @@ These are the ones that earned a permanent spot in my setup. They lean on real k
 | Skill | What it does |
 |---|---|
 | [`media-icon-search`](skills/media-icon-search) | Find the right icon across Lucide, Phosphor, Tabler, Heroicons, and HugeIcons by describing it, and get the exact React import back. |
-| [`media-image-gen`](skills/media-image-gen) | Generate logos, illustrations, photoreal shots, UI mockups, and ads with GPT Image 2 — with cost logged per call. |
+| [`media-image-gen`](skills/media-image-gen) | Generate and edit assets with native Codex Images 2.5 using the included plan; Flare for API-only work. |
 | [`media-video-gen`](skills/media-video-gen) | Generate cinematic videos with Veo 3.1 (text/image→video) — pairs with a still, quotes exact per-second cost up front, true-loop + web MP4/WebM/poster output. |
 | [`brand-design`](skills/brand-design) | A house UI/UX playbook for reviewing app and web screens — typography, spacing, dark mode, motion, the "looks AI-generated" smell test. |
 | [`brand-copy`](skills/brand-copy) | Write, edit, and humanize interface, landing-page, and marketing copy. |

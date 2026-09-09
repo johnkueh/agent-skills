@@ -1,4 +1,4 @@
-# GPT Image 2 Prompting Guide (distilled)
+# GPT Image 2.5 Prompting Guide (distilled)
 
 Distilled from OpenAI's official cookbook: *Image Generation Models Prompting Guide*. Read this when you need to engineer a prompt — pick the category template, fill in the user's specifics, and verify against the anti-patterns at the bottom.
 
