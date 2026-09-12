@@ -1,0 +1,20 @@
+{
+  "name": "agent-skills",
+  "displayName": "Agent Skills",
+  "version": "1.39.0",
+  "description": "Public skill collection for engineering, research, communications, media, design, data, and macOS operations.",
+  "author": {
+    "name": "John Kueh"
+  },
+  "homepage": "https://github.com/johnkueh/agent-skills",
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "marketing",
+    "media",
+    "comms"
+  ],
+  "category": "developer-tools",
+  "skills": "./skills/"
+}

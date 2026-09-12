@@ -1,0 +1,17 @@
+{
+  "name": "johnkueh-agent-skills",
+  "owner": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "metadata": {
+    "description": "John Kueh's public skill collection. Install the bundle once — do not install the per-skill Claude plugins."
+  },
+  "plugins": [
+    {
+      "name": "agent-skills",
+      "description": "Public skill collection for engineering, research, communications, media, design, data, and macOS operations.",
+      "source": "./"
+    }
+  ]
+}
