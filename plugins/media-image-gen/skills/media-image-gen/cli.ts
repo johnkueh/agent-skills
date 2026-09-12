@@ -1,20 +1,19 @@
 #!/usr/bin/env -S npx tsx
 /**
- * GPT Image 2 generation CLI with cost logging.
+ * GPT Image 2.5 generation CLI with cost logging.
  *
  * Two auth routes:
- *   - API key (default): calls OpenAI's /v1/images/generations & /v1/images/edits
- *     with model=gpt-image-2. Estimates cost pre-flight, logs actual usage.
- *   - ChatGPT plan (--chatgpt-auth): routes through the local `openai-oauth`
- *     proxy → Responses API `image_generation` tool, billing your ChatGPT
- *     subscription quota instead of an API key. No $ charge.
+ *   - API key (--api or exact mask): calls OpenAI's /v1/images/generations & /v1/images/edits
+ *     with model=gpt-image-2.5-flare. Estimates cost pre-flight, logs actual usage.
+ *   - ChatGPT plan (default): native codex exec image generation using
+ *     the included plan allowance; no OAuth proxy or API key.
  *
  * Pricing (per 1M tokens):  text in $5 (cached $1.25), image in $8 (cached $2),
  * image out $30.
  */
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, statSync, appendFileSync } from "node:fs";
-import { connect } from "node:net";
+import { codexBinary, codexEnvironment, codexLoginStatus, generateNativeImage } from "./codex-image.mjs";
 import { homedir } from "node:os";
 import { dirname, join, parse as parsePath } from "node:path";
 
@@ -22,22 +21,10 @@ import { Command, Option } from "commander";
 import sharp from "sharp";
 
 const API_BASE = "https://api.openai.com/v1";
-const MODEL = "gpt-image-2";
+const MODEL = "gpt-image-2.5-flare";
 const CONFIG_DIR = join(homedir(), ".config", "image-gen");
 const LOG_PATH = join(CONFIG_DIR, "usage.jsonl");
 const CONFIG_ENV = join(CONFIG_DIR, "env");
-
-// gpt-image-2 dropped support for `background: "transparent"` — its enum is now
-// {auto, opaque} only. Workaround for --transparent: ask the model to paint a
-// solid magenta #FF00FF background, then chroma-key it out in post-process.
-const MAGENTA_BG_BLOCK =
-  "\n\nCRITICAL — background: solid uniform pure magenta #FF00FF " +
-  "(rgb 255, 0, 255), edge-to-edge, completely flat with no gradient, no " +
-  "texture, no atmosphere — every pixel outside the painted subject and " +
-  "its shadow must be exact pure magenta. This is critical: the magenta " +
-  "will be chroma-keyed out in post-processing to produce a transparent " +
-  "PNG, so it must be a perfectly clean color block. No magenta or " +
-  "pink-purple anywhere in the subject itself.";
 
 const PRICE = {
   text_in: 5.0 / 1_000_000,
@@ -62,30 +49,14 @@ const OUTPUT_TOKEN_TABLE: Record<string, number> = {
 };
 
 const SIZES = ["auto", "1024x1024", "1024x1536", "1536x1024"];
-const QUALITIES = ["low", "medium", "high", "auto"];
+const QUALITIES = ["low", "medium", "high", "xhigh", "max", "auto"];
 const FORMATS = ["png", "jpeg", "webp"];
 const BACKGROUNDS = ["auto", "transparent", "opaque"];
 
 // ── ChatGPT-plan (Codex OAuth) route ────────────────────────────────────────
 const OAUTH_DEFAULT_PORT = 10531;
-const OAUTH_MODELS = ["gpt-5.5", "gpt-5.4", "gpt-5.4-mini"];
+const OAUTH_MODELS = ["gpt-6-astra"];
 const OAUTH_REASONING = ["none", "low", "medium", "high", "xhigh"];
-const CODEX_AUTH_PATHS = [
-  join(process.env.CODEX_HOME || join(homedir(), ".codex"), "auth.json"),
-  join(homedir(), ".config", "codex", "auth.json"),
-  join(homedir(), ".chatgpt-local", "auth.json"),
-];
-
-// The skill hands us a carefully engineered, cookbook-shaped prompt, so we want
-// it rendered verbatim — pass-through, no rewrite, no web search.
-const OAUTH_DEV_PROMPT =
-  "You are an image generation assistant. Your only job is to invoke the " +
-  "image_generation tool. Never reply with text only. Treat the user's prompt " +
-  "as the exact source of truth: pass it through unchanged as the " +
-  "image_generation prompt argument. Do not translate, summarize, rewrite, " +
-  "restyle, expand, or add descriptors. Render with crisp detail, clean lines, " +
-  "accurate spelling in any visible text, and no watermark or signature.";
-
 // ── helpers ──────────────────────────────────────────────────────────────────
 function err(msg: string): void {
   process.stderr.write(msg + "\n");
@@ -161,6 +132,7 @@ async function estimateCost(
   const imgInTok = refs.reduce((s, p) => s + estimateImageInputTokens(p), 0);
   const effSize = size !== "auto" ? size : "1024x1536";
   const effQuality = quality !== "auto" ? quality : "high";
+  err("Pre-flight estimate uses legacy token counts; GPT Image 2.5 consumption differs. Actual usage determines cost.");
   const perImgOut = OUTPUT_TOKEN_TABLE[`${effSize}|${effQuality}`] ?? 4160;
   const outTok = perImgOut * n;
 
@@ -367,208 +339,12 @@ async function chromaKeyFile(
 
 // ── ChatGPT-plan helpers ──────────────────────────────────────────────────────
 function codexAuthPresent(): boolean {
-  return CODEX_AUTH_PATHS.some((p) => existsSync(p));
-}
-
-function oauthProxyUp(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const socket = connect({ host: "127.0.0.1", port });
-    const done = (ok: boolean) => {
-      socket.destroy();
-      resolve(ok);
-    };
-    socket.setTimeout(500);
-    socket.once("connect", () => done(true));
-    socket.once("timeout", () => done(false));
-    socket.once("error", () => done(false));
-  });
-}
-
-function whichNpx(): boolean {
-  const probe = spawnSync(process.platform === "win32" ? "where" : "which", ["npx"], {
-    stdio: "ignore",
-  });
-  return probe.status === 0;
-}
-
-function requireNpx(): void {
-  if (!whichNpx()) {
-    die(
-      "Error: `npx` not found. Install Node.js (https://nodejs.org) — the " +
-        "ChatGPT-plan route needs `npx @openai/codex` and `npx openai-oauth`.",
-      2,
-    );
-  }
+  return codexLoginStatus();
 }
 
 function runCodexLogin(): void {
-  requireNpx();
-  err("Signing in with your ChatGPT plan via `npx @openai/codex login` …");
-  err("A browser window will open — complete the login there.");
-  const r = spawnSync("npx", ["-y", "@openai/codex", "login"], { stdio: "inherit" });
-  if (r.status !== 0) die(`Error: \`codex login\` failed (exit ${r.status}).`);
-  if (!codexAuthPresent()) die("Error: login finished but no auth.json was written. Retry `setup`.");
-  err("  ✓ signed in (token cached in ~/.codex/auth.json)");
-}
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-/**
- * Ensure the local openai-oauth proxy is reachable. Returns the spawned child
- * if WE started it (caller kills it when done), or null if one was running.
- * Auto-runs the ChatGPT sign-in flow if no Codex auth is found.
- */
-async function ensureOauthProxy(port: number): Promise<ReturnType<typeof spawn> | null> {
-  if (await oauthProxyUp(port)) return null;
-  requireNpx();
-  if (!codexAuthPresent()) {
-    err("No ChatGPT-plan auth found — running first-time setup …");
-    runCodexLogin();
-  }
-  err(`Starting openai-oauth proxy on :${port} (npx) …`);
-  const child = spawn("npx", ["-y", "openai-oauth", "--port", String(port)], {
-    stdio: "ignore",
-  });
-  let exited: number | null = null;
-  child.once("exit", (code) => {
-    exited = code ?? 0;
-  });
-  const deadline = Date.now() + 90_000;
-  while (Date.now() < deadline) {
-    if (await oauthProxyUp(port)) {
-      await sleep(1000); // brief grace for the proxy to load the token
-      return child;
-    }
-    if (exited !== null) {
-      die("Error: openai-oauth exited. Run `npx @openai/codex login` to reauth, then retry.");
-    }
-    await sleep(500);
-  }
-  child.kill();
-  die("Error: openai-oauth proxy did not become ready within 90s.");
-}
-
-interface ResponsesResult {
-  images: string[];
-  usage: Record<string, unknown>;
-}
-
-/**
- * Generate/edit one image through the OAuth proxy's Responses API. gpt-image-2
- * runs as the `image_generation` tool inside the reasoning loop; results stream
- * back as `image_generation_call` items whose `.result` is base64.
- */
-async function runImageViaResponses(
-  prompt: string,
-  size: string,
-  quality: string,
-  model: string,
-  webSearch: boolean,
-  refs: string[],
-  port: number,
-  reasoning: string,
-): Promise<ResponsesResult> {
-  const imageTool: Record<string, unknown> = { type: "image_generation", moderation: "low" };
-  if (size !== "auto") imageTool.size = size;
-  if (quality !== "auto") imageTool.quality = quality;
-  const tools = [...(webSearch ? [{ type: "web_search" }] : []), imageTool];
-
-  let userContent: unknown;
-  if (refs.length) {
-    const content: unknown[] = refs.map((p) => ({
-      type: "input_image",
-      image_url: `data:image/png;base64,${readFileSync(p).toString("base64")}`,
-    }));
-    content.push({
-      type: "input_text",
-      text: `Edit this image with this exact prompt, no modifications: ${prompt}`,
-    });
-    userContent = content;
-  } else {
-    userContent = `Generate an image with this exact prompt, no modifications: ${prompt}`;
-  }
-
-  const payload = {
-    model,
-    input: [
-      { role: "developer", content: OAUTH_DEV_PROMPT },
-      { role: "user", content: userContent },
-    ],
-    tools,
-    tool_choice: { type: "image_generation" },
-    reasoning: { effort: reasoning },
-    stream: true,
-  };
-
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 400_000);
-  let res: Response;
-  try {
-    res = await fetch(`http://127.0.0.1:${port}/v1/responses`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    });
-  } finally {
-    clearTimeout(timer);
-  }
-  if (!res.ok) {
-    die(`OAuth proxy error ${res.status}: ${(await res.text()).slice(0, 500)}`);
-  }
-
-  const images: string[] = [];
-  let usage: Record<string, unknown> = {};
-  const take = (item: any) => {
-    if (
-      item &&
-      item.type === "image_generation_call" &&
-      typeof item.result === "string" &&
-      item.result &&
-      !images.includes(item.result)
-    ) {
-      images.push(item.result);
-    }
-  };
-
-  const reader = res.body!.getReader();
-  const decoder = new TextDecoder();
-  let buffer = "";
-  outer: while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
-    let idx: number;
-    while ((idx = buffer.indexOf("\n")) >= 0) {
-      const line = buffer.slice(0, idx).trim();
-      buffer = buffer.slice(idx + 1);
-      if (!line.startsWith("data:")) continue;
-      const data = line.slice(5).trim();
-      if (data === "[DONE]") break outer;
-      let ev: any;
-      try {
-        ev = JSON.parse(data);
-      } catch {
-        continue;
-      }
-      if (ev.type === "response.output_item.done") {
-        take(ev.item);
-      } else if (ev.type === "response.completed") {
-        usage = ev.response?.usage || {};
-        for (const item of ev.response?.output || []) take(item);
-      } else if (ev.type === "error") {
-        die(`Stream error: ${JSON.stringify(ev.error || {}).slice(0, 300)}`);
-      }
-    }
-  }
-
-  if (!images.length) {
-    die(
-      "No image returned. The model may have refused, or your plan quota for " +
-        "image turns is exhausted (resets on the rolling window).",
-    );
-  }
-  return { images, usage };
+  const result = spawnSync(codexBinary(), ["login"], { stdio: "inherit", env: codexEnvironment() });
+  if (result.status !== 0 || !codexAuthPresent()) die("Codex ChatGPT login failed. Run `codex login`.");
 }
 
 interface ChatgptAuthOpts {
@@ -582,62 +358,44 @@ interface ChatgptAuthOpts {
   fmt: string;
   out?: string;
   transparent: boolean;
+  background?: string;
+  n?: number;
   open: boolean;
   oauthPort: number;
   dryRun: boolean;
   reasoning: string;
 }
 
-// Core generate-one. Assumes the openai-oauth proxy is already running on
-// o.oauthPort (caller owns its lifecycle). Generates, writes files, logs usage,
-// and returns the saved paths + elapsed seconds. Safe to call concurrently
-// against a single shared proxy (this is what `batch` does).
 async function chatgptAuthImageCore(o: ChatgptAuthOpts): Promise<{ saved: string[]; elapsed: number }> {
   const t0 = Date.now();
-  const { images, usage } = await runImageViaResponses(
-    o.prompt,
-    o.size,
-    o.quality,
-    o.model,
-    o.webSearch,
-    o.refs,
-    o.oauthPort,
-    o.reasoning,
-  );
-  const elapsed = (Date.now() - t0) / 1000;
-
-  const { writeFileSync } = await import("node:fs");
   const saved: string[] = [];
-  for (let i = 0; i < images.length; i++) {
-    const target = targetPath(o.out, o.prompt, o.fmt, i, images.length);
+  const count = o.n ?? 1;
+  const threads: string[] = [];
+  for (let i = 0; i < count; i++) {
+    const result = await generateNativeImage({
+      prompt: o.prompt,
+      refs: o.refs,
+      size: o.size,
+      quality: o.quality,
+      background: o.background ?? "auto",
+    });
+    const target = targetPath(o.out, o.prompt, o.fmt, i, count);
     mkdirSync(dirname(target), { recursive: true });
-    writeFileSync(target, Buffer.from(images[i], "base64"));
-    if (o.transparent) {
-      const [cleared, total] = await chromaKeyFile(target, target);
-      err(`  chroma-key: α=0 on ${cleared}/${total} px (${((100 * cleared) / total).toFixed(1)}%)  → ${target}`);
-    }
+    let output = sharp(result.paths[0]);
+    if (o.fmt === "jpeg") output = output.flatten({ background: "#ffffff" });
+    await output.toFormat(o.fmt as "png" | "jpeg" | "webp").toFile(target);
     saved.push(target);
+    threads.push(result.thread_id);
   }
-
+  const elapsed = (Date.now() - t0) / 1000;
   logUsage({
-    ts: new Date().toISOString(),
-    mode: o.mode,
-    auth: "chatgpt-oauth",
-    model: o.model,
-    reasoning: o.reasoning,
-    size: o.size,
-    quality: o.quality,
-    format: o.fmt,
-    n: saved.length,
-    refs: o.refs,
-    elapsed_s: round(elapsed, 2),
-    prompt_preview: o.prompt.slice(0, 200),
-    out_files: saved,
-    plan_quota: true,
-    cost_usd: 0.0,
-    oauth_usage: usage,
+    ts: new Date().toISOString(), mode: o.mode, auth: "codex-chatgpt",
+    model: "gpt-6-astra", image_model: "codex-managed", threads,
+    size_requested: o.size, quality_requested: o.quality, format: o.fmt,
+    n: saved.length, refs: o.refs, elapsed_s: round(elapsed, 2),
+    prompt_preview: o.prompt.slice(0, 200), out_files: saved,
+    plan_quota: true, cost_usd: 0.0,
   });
-
   return { saved, elapsed };
 }
 
@@ -653,8 +411,10 @@ async function chatgptAuthImage(o: ChatgptAuthOpts): Promise<void> {
       JSON.stringify(
         {
           dry_run: true,
-          auth: "chatgpt-oauth",
+          auth: "codex-chatgpt",
           model: o.model,
+          image_model: "codex-managed",
+          n: o.n ?? 1,
           reasoning: o.reasoning,
           size: o.size,
           quality: o.quality,
@@ -668,13 +428,7 @@ async function chatgptAuthImage(o: ChatgptAuthOpts): Promise<void> {
     return;
   }
 
-  const proc = await ensureOauthProxy(o.oauthPort);
-  let result: { saved: string[]; elapsed: number };
-  try {
-    result = await chatgptAuthImageCore(o);
-  } finally {
-    proc?.kill();
-  }
+  const result = await chatgptAuthImageCore(o);
 
   err(`  done: plan quota (${result.elapsed.toFixed(1)}s)`);
   for (const s of result.saved) console.log(s);
@@ -689,36 +443,17 @@ function validateChoice(name: string, value: string, choices: string[]): string 
 }
 
 // ── doctor (shared) ───────────────────────────────────────────────────────────
-async function doctorCheck(port: number): Promise<boolean> {
-  let ok = true;
-
-  const hasNpx = whichNpx();
-  err(`  npx / Node.js:  ${hasNpx ? "✓" : "✗ install Node.js (https://nodejs.org)"}`);
-  ok = ok && hasNpx;
-
-  const authed = codexAuthPresent();
-  err(`  ChatGPT auth:   ${authed ? "✓ ~/.codex/auth.json" : "✗ run `setup` (npx @openai/codex login)"}`);
-  ok = ok && authed;
-
-  if (hasNpx && authed) {
-    const alreadyUp = await oauthProxyUp(port);
-    const proc = alreadyUp ? null : await ensureOauthProxy(port);
-    const up = await oauthProxyUp(port);
-    const tag = up
-      ? `✓ :${port} reachable${alreadyUp ? " (already running)" : " (started)"}`
-      : `✗ :${port} not reachable`;
-    err(`  oauth proxy:    ${tag}`);
-    proc?.kill();
-    ok = ok && up;
-  } else {
-    err("  oauth proxy:    – skipped (fix above first)");
-  }
-  return ok;
+async function doctorCheck(_port: number): Promise<boolean> {
+  const version = spawnSync(codexBinary(), ["--version"], { encoding: "utf8", env: codexEnvironment() });
+  const loggedIn = codexAuthPresent();
+  err(`  Codex CLI: ${version.status === 0 ? version.stdout.trim() : "not installed"}`);
+  err(`  ChatGPT login: ${loggedIn ? "ready" : "run codex login"}`);
+  err("  Local generation uses native Codex Images 2.5. API-only workflows use Flare.");
+  return version.status === 0 && loggedIn;
 }
 
-// ── CLI ────────────────────────────────────────────────────────────────────────
 const program = new Command();
-program.name("image-gen").description("GPT Image 2 CLI — generate, edit, and track cost.");
+program.name("image-gen").description("GPT Image 2.5 CLI — generate, edit, and track cost.");
 
 const collect = (v: string, acc: string[]) => {
   acc.push(v);
@@ -730,7 +465,7 @@ program
   .description("Text → image via /v1/images/generations (or the ChatGPT plan with --chatgpt-auth).")
   .requiredOption("-p, --prompt <text>", "Final, cookbook-shaped prompt.")
   .option("--size <size>", "auto|1024x1024|1024x1536|1536x1024", "auto")
-  .option("--quality <q>", "low|medium|high|auto", "high")
+  .option("--quality <q>", "low|medium|high|xhigh|max|auto", "high")
   .option("--format <fmt>", "png|jpeg|webp", "png")
   .option("--background <bg>", "auto|transparent|opaque", "auto")
   .option("--n <n>", "Images to generate (1-10).", (v) => parseInt(v, 10), 1)
@@ -742,15 +477,15 @@ program
     [],
   )
   .option("--compression <pct>", "0-100, jpeg/webp only.", (v) => parseInt(v, 10))
-  .option("-t, --transparent", "Magenta-bg + chroma-key → transparent PNG. Forces png + opaque.")
+  .option("-t, --transparent", "Generate with a native transparent background; forces PNG.")
   .option("--dry-run", "Print estimate and exit.")
   .option("--no-open", "Don't auto-open result in Preview.")
   .option("--chatgpt-auth", "Bill against your ChatGPT plan quota instead of an API key.")
   .option("--api", "Force the OpenAI API-key path even when ChatGPT-plan auth is available.")
   .addOption(
-    new Option("--model <model>", "Reasoning model for --chatgpt-auth (default gpt-5.5, strongest).")
+    new Option("--model <model>", "Reasoning model for --chatgpt-auth (default gpt-6-astra).")
       .choices(OAUTH_MODELS)
-      .default("gpt-5.5"),
+      .default("gpt-6-astra"),
   )
   .addOption(
     new Option("--reasoning <effort>", "Reasoning effort for --chatgpt-auth (higher = better planning, more quota).")
@@ -758,7 +493,7 @@ program
       .default("medium"),
   )
   .option("--web-search", "Allow web_search on --chatgpt-auth (off by default; burns more quota).")
-  .option("--oauth-port <port>", "openai-oauth proxy port.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
+  .option("--oauth-port <port>", "Deprecated compatibility option; native Codex does not use a proxy.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
   .action(async (opts) => {
     let { prompt, size, quality, format: fmt, background } = opts;
     const refs: string[] = opts.ref ?? [];
@@ -767,18 +502,19 @@ program
     validateChoice("quality", quality, QUALITIES);
     validateChoice("format", fmt, FORMATS);
     validateChoice("background", background, BACKGROUNDS);
+    if (background === "transparent" && fmt === "jpeg") die("Native transparency requires PNG or WebP.");
+    if (!Number.isInteger(opts.n) || opts.n < 1 || opts.n > 10) die("n must be between 1 and 10.");
 
     if (opts.transparent) {
       fmt = "png";
-      background = "opaque";
-      prompt = prompt + MAGENTA_BG_BLOCK;
+      background = "transparent";
     }
 
-    // Default to the ChatGPT plan when its auth is present (free vs. API $). --api forces the key path.
-    const useChatgpt = !opts.api && (opts.chatgptAuth || codexAuthPresent());
+    // Codex is the default; explicit API requests and exact edit masks use Flare.
+    const useChatgpt = !opts.api && !opts.mask;
     if (useChatgpt) {
-      if (!opts.chatgptAuth) err("auth: defaulting to ChatGPT plan (found ~/.codex/auth.json). Pass --api for the API-key path.");
-      if (opts.n > 1) err("Note: --chatgpt-auth generates 1 image per call; ignoring --n.");
+      err("auth: native Codex Images 2.5 using the ChatGPT plan.");
+
       await chatgptAuthImage({
         mode: "generate",
         prompt,
@@ -790,6 +526,8 @@ program
         fmt,
         out: opts.out,
         transparent: !!opts.transparent,
+        background,
+        n: opts.n,
         open: opts.open,
         oauthPort: opts.oauthPort,
         dryRun: !!opts.dryRun,
@@ -798,6 +536,7 @@ program
       return;
     }
 
+    if (opts.mask) err("Exact edit masks require the Image API; using gpt-image-2.5-flare.");
     const est = await estimateCost(prompt, size, quality, opts.n, refs);
     err(`Prompt (${prompt.length} chars)${refs.length ? `, refs: ${refs.map((r) => parsePath(r).base)}` : ""}:`);
     err(prompt);
@@ -856,7 +595,7 @@ program
 
     const data: any = await resp.json();
     const actual = computeActualCost(data.usage || {});
-    const saved = await saveB64Images(data.data || [], prompt, fmt, opts.out, opts.transparent);
+    const saved = await saveB64Images(data.data || [], prompt, fmt, opts.out, false);
 
     logUsage({
       ts: new Date().toISOString(),
@@ -906,7 +645,7 @@ program
   .command("batch")
   .description(
     "Generate many images in parallel on the ChatGPT plan from a JSON manifest " +
-      "(concurrency up to 8, sharing one oauth proxy). No $ charge.",
+      "(concurrency up to 8, native Codex sessions). Uses your included plan allowance.",
   )
   .requiredOption(
     "--manifest <file>",
@@ -918,9 +657,9 @@ program
   .option("--format <fmt>", "Default format when an item omits it.", "png")
   .option("--skip-existing", "Skip items whose out file already exists (resume a partial run).")
   .addOption(
-    new Option("--model <model>", "Reasoning model (default gpt-5.5, strongest).")
+    new Option("--model <model>", "Reasoning model (default gpt-6-astra).")
       .choices(OAUTH_MODELS)
-      .default("gpt-5.5"),
+      .default("gpt-6-astra"),
   )
   .addOption(
     new Option("--reasoning <effort>", "Reasoning effort (higher = better planning).")
@@ -928,10 +667,10 @@ program
       .default("medium"),
   )
   .option("--web-search", "Allow web_search (off by default).")
-  .option("--oauth-port <port>", "openai-oauth proxy port.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
+  .option("--oauth-port <port>", "Deprecated compatibility option; native Codex does not use a proxy.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
   .option("--dry-run", "Print the plan and exit.")
   .action(async (opts) => {
-    if (!codexAuthPresent()) {
+    if (!opts.dryRun && !codexAuthPresent()) {
       die("batch runs on the ChatGPT plan path. Run `image-gen setup` to sign in first.", 2);
     }
 
@@ -994,12 +733,11 @@ program
       return;
     }
 
-    // One shared proxy for the whole run; workers reuse it via oauthPort.
-    const proc = await ensureOauthProxy(opts.oauthPort);
+
     let ok = 0;
     let fail = 0;
     const failures: Array<{ out: string; error: string }> = [];
-    try {
+    {
       let idx = 0;
       const runner = async () => {
         while (idx < work.length) {
@@ -1032,8 +770,6 @@ program
         }
       };
       await Promise.all(Array.from({ length: Math.min(conc, work.length) }, runner));
-    } finally {
-      proc?.kill();
     }
 
     err(`batch done: ${ok} ok, ${fail} failed. Re-run with --skip-existing to retry failures.`);
@@ -1048,19 +784,19 @@ program
   .requiredOption("--ref <path>", "Reference image(s). Repeat for multi-image input.", collect, [])
   .option("--mask <path>", "Optional mask PNG (transparent = editable area).")
   .option("--size <size>", "auto|1024x1024|1024x1536|1536x1024", "auto")
-  .option("--quality <q>", "low|medium|high|auto", "high")
+  .option("--quality <q>", "low|medium|high|xhigh|max|auto", "high")
   .option("--format <fmt>", "png|jpeg|webp", "png")
   .option("--background <bg>", "auto|transparent|opaque", "auto")
   .option("--n <n>", "Images to generate.", (v) => parseInt(v, 10), 1)
   .option("-o, --out <path>", "Output path.")
   .option("--dry-run", "Print estimate and exit.")
   .option("--no-open", "Don't auto-open result in Preview.")
-  .option("--chatgpt-auth", "Bill against your ChatGPT plan quota instead of an API key. (--mask ignored.)")
+  .option("--chatgpt-auth", "Use the default Codex ChatGPT route. Exact masks require the Flare API.")
   .option("--api", "Force the OpenAI API-key path even when ChatGPT-plan auth is available.")
   .addOption(
-    new Option("--model <model>", "Reasoning model for --chatgpt-auth (default gpt-5.5, strongest).")
+    new Option("--model <model>", "Reasoning model for --chatgpt-auth (default gpt-6-astra).")
       .choices(OAUTH_MODELS)
-      .default("gpt-5.5"),
+      .default("gpt-6-astra"),
   )
   .addOption(
     new Option("--reasoning <effort>", "Reasoning effort for --chatgpt-auth (higher = better planning, more quota).")
@@ -1068,7 +804,7 @@ program
       .default("medium"),
   )
   .option("--web-search", "Allow web_search on --chatgpt-auth (off by default; burns more quota).")
-  .option("--oauth-port <port>", "openai-oauth proxy port.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
+  .option("--oauth-port <port>", "Deprecated compatibility option; native Codex does not use a proxy.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
   .action(async (opts) => {
     const { prompt, size, quality, format: fmt, background } = opts;
     const refs: string[] = opts.ref;
@@ -1076,14 +812,16 @@ program
     validateChoice("quality", quality, QUALITIES);
     validateChoice("format", fmt, FORMATS);
     validateChoice("background", background, BACKGROUNDS);
+    if (background === "transparent" && fmt === "jpeg") die("Native transparency requires PNG or WebP.");
+    if (!Number.isInteger(opts.n) || opts.n < 1 || opts.n > 10) die("n must be between 1 and 10.");
     for (const r of refs) if (!existsSync(r)) die(`Error: ref not found: ${r}`, 2);
 
-    // Default to the ChatGPT plan when its auth is present (free vs. API $). --api forces the key path.
-    const useChatgpt = !opts.api && (opts.chatgptAuth || codexAuthPresent());
+    // Codex is the default; explicit API requests and exact edit masks use Flare.
+    const useChatgpt = !opts.api && !opts.mask;
     if (useChatgpt) {
-      if (!opts.chatgptAuth) err("auth: defaulting to ChatGPT plan (found ~/.codex/auth.json). Pass --api for the API-key path.");
-      if (opts.mask) err("Note: --mask is not supported on --chatgpt-auth; ignoring it.");
-      if (opts.n > 1) err("Note: --chatgpt-auth generates 1 image per call; ignoring --n.");
+      err("auth: native Codex Images 2.5 using the ChatGPT plan.");
+
+
       await chatgptAuthImage({
         mode: "edit",
         prompt,
@@ -1095,6 +833,8 @@ program
         fmt,
         out: opts.out,
         transparent: false,
+        background,
+        n: opts.n,
         open: opts.open,
         oauthPort: opts.oauthPort,
         dryRun: !!opts.dryRun,
@@ -1103,6 +843,7 @@ program
       return;
     }
 
+    if (opts.mask) err("Exact edit masks require the Image API; using gpt-image-2.5-flare.");
     const est = await estimateCost(prompt, size, quality, opts.n, refs);
     err(`Prompt (${prompt.length} chars), refs: ${refs.map((r) => parsePath(r).base)}`);
     err(prompt);
@@ -1242,10 +983,9 @@ program
 program
   .command("setup")
   .description("One-time setup for --chatgpt-auth: sign in with ChatGPT, then doctor.")
-  .option("--oauth-port <port>", "openai-oauth proxy port.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
+  .option("--oauth-port <port>", "Deprecated compatibility option; native Codex does not use a proxy.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
   .option("--force-login", "Re-run the ChatGPT login even if already authed.")
   .action(async (opts) => {
-    requireNpx();
     if (opts.forceLogin || !codexAuthPresent()) runCodexLogin();
     else err("  ✓ already signed in (~/.codex/auth.json present)");
     err("\nRunning doctor …");
@@ -1260,8 +1000,8 @@ program
 
 program
   .command("doctor")
-  .description("Diagnose the --chatgpt-auth path (npx, ChatGPT auth, proxy reachability).")
-  .option("--oauth-port <port>", "openai-oauth proxy port.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
+  .description("Check the installed Codex CLI and ChatGPT login.")
+  .option("--oauth-port <port>", "Deprecated compatibility option; native Codex does not use a proxy.", (v) => parseInt(v, 10), OAUTH_DEFAULT_PORT)
   .action(async (opts) => {
     if (!(await doctorCheck(opts.oauthPort))) process.exit(1);
   });

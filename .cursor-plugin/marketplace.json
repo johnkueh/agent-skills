@@ -1,0 +1,17 @@
+{
+  "name": "johnkueh-agent-skills",
+  "owner": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "metadata": {
+    "description": "John Kueh's public skill bundle for Cursor."
+  },
+  "plugins": [
+    {
+      "name": "agent-skills",
+      "description": "Cross-agent skills for engineering, research, communications, media, design, data, and macOS operations.",
+      "source": "./plugins/agent-skills"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "media-image-gen",
   "version": "2.0.2",
-  "description": "Generate or edit visual assets with OpenAI GPT Image, including logos, illustrations, ads, infographics, mockups, and photoreal images. Use for image generation, moodboards, reference-image work, or style transfer.",
+  "description": "Generate and edit visual assets with Codex Images 2.5 using the included ChatGPT plan. Supports reference images and local batch scripts, with GPT Image 2.5 Flare for workflows that require the Image API.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"
@@ -11,7 +11,7 @@
   "interface": {
     "displayName": "Media Image Gen",
     "shortDescription": "Use the Media Image Gen skill collection",
-    "longDescription": "Generate or edit visual assets with OpenAI GPT Image, including logos, illustrations, ads, infographics, mockups, and photoreal images. Use for image generation, moodboards, reference-image work, or style transfer.",
+    "longDescription": "Generate and edit visual assets with Codex Images 2.5 using the included ChatGPT plan. Supports reference images and local batch scripts, with GPT Image 2.5 Flare for workflows that require the Image API.",
     "developerName": "John Kueh",
     "category": "Developer Tools",
     "capabilities": [

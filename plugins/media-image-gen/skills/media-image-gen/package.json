@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "GPT Image 2 CLI — generate, edit, track cost; API-key or ChatGPT-plan auth.",
+  "description": "Codex Images 2.5 CLI with ChatGPT-plan usage; Flare for API-only workflows.",
   "bin": {
     "image-gen": "cli.ts"
   },
   "scripts": {
-    "image-gen": "tsx cli.ts"
+    "image-gen": "tsx cli.ts",
+    "test": "node --test codex-image.test.mjs"
   },
   "dependencies": {
     "commander": "^12.1.0",
