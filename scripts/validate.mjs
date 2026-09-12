@@ -103,13 +103,21 @@ for (const path of filesUnder(join(root, "plugins"))) {
 const packageJson = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
 const bundleClaude = JSON.parse(readFileSync(join(root, "plugins/agent-skills/.claude-plugin/plugin.json"), "utf8"));
 const bundleCodex = JSON.parse(readFileSync(join(root, "plugins/agent-skills/.codex-plugin/plugin.json"), "utf8"));
-if (packageJson.version !== bundleClaude.version || packageJson.version !== bundleCodex.version) {
-  errors.push("Workspace, Claude, and Codex bundle versions must match");
+const bundleCursor = JSON.parse(readFileSync(join(root, "plugins/agent-skills/.cursor-plugin/plugin.json"), "utf8"));
+const bundleAgent = JSON.parse(readFileSync(join(root, "plugins/agent-skills/plugin.json"), "utf8"));
+if (
+  packageJson.version !== bundleClaude.version ||
+  packageJson.version !== bundleCodex.version ||
+  packageJson.version !== bundleCursor.version ||
+  packageJson.version !== bundleAgent.version
+) {
+  errors.push("Workspace, Claude, Codex, Cursor, and Agent Plugin bundle versions must match");
 }
 
 for (const manifest of [
   ".claude-plugin/marketplace.json",
   ".agents/plugins/marketplace.json",
+  ".cursor-plugin/marketplace.json",
 ]) {
   try {
     JSON.parse(readFileSync(join(root, manifest), "utf8"));

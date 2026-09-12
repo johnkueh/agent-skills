@@ -75,6 +75,30 @@ function codexManifest(name, description) {
   };
 }
 
+function cursorManifest(name, description) {
+  return {
+    name,
+    displayName: titleCase(name),
+    version,
+    description,
+    author: { name: "John Kueh" },
+    homepage: "https://github.com/johnkueh/agent-skills",
+    repository: "https://github.com/johnkueh/agent-skills",
+    category: "developer-tools",
+    skills: "./skills/",
+  };
+}
+
+function agentPluginManifest(name, description) {
+  return {
+    $schema: "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+    name,
+    description,
+    version,
+    author: { name: "John Kueh" },
+  };
+}
+
 function writeJson(path, value) {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
@@ -158,6 +182,8 @@ const bundleDescription =
   "Cross-agent skills for engineering, research, communications, media, design, data, and macOS operations.";
 writeJson(join(bundleRoot, ".claude-plugin", "plugin.json"), manifest(bundleName, bundleDescription));
 writeJson(join(bundleRoot, ".codex-plugin", "plugin.json"), codexManifest(bundleName, bundleDescription));
+writeJson(join(bundleRoot, ".cursor-plugin", "plugin.json"), cursorManifest(bundleName, bundleDescription));
+writeJson(join(bundleRoot, "plugin.json"), agentPluginManifest(bundleName, bundleDescription));
 writeJson(join(bundleRoot, "skills.json"), { skills: skillNames });
 
 const marketplacePlugins = [
@@ -183,5 +209,19 @@ const marketplace = {
 };
 writeJson(join(root, ".claude-plugin", "marketplace.json"), marketplace);
 writeJson(join(root, ".agents", "plugins", "marketplace.json"), marketplace);
+writeJson(join(root, ".cursor-plugin", "marketplace.json"), {
+  name: marketplaceName,
+  owner: { name: "John Kueh", url: "https://github.com/johnkueh" },
+  metadata: {
+    description: "John Kueh's public skill bundle for Cursor.",
+  },
+  plugins: [
+    {
+      name: bundleName,
+      description: bundleDescription,
+      source: `./plugins/${bundleName}`,
+    },
+  ],
+});
 
 console.log(`Materialized ${skillNames.length} skills into one bundle and ${skillNames.length} single-skill plugins`);

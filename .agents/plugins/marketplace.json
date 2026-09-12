@@ -90,7 +90,7 @@
     },
     {
       "name": "media-image-gen",
-      "description": "Generate or edit visual assets with OpenAI GPT Image, including logos, illustrations, ads, infographics, mockups, and photoreal images. Use for image generation, moodboards, reference-image work, or style transfer.",
+      "description": "Generate and edit visual assets with Codex Images 2.5 using the included ChatGPT plan. Supports reference images and local batch scripts, with GPT Image 2.5 Flare for workflows that require the Image API.",
       "source": "./plugins/media-image-gen"
     },
     {

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "agent-skills",
+  "description": "Cross-agent skills for engineering, research, communications, media, design, data, and macOS operations.",
+  "version": "2.0.2",
+  "author": {
+    "name": "John Kueh"
+  }
+}
