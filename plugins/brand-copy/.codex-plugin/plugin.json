@@ -1,0 +1,26 @@
+{
+  "name": "brand-copy",
+  "version": "2.0.2",
+  "description": "Write and edit product and marketing copy, including interface strings, landing pages, headlines, CTAs, emails, release notes, and de-slopping an existing draft. Use for brand voice and conversion copy, not personal essays or product-behavior decisions. Triggers on \"write the copy\", \"landing page copy\", \"fix this CTA\", \"rewrite this headline\", \"humanize this\", \"remove AI tells\", \"error message\", \"empty state\", and \"make this sound less generic\".",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Brand Copy",
+    "shortDescription": "Use the Brand Copy skill collection",
+    "longDescription": "Write and edit product and marketing copy, including interface strings, landing pages, headlines, CTAs, emails, release notes, and de-slopping an existing draft. Use for brand voice and conversion copy, not personal essays or product-behavior decisions. Triggers on \"write the copy\", \"landing page copy\", \"fix this CTA\", \"rewrite this headline\", \"humanize this\", \"remove AI tells\", \"error message\", \"empty state\", and \"make this sound less generic\".",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $brand-copy to help with this request."
+    ]
+  }
+}

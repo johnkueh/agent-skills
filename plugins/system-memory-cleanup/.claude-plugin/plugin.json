@@ -1,0 +1,10 @@
+{
+  "name": "system-memory-cleanup",
+  "version": "2.0.2",
+  "description": "Inspect and clean macOS CPU and memory usage. Use for a slow Mac, resource hogs, orphaned processes, high CPU, memory pressure, or process cleanup.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills"
+}

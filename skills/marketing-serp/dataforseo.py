@@ -1,5 +1,5 @@
-# GENERATED FILE — synced from scripts/shared/dataforseo.py by scripts/build-marketplace.ts.
-# Do not edit here: edit the canonical file, then run `bun scripts/build-marketplace.ts`.
+# GENERATED FILE — synced from scripts/shared/dataforseo.py by scripts/build-packages.mjs.
+# Edit the canonical file, then run `pnpm build`.
 """Shared DataForSEO API client used by the keyword-data and serp-data skills.
 
 CANONICAL COPY. The build script (scripts/build-marketplace.ts) syncs this file

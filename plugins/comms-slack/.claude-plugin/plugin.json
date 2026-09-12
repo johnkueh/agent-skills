@@ -1,0 +1,10 @@
+{
+  "name": "comms-slack",
+  "version": "2.0.2",
+  "description": "Search Slack messages, people, channels, DMs, and threads using a user token. Use for Slack permalinks or requests to find a conversation, colleague, message, channel, or thread.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills"
+}

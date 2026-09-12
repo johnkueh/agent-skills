@@ -1,0 +1,26 @@
+{
+  "name": "marketing-ai-crawler",
+  "version": "2.0.2",
+  "description": "Report which AI bots crawl Vercel-hosted sites and which paths they hit. Use for GPTBot, ClaudeBot, PerplexityBot, AI crawler traffic, user-agent logs, or per-site crawler reports.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Marketing Ai Crawler",
+    "shortDescription": "Use the Marketing Ai Crawler skill collection",
+    "longDescription": "Report which AI bots crawl Vercel-hosted sites and which paths they hit. Use for GPTBot, ClaudeBot, PerplexityBot, AI crawler traffic, user-agent logs, or per-site crawler reports.",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $marketing-ai-crawler to help with this request."
+    ]
+  }
+}

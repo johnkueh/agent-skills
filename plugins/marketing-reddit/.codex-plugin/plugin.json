@@ -1,0 +1,26 @@
+{
+  "name": "marketing-reddit",
+  "version": "2.0.2",
+  "description": "Mine Reddit posts, threads, comments, and question clusters through a bot-challenge-resistant browser. Use for subreddit research, content gaps, unanswered questions, post data, or Reddit 403 blocks.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Marketing Reddit",
+    "shortDescription": "Use the Marketing Reddit skill collection",
+    "longDescription": "Mine Reddit posts, threads, comments, and question clusters through a bot-challenge-resistant browser. Use for subreddit research, content gaps, unanswered questions, post data, or Reddit 403 blocks.",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $marketing-reddit to help with this request."
+    ]
+  }
+}

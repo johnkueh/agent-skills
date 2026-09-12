@@ -1,0 +1,26 @@
+{
+  "name": "media-icon-search",
+  "version": "2.0.2",
+  "description": "Find valid installed React icons across Lucide, Phosphor, Tabler, Heroicons, HugeIcons, and related sets. Use for icon selection, natural-language icon searches, paste-ready imports, or contact-sheet previews.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Media Icon Search",
+    "shortDescription": "Use the Media Icon Search skill collection",
+    "longDescription": "Find valid installed React icons across Lucide, Phosphor, Tabler, Heroicons, HugeIcons, and related sets. Use for icon selection, natural-language icon searches, paste-ready imports, or contact-sheet previews.",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $media-icon-search to help with this request."
+    ]
+  }
+}

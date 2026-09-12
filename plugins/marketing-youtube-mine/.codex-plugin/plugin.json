@@ -1,0 +1,26 @@
+{
+  "name": "marketing-youtube-mine",
+  "version": "2.0.2",
+  "description": "Mine YouTube videos and comments for unanswered questions using yt-dlp. Use for channel or query research, recent uploads, comment extraction, question clustering, or YouTube content gaps.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Marketing Youtube Mine",
+    "shortDescription": "Use the Marketing Youtube Mine skill collection",
+    "longDescription": "Mine YouTube videos and comments for unanswered questions using yt-dlp. Use for channel or query research, recent uploads, comment extraction, question clustering, or YouTube content gaps.",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $marketing-youtube-mine to help with this request."
+    ]
+  }
+}

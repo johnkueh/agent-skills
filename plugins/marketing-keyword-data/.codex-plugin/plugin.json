@@ -1,0 +1,26 @@
+{
+  "name": "marketing-keyword-data",
+  "version": "2.0.2",
+  "description": "Research keywords with DataForSEO, including volume, intent, difficulty, CPC, and suggestions. Use for SEO research, content planning, long-tail ideas, search intent, or keyword opportunities; supports dry-run cost previews.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Marketing Keyword Data",
+    "shortDescription": "Use the Marketing Keyword Data skill collection",
+    "longDescription": "Research keywords with DataForSEO, including volume, intent, difficulty, CPC, and suggestions. Use for SEO research, content planning, long-tail ideas, search intent, or keyword opportunities; supports dry-run cost previews.",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $marketing-keyword-data to help with this request."
+    ]
+  }
+}

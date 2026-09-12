@@ -1,10 +1,10 @@
-# GPT Image 2 Prompting Guide (distilled)
+# GPT Image 2.5 Prompting Guide (distilled)
 
 Distilled from OpenAI's official cookbook: *Image Generation Models Prompting Guide*. Read this when you need to engineer a prompt — pick the category template, fill in the user's specifics, and verify against the anti-patterns at the bottom.
 
 ## Universal structure
 
-Always order the prompt: **Scene/Background → Subject → Key Details → Composition → Constraints**.
+A useful structure for complex prompts is: **Scene/Background → Subject → Key Details → Composition → Constraints**.
 
 Use short labeled segments or line breaks for complex requests, not one wall of text. Be concrete about materials, shapes, textures, and the visual medium (photo / watercolor / 3D render / flat vector). Include **intended use** (ad, UI mock, infographic, logo) to give the model context.
 
@@ -22,7 +22,7 @@ Key rules:
 - Describe brand personality and use case, not just visual style
 - Emphasize **simplicity**, **scalability**, **balanced negative space**
 - Default to flat, no gradients, single centered mark with padding
-- Use `--background transparent` if user wants a clean cut-out
+- For this CLI use `--transparent` for its documented post-processing path; inspect edges afterward
 
 ### Illustration
 
@@ -38,7 +38,7 @@ Key rules:
 > **Photorealistic** candid photograph of **<subject>** **<action>** in **<setting>**. **<Real-world details: skin texture, pores, fabric wear, imperfections>**. Shot like a **<35mm film / iPhone / professional>** photograph, **<framing: medium close-up / wide / eye-level>** using a **<lens, e.g. 50mm>**. **<Lighting: soft coastal daylight / golden hour / overcast>**, **<depth of field>**, **<grain>**, natural color balance. The image should feel honest and unposed.
 
 Key rules:
-- The word "photorealistic" must appear (engages photoreal mode)
+- Describe the intended photographic appearance; there is no required magic keyword
 - Alt phrases: "real photograph", "taken on a real camera", "iPhone photo"
 - Ask for **real texture** — pores, wrinkles, fabric wear, imperfections
 - **Avoid** "studio polish", "cinematic lighting", "dramatic color grading", "movie-poster" — these flip the model to stylized

@@ -1,0 +1,26 @@
+{
+  "name": "media-video-gen",
+  "version": "2.0.2",
+  "description": "Generate text-to-video or image-to-video clips with Google Veo, with explicit cost quotes and web-ready outputs. Use for cinematic clips, hero videos, loops, background video, or animating a still.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Media Video Gen",
+    "shortDescription": "Use the Media Video Gen skill collection",
+    "longDescription": "Generate text-to-video or image-to-video clips with Google Veo, with explicit cost quotes and web-ready outputs. Use for cinematic clips, hero videos, loops, background video, or animating a still.",
+    "developerName": "John Kueh",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/johnkueh/agent-skills",
+    "defaultPrompt": [
+      "Use $media-video-gen to help with this request."
+    ]
+  }
+}

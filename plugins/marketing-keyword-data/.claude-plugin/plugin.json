@@ -1,0 +1,10 @@
+{
+  "name": "marketing-keyword-data",
+  "version": "2.0.2",
+  "description": "Research keywords with DataForSEO, including volume, intent, difficulty, CPC, and suggestions. Use for SEO research, content planning, long-tail ideas, search intent, or keyword opportunities; supports dry-run cost previews.",
+  "author": {
+    "name": "John Kueh",
+    "url": "https://github.com/johnkueh"
+  },
+  "repository": "https://github.com/johnkueh/agent-skills"
+}
