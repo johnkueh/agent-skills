@@ -40,7 +40,7 @@ When the user first asks to set this up for a project:
 
 2. **`cd` into the user's project**, then `aeo init`. This creates `<project>/.aeo/runs.sqlite`.
 
-3. **Research the project before adding queries** — read `CLAUDE.md`, `README.md`, `src/lib/content-registry.ts` (or equivalent), the site map. Understand:
+3. **Research the project before adding queries** — read `AGENTS.md` (or `CLAUDE.md`), `README.md`, `src/lib/content-registry.ts` (or equivalent), the site map. Understand:
    - What does this project do?
    - Who is the audience?
    - What questions do they ask AI chatbots?
