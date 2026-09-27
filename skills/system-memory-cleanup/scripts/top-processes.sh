@@ -1,55 +1,45 @@
 #!/bin/bash
-# Show top processes by CPU and memory usage (macOS)
+# Show macOS physical-footprint and CPU snapshots.
 
-echo "=== TOP CPU CONSUMERS ==="
-echo ""
-printf "%-40s %8s %8s %10s %5s\n" "PROCESS" "CPU%" "MEM%" "RSS(MB)" "COUNT"
-printf "%-40s %8s %8s %10s %5s\n" "-------" "----" "----" "-------" "-----"
+set -u
 
-ps -axo %cpu,%mem,rss,command | awk 'NR>1 {
-  cmd=$4
-  for(i=5;i<=NF;i++) cmd=cmd" "$i
-  gsub(/.*\//, "", cmd)
-  gsub(/ .*/, "", cmd)
-  cpu[cmd]+=$1
-  mem[cmd]+=$2
-  rss[cmd]+=$3
-  count[cmd]++
-}
-END {
-  for(c in cpu) {
-    if(cpu[c]>0.5 || mem[c]>0.5)
-      printf "%-40s %8.1f %8.1f %10.0f %5d\n", substr(c,1,40), cpu[c], mem[c], rss[c]/1024, count[c]
-  }
-}' | sort -t' ' -k2 -rn | head -20
+TOP=/usr/bin/top
+PS=/bin/ps
+MEMORY_PRESSURE=/usr/bin/memory_pressure
+
+echo "=== TOP MEMORY (Activity Monitor-style footprint) ==="
+if [ -x "$TOP" ]; then
+  "$TOP" -l 1 -n 30 -o mem -stats pid,command,mem,rsize,vsize,cpu,time,threads,ports 2>&1 | sed -n '1,38p'
+else
+  echo "top is unavailable"
+fi
 
 echo ""
-echo "=== TOP MEMORY CONSUMERS ==="
-echo ""
-printf "%-40s %8s %8s %10s %5s\n" "PROCESS" "CPU%" "MEM%" "RSS(MB)" "COUNT"
-printf "%-40s %8s %8s %10s %5s\n" "-------" "----" "----" "-------" "-----"
-
-ps -axo %cpu,%mem,rss,command | awk 'NR>1 {
-  cmd=$4
-  for(i=5;i<=NF;i++) cmd=cmd" "$i
-  gsub(/.*\//, "", cmd)
-  gsub(/ .*/, "", cmd)
-  cpu[cmd]+=$1
-  mem[cmd]+=$2
-  rss[cmd]+=$3
-  count[cmd]++
-}
-END {
-  for(c in cpu) {
-    if(cpu[c]>0.5 || mem[c]>0.5)
-      printf "%-40s %8.1f %8.1f %10.0f %5d\n", substr(c,1,40), cpu[c], mem[c], rss[c]/1024, count[c]
-  }
-}' | sort -t' ' -k3 -rn | head -20
+echo "=== LIVE CPU (ps sample) ==="
+if [ -x "$PS" ]; then
+  "$PS" -Ao state=,pcpu=,pid=,ppid=,rss=,etime=,comm= 2>/dev/null |
+    sort -k2 -nr | head -20
+else
+  echo "ps is unavailable"
+fi
 
 echo ""
-echo "=== TOTAL MEMORY ==="
-ps -axo rss= | awk '{sum+=$1} END {printf "Total process memory: %.1f GB\n", sum/1024/1024}'
+echo "=== MEMORY PRESSURE ==="
+if [ -x "$MEMORY_PRESSURE" ]; then
+  "$MEMORY_PRESSURE" 2>&1 | sed -n '1,24p'
+else
+  echo "memory_pressure is unavailable"
+fi
 
 echo ""
-echo "=== LONG TAIL ==="
-ps -axo %mem,rss,command | awk 'NR>1 && $1<0.3 {sum+=$2; count++} END {printf "%d small processes (<0.3%% each): %.0f MB total\n", count, sum/1024}'
+echo "=== RSS TOTAL (not the Activity Monitor footprint) ==="
+if [ -x "$PS" ]; then
+  "$PS" -axo rss= | /usr/bin/awk '{sum += $1} END {printf "%.1f GB\n", sum / 1024 / 1024}'
+else
+  echo "ps is unavailable"
+fi
+
+echo ""
+echo "=== SWAP AND UPTIME ==="
+/usr/sbin/sysctl vm.swapusage 2>&1 || true
+/usr/bin/uptime

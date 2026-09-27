@@ -3,358 +3,87 @@ name: marketing-keyword-data
 description: "Research keywords with DataForSEO, including volume, intent, difficulty, CPC, and suggestions. Use for SEO research, content planning, long-tail ideas, search intent, or keyword opportunities; supports dry-run cost previews."
 ---
 
-# Keyword Data (DataForSEO)
+# Keyword data (DataForSEO)
 
-Keyword research CLI using DataForSEO APIs for search volume, search intent, keyword difficulty, and competitive data. `suggestions` and `related` commands use clickstream-refined volumes for more accurate per-keyword data (especially for niche terms). `volume` uses Google Ads for broad coverage.
+A CLI for search volume, intent, difficulty, CPC, and competitor keywords.
+`suggestions` and `related` return clickstream-refined volumes, which are better for
+niche terms. `volume` uses Google Ads data for broad coverage.
 
-**Setup:** Set the `DATAFORSEO_API_KEY` environment variable. The value is the base64 encoding of your DataForSEO `login:password` pair (it is sent as an HTTP Basic auth header):
+Run everything from this skill directory with `uv run python cli.py …`.
+Options, filters, output fields, full costs, and the Python helpers are in
+[REFERENCE.md](REFERENCE.md).
 
-```bash
-echo -n 'login:pass' | base64
-```
+## Setup
 
-Resolve credentials through the user’s configured secret manager or environment.
-Keep values out of chat and the repository. Use dry-run estimates when available
-and stay within the authorized scope and budget.
+Set `DATAFORSEO_API_KEY` to the base64 of your DataForSEO `login:password`
+(`echo -n 'login:pass' | base64`). Load it from the user's secret manager or
+environment; keep it out of chat and the repo.
 
-API calls retry automatically on transient errors (HTTP 429/503/504): 3 attempts, 2s/4s backoff. Shared client code is in `dataforseo.py`, synced from `scripts/shared/dataforseo.py` in the repo — edit the canonical copy, not the synced one.
+Transient errors (429/503/504) retry 3 times with 2s/4s backoff. `dataforseo.py` is
+synced from `scripts/shared/dataforseo.py` in this repo; edit that copy.
 
-## CLI Location
+## The one cost rule
 
-```
-<skill-dir>
-```
+`volume` costs a flat ~$0.075 for 1 to 1,000 keywords. Discover broadly, then send
+everything to `volume` in one call. Fifty single-keyword calls cost ~$3.75; the same
+research batched costs ~$0.25.
 
-## Cost-Efficient Research Workflow
+Use `--dry-run` on any paid command to see the estimated cost and balance first, and
+stay inside the budget the user gave you. `balance`, `costs`, and `analyze.py` are free.
 
-**CRITICAL: The `volume` command costs $0.075 FLAT regardless of keyword count (1 to 1000).**
-
-| Approach | Keywords | API Calls | Cost |
-|----------|----------|-----------|------|
-| ❌ Bad: Individual calls | 50 | 50 | ~$3.75 |
-| ✅ Good: Discovery + batch | 500+ | 5 | ~$0.25 |
-
-### Complete Research Session Example
+## A research session
 
 ```bash
-# 1. Run multiple discovery calls (~$0.02-0.04 each, with clickstream volumes)
-cd <skill-dir>
-uv run python cli.py suggestions "insolvency" --limit 100
-uv run python cli.py suggestions "liquidation" --limit 100
-uv run python cli.py suggestions "bankruptcy" --limit 100
-uv run python cli.py related "voluntary administration" --limit 50
-
-# 2. Combine all discovered keywords
-uv run python analyze.py combine > /tmp/all_keywords.txt
-
-# 3. Find keywords we don't have volume for yet
-uv run python analyze.py find-new /tmp/all_keywords.txt
-
-# 4. Batch volume lookup (ONE call for all keywords = $0.075)
-cat /tmp/all_keywords.txt | tr '\n' '\0' | xargs -0 uv run python cli.py volume
-
-# 5. Generate report
-uv run python analyze.py report results/volume_*.csv -o report.md
-```
-
-**Estimated cost for 500+ keywords: ~$0.25-0.50**
-
----
-
-## Commands
-
-### Research Commands (cli.py)
-
-#### Check balance (FREE)
-```bash
-cd <skill-dir> && uv run python cli.py balance
-```
-
-#### Show cost estimates
-```bash
-cd <skill-dir> && uv run python cli.py costs
-```
-
-#### Get search volume + intent + CPC (~$0.077 for up to 1000 keywords)
-```bash
-cd <skill-dir> && uv run python cli.py volume "keyword1" "keyword2" "keyword3"
-cd <skill-dir> && uv run python cli.py volume -d "keyword1"  # with difficulty
-cd <skill-dir> && uv run python cli.py volume --no-intent "keyword1"  # skip intent
-```
-
-Search intent is included by default (informational, transactional, commercial, navigational).
-
-#### Get keyword suggestions (~$0.02-0.04, includes clickstream-refined volumes)
-```bash
-cd <skill-dir> && uv run python cli.py suggestions "seed keyword" --limit 100
-```
-
-#### Get related keywords (~$0.02-0.04, includes clickstream-refined volumes)
-```bash
-cd <skill-dir> && uv run python cli.py related "keyword"
-```
-
-### Competitor Commands (DataForSEO Labs)
-
-Reverse-engineer what a *competitor domain* actually ranks for, instead of
-guessing seed keywords. The fastest way to discover the real high-value keywords
-in a niche is to pull them straight off the sites already ranking. All accept
-`--location` (default 2036 = Australia; use `--location 2840` for US).
-
-#### Domain overview — organic footprint (~$0.01/domain)
-```bash
-cd <skill-dir> && uv run python cli.py domain-overview competitor.com other.com --location 2840
-# -> keyword count, estimated organic traffic/mo (etv), and $ traffic value
-```
-
-#### Ranked keywords — every keyword a domain ranks for (~$0.02-0.05)
-```bash
-cd <skill-dir> && uv run python cli.py ranked-keywords competitor.com --max-pos 20 --min-vol 50 --location 2840
-# -> keyword, volume, cpc, position, est traffic, ranking URL. Auto-saved to results/.
-```
-
-#### Intersection — keywords BOTH domains rank for, i.e. gap analysis (~$0.02)
-```bash
-cd <skill-dir> && uv run python cli.py intersection competitorA.com competitorB.com --min-vol 40 --location 2840
-# -> shared keywords both already rank for = the proven category terms to target
-```
-
-#### Competitors — auto-discover competitor domains (~$0.01)
-```bash
-cd <skill-dir> && uv run python cli.py competitors competitor.com --location 2840
-# -> rival domains by shared keywords, each with total kw count + est traffic
-```
-
-#### Keywords for site — terms a domain ranks AND bids on (~$0.02)
-```bash
-cd <skill-dir> && uv run python cli.py keywords-for-site competitor.com --location 2840
-# -> reveals where a competitor spends paid-search budget
-```
-
-**Competitor research workflow:** `domain-overview` a few rivals to find who has
-the real traffic → `ranked-keywords` the leaders to harvest their winning terms →
-`intersection` two close rivals to find the proven shared category keywords →
-`competitors` to surface rivals you didn't know about → batch the harvested
-keywords through `volume` for fresh intent + CPC.
-
-### Analysis Commands (analyze.py)
-
-#### List result files
-```bash
-cd <skill-dir> && uv run python analyze.py list-files
-```
-
-#### Summarize volume results
-```bash
-cd <skill-dir> && uv run python analyze.py summary results/volume_*.csv --min-volume 10
-```
-
-#### Combine suggestion files
-```bash
-cd <skill-dir> && uv run python analyze.py combine
-```
-
-#### Find new keywords not in existing data
-```bash
-cd <skill-dir> && uv run python analyze.py find-new new_keywords.txt -e results/volume_existing.csv
-```
-
-#### Generate markdown report
-```bash
-cd <skill-dir> && uv run python analyze.py report results/volume_*.csv -o report.md
-```
-
----
-
-## Auto-Save
-
-All results are automatically saved to:
-```
-<skill-dir>/results/
-```
-
-Filenames: `{command}_{seed}_{timestamp}.csv`
-
-Examples:
-- `volume_liquidator_2026-02-05_112358.csv`
-- `suggestions_insolvency_2026-02-05_113045.csv`
-- `related_voluntary-administration_2026-02-05_114522.csv`
-
-This ensures data is never lost if the chat session ends.
-
----
-
-## Dry Run Mode
-
-**Use `--dry-run` to preview costs before executing:**
-
-```bash
-cd <skill-dir> && uv run python cli.py volume --dry-run "keyword1" "keyword2"
-```
-
-This shows:
-- Action being taken
-- Request details
-- Estimated cost
-- Current balance
-- Balance after call
-- Confirmation prompt
-
----
-
-## Filtering Results
-
-Filter `suggestions` and `related` results server-side:
-
-```bash
-# Keywords containing "definition"
-uv run python cli.py suggestions "insolvency" --filter "keyword" "like" "%definition%"
-
-# Question keywords
-uv run python cli.py suggestions "insolvency" --filter "keyword" "regex" "(how|what|when)"
-
-# Volume > 100
-uv run python cli.py suggestions "software" --location 2840 --filter "keyword_info.search_volume" ">" "100"
-```
-
-### Filter Operators
-
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `like` | SQL LIKE pattern | `%software%` |
-| `regex` | Regular expression | `(how\|what)` |
-| `>`, `<`, `>=`, `<=` | Numeric comparison | `100` |
-| `=`, `<>` | Equals / not equals | `LOW` |
-
----
-
-## Options
-
-| Option | Description |
-|--------|-------------|
-| `--dry-run` | Preview cost before executing |
-| `--location` | Location code (default: 2036 = Australia) |
-| `--language` | Language code (default: en) |
-| `--output` / `-o` | Save results to CSV file |
-| `--limit` | Max results for suggestions/related |
-| `--filter` | Server-side filter (field operator value) |
-| `-d` / `--with-difficulty` | Include keyword difficulty scores |
-| `--no-intent` | Skip search intent classification (saves ~$0.001) |
-
----
-
-## Cost Reference
-
-| Command | Cost |
-|---------|------|
-| `volume` (up to 1000 keywords) | $0.075 + $0.001 (intent) |
-| `volume -d` | +$0.01 + $0.0001/keyword |
-| `volume --no-intent` | $0.075 (skip intent) |
-| `suggestions` (+ clickstream) | $0.02 + $0.0002/result |
-| `related` (+ clickstream) | $0.02 + $0.0002/result |
-| `ranked-keywords` (Labs) | ~$0.02-0.05 |
-| `domain-overview` (Labs) | ~$0.01/domain |
-| `intersection` (Labs) | ~$0.02 |
-| `competitors` (Labs) | ~$0.01 |
-| `keywords-for-site` (Labs) | ~$0.02 |
-| `balance` | FREE |
-| `costs` | FREE |
-| `analyze.py *` | FREE (local) |
-
----
-
-## Common Locations
-
-| Code | Country |
-|------|---------|
-| 2036 | Australia |
-| 2840 | United States |
-| 2826 | United Kingdom |
-| 2124 | Canada |
-
----
-
-## Output Fields
-
-| Field | Description |
-|-------|-------------|
-| keyword | The search term |
-| search_volume | Monthly search volume |
-| keyword_difficulty | Difficulty to rank (0-100) |
-| intent | Primary search intent (informational/transactional/commercial/navigational) |
-| intent_prob | Confidence of primary intent (0-1) |
-| secondary_intent | Secondary intent if present |
-| cpc | Cost per click in Google Ads |
-| competition | Competition level (LOW/MEDIUM/HIGH) |
-
----
-
-## Python API (for custom scripts)
-
-```python
-from analyze import (
-    extract_keywords,
-    combine_suggestion_files,
-    find_new_keywords,
-    filter_keywords,
-    summarize_volume,
-    categorize_keywords,
-    generate_report,
-)
-
-# Extract keywords from CSV
-keywords = extract_keywords("results/suggestions_insolvency.csv")
-
-# Combine all suggestion files
-all_keywords = combine_suggestion_files("suggestions_*.csv")
-
-# Find keywords not in existing volume data
-new_keywords = find_new_keywords(discovered_keywords, "results/volume_existing.csv")
-
-# Filter out irrelevant keywords (default excludes non-AU geographic terms)
-filtered = filter_keywords(keywords, exclude_patterns=["phoenix", "california"])
-
-# Get summary with min volume threshold
-summary = summarize_volume("results/volume_batch.csv", min_volume=10)
-
-# Categorize by topic
-categories = categorize_keywords([(kw, vol) for kw, vol in keywords_with_volume])
-
-# Generate markdown report
-report = generate_report("results/volume_batch.csv", "report.md")
-```
-
----
-
-## Example: Full Research Session
-
-Research Australian insolvency keywords efficiently:
-
-```bash
-cd <skill-dir>
-
-# Check balance first
 uv run python cli.py balance
 
-# Discovery phase (~$0.40 for 10 calls, with clickstream volumes)
-for seed in "insolvency" "liquidation" "bankruptcy" "voluntary administration" \
-            "deed of company arrangement" "winding up" "receiver" "safe harbour" \
-            "director penalty notice" "proof of debt"; do
-    uv run python cli.py suggestions "$seed" --limit 100
-done
+# 1. Discover (~$0.02–0.04 each)
+uv run python cli.py suggestions "insolvency" --limit 100
+uv run python cli.py suggestions "liquidation" --limit 100
+uv run python cli.py related "voluntary administration" --limit 50
 
-# Combine and deduplicate
-uv run python analyze.py combine > /tmp/keywords.txt
+# 2. Combine, then drop keywords you already have volume for
+uv run python analyze.py combine > /tmp/all_keywords.txt
+uv run python analyze.py find-new /tmp/all_keywords.txt
 
-# Optional: filter irrelevant terms
-# (analyze.py has default filters for non-AU geographic terms)
+# 3. One batched volume call (~$0.075)
+tr '\n' '\0' < /tmp/all_keywords.txt | xargs -0 uv run python cli.py volume
 
-# Batch volume lookup ($0.075)
-cat /tmp/keywords.txt | tr '\n' '\0' | xargs -0 uv run python cli.py volume
-
-# Generate report
-uv run python analyze.py report results/volume_*.csv -o keyword_report.md
+# 4. Report
+uv run python analyze.py report results/volume_*.csv -o report.md
 uv run python analyze.py summary results/volume_*.csv --min-volume 50
 ```
 
-**Total cost: ~$0.50 for 1000+ keywords**
+500+ keywords typically cost $0.25–0.50.
+
+## Commands
+
+| Command | What it returns | Cost |
+|---|---|---|
+| `volume kw1 kw2 …` | volume, intent, CPC, competition (`-d` adds difficulty, `--no-intent` skips intent) | ~$0.077 per ≤1,000 |
+| `suggestions "seed" --limit N` | long-tail ideas containing the seed | ~$0.02–0.04 |
+| `related "kw"` | semantically related keywords | ~$0.02–0.04 |
+| `domain-overview a.com b.com` | keyword count, estimated traffic and its value | ~$0.01/domain |
+| `ranked-keywords a.com --max-pos 20 --min-vol 50` | every keyword a domain ranks for, with URL | ~$0.02–0.05 |
+| `intersection a.com b.com --min-vol 40` | keywords both domains rank for | ~$0.02 |
+| `competitors a.com` | rival domains by shared keywords | ~$0.01 |
+| `keywords-for-site a.com` | terms a domain ranks for and bids on | ~$0.02 |
+
+Every command takes `--location` (default `2036` Australia; `2840` US, `2826` UK,
+`2124` Canada) and `--language` (default `en`). Filter `suggestions` and `related`
+server-side with `--filter <field> <operator> <value>`, for example
+`--filter "keyword" "regex" "(how|what|when)"`.
+
+## Competitor research
+
+Rather than guessing seeds, take them from sites that already rank:
+
+1. `domain-overview` a few rivals to see who has real traffic.
+2. `ranked-keywords` on the leaders to harvest their terms.
+3. `intersection` two close rivals to find the proven category keywords.
+4. `competitors` to find rivals you didn't know about.
+5. Batch the harvest through `volume` for fresh intent and CPC.
+
+## Results
+
+Every call saves a CSV to `results/` as `{command}_{seed}_{timestamp}.csv`, so nothing
+is lost if the session ends. `analyze.py list-files` shows them.

@@ -1,7 +1,7 @@
 {
   "name": "agent-skills",
   "displayName": "Agent Skills",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Cross-agent skills for engineering, research, communications, media, design, data, and macOS operations.",
   "author": {
     "name": "John Kueh"
