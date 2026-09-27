@@ -35,7 +35,7 @@
     },
     {
       "name": "comms-whatsapp",
-      "description": "Read and send WhatsApp messages with wacli. Use to search messages, list chats, groups, or contacts, fetch threads or media, or send WhatsApp messages.",
+      "description": "Read, search, and send WhatsApp messages with wacli. Use to find a WhatsApp discussion, check what someone said, summarize a chat, list chats, groups, or contacts, download media, or send a message the user explicitly asked to send.",
       "source": "./plugins/comms-whatsapp"
     },
     {
@@ -105,7 +105,7 @@
     },
     {
       "name": "system-memory-cleanup",
-      "description": "Inspect and clean macOS CPU and memory usage. Use for a slow Mac, resource hogs, orphaned processes, high CPU, memory pressure, or process cleanup.",
+      "description": "Inspect and relieve macOS CPU and memory pressure with the memclean CLI: physical footprint, swap, launchd jobs, repeated MCP servers, detached dev-server trees, and orphaned Claude/Codex/Node processes. Use for a slow Mac, memory pressure, resource hogs, high CPU, agent zombies, runaway dev servers, or /memclean.",
       "source": "./plugins/system-memory-cleanup"
     }
   ]

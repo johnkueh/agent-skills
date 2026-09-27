@@ -1,7 +1,7 @@
 {
   "name": "system-memory-cleanup",
-  "version": "2.0.2",
-  "description": "Inspect and clean macOS CPU and memory usage. Use for a slow Mac, resource hogs, orphaned processes, high CPU, memory pressure, or process cleanup.",
+  "version": "2.1.0",
+  "description": "Inspect and relieve macOS CPU and memory pressure with the memclean CLI: physical footprint, swap, launchd jobs, repeated MCP servers, detached dev-server trees, and orphaned Claude/Codex/Node processes. Use for a slow Mac, memory pressure, resource hogs, high CPU, agent zombies, runaway dev servers, or /memclean.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"

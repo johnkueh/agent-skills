@@ -17,7 +17,7 @@ For API-only work, provide `OPENAI_API_KEY` through the environment or the exist
 
 ## Prompting
 
-Use `PROMPTING.md` for the visual brief. Describe the scene, subject, composition, details, and constraints. Quote exact text and specify what must remain unchanged in edits. Use reference images for identity or style continuity. Resolve a complete brief directly; ask only when missing information would materially change the result.
+Shape every visual brief with [PROMPTING.md](PROMPTING.md): intended use, subject, composition, visible style properties, exact quoted text, and, for edits, what must stay unchanged. Resolve a complete brief directly; ask only when missing information would materially change the result.
 
 ## Local commands
 

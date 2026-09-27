@@ -1,253 +1,163 @@
 ---
 name: comms-whatsapp
-description: "Read and send WhatsApp messages with wacli. Use to search messages, list chats, groups, or contacts, fetch threads or media, or send WhatsApp messages."
+description: "Read, search, and send WhatsApp messages with wacli. Use to find a WhatsApp discussion, check what someone said, summarize a chat, list chats, groups, or contacts, download media, or send a message the user explicitly asked to send."
 ---
 
-# wacli — WhatsApp from the CLI
+# WhatsApp with wacli
 
-`wacli` is a Go CLI built on the [whatsmeow](https://github.com/tulir/whatsmeow) library. It pairs to the user's WhatsApp account as a multi-device companion (like WhatsApp Web), syncs messages to a **local SQLite DB** at `~/.wacli/wacli.db`, and exposes commands to read, search, and send.
+[`wacli`](https://github.com/steipete/wacli) pairs to the user's WhatsApp as a
+linked device, syncs messages into a local SQLite store (`~/.wacli` on macOS,
+`~/.local/state/wacli` on Linux), and reads from that store.
 
-Repo: https://github.com/steipete/wacli · install: `brew install steipete/tap/wacli`.
+Two phases matter:
 
-## Mental model — sync vs. read
+- **Sync** writes new messages into the store. Messages only arrive while a sync runs.
+- **Read** (`messages`, `chats`, `contacts`) queries the local store. It is only as
+  fresh as the last sync.
 
-Two distinct phases:
+Reads are the default. Send, mark read, change groups, or delete only when the user
+explicitly asks for that exact action.
 
-1. **Sync** (`wacli sync` / `wacli auth --follow`) connects to WhatsApp servers and writes new messages to the local DB. Runs as a long-lived process. New messages only land in the DB while sync is running.
-2. **Read** (`wacli messages list/search/show`, `wacli chats list`) queries the local DB. Fast, offline, no network. Always reads what sync has already written.
+## Setup
 
-So when the user asks "what did Alice send yesterday?" — the answer comes from the local DB. If the DB is stale, the user needs to run sync first. Use `wacli doctor` to check state.
+Check first: `wacli doctor` or `wacli auth status`. If it says `AUTHENTICATED true`,
+do not run `wacli auth` again; that creates another linked device. On a shared
+machine every agent uses the same session and store.
 
-## Critical gotchas
-
-- **Single-writer lock.** The store is locked while `wacli sync` (or any connecting command) holds it. Trying to send while sync is running fails with a lock error. Inspect the lock owner and installed CLI capabilities. Wait for a bounded sync or pause only the managed follower for that exact store, then restore it after sending. Do not kill sync processes by a broad name pattern. `wacli doctor` shows lock state.
-- **History is shallow by default.** Initial sync only pulls recent messages from the user's primary device. Older history requires `wacli history backfill --chat <jid> --requests N`. Best-effort, may not return.
-- **JIDs, not phone numbers.** Most read commands take `--chat <jid>` (e.g. `61400000000@s.whatsapp.net` for DMs, `<id>@g.us` for groups). `wacli send text` accepts `--to` as either phone or JID. To find a JID: `wacli chats list --json` or `wacli contacts search "name" --json`.
-- **FTS5 may not be available.** `wacli doctor` shows `FTS5 false` on stock macOS SQLite — search falls back to LIKE, which is slower and less precise. Still usable for typical agent queries.
-- **Do not commit `~/.wacli/`.** It contains the session keypair and message DB.
-
-## Setup (once)
-
-```sh
+```bash
 brew install steipete/tap/wacli
-wacli auth                # shows QR; pair from phone → WhatsApp → Linked Devices
+wacli auth                                   # QR → phone → Linked Devices
+wacli sync --once --idle-exit 30s            # initial catch-up
 ```
 
-After pairing, kick off an initial sync that exits when idle:
+Never commit the store directory. It holds session keys and messages.
 
-```sh
-wacli sync --once --idle-exit 30s
+## Freshness and the store lock
+
+Start a read with one bounded catch-up, unless the user wants an offline snapshot:
+
+```bash
+wacli sync --once --refresh-groups --refresh-contacts --idle-exit 45s
 ```
 
-For explicitly requested continuous sync on a dedicated store, a follower can keep the local DB current. On a shared store use the existing supervisor and bounded sync instead:
+The store has a single-writer lock. If it is locked, check only the reported PID's
+executable name and status. If the owner is a live `wacli` on the same store, leave it
+running and read with `wacli --read-only …`. For any other owner, stop and report it.
+Never kill a process, delete a lock file, or break the lock to finish a read. Never
+start an unmanaged `sync --follow` on a shared store.
 
-```sh
-wacli sync --follow >/tmp/wacli-sync.log 2>&1 &
+Always report whether catch-up ran, the newest local message time in the chat, and
+whether the requested window is covered. Local results prove only what the store has.
+Older history needs `wacli history backfill --chat <jid> --count 50 --requests 3`,
+which is best-effort and needs the phone online.
+
+## Find the chat
+
+Most commands take a JID: `614…@s.whatsapp.net` for a person, `…@g.us` for a group.
+
+```bash
+wacli --read-only chats list --json
+wacli --read-only contacts search "Alice" --json
 ```
 
-## Shared computer / already paired
+Prefer an exact, case-insensitive name match. With no exact match, run one bounded
+search and continue when it yields one clear candidate. Ask only when the identity is
+still ambiguous; never guess from a phone number.
 
-- **Check first.** Run `wacli doctor` / `wacli auth status` before pairing. If `AUTHENTICATED true`, do not run `wacli auth` again — that creates another linked device.
-- **Shared machine.** The binary and store live on the shared home directory. Any agent on that computer uses the same `wacli` session. No second install, no second QR.
-- **Linux store.** Default store is `~/.local/state/wacli` (XDG). macOS is `~/.wacli`. Binary is often `~/.local/bin/wacli`.
-- **One lock.** `wacli sync` / `wacli auth` holds a single-writer lock for everyone. Do not start an unmanaged follower on a shared store. For reads, preserve a live lock owner and use the read-only procedure below. For sends, use the exact-store lifecycle procedure below.
-- **Install on Linux if missing.** Prefer the GitHub release binary (`openclaw/wacli`, linux_amd64) onto `~/.local/bin/wacli`. Homebrew tap `openclaw/tap/wacli` also works where brew exists.
+## Read and search
 
-## Always pass `--json` when an agent is consuming output
+Always pass `--json`. Output is an envelope; the rows are under `.data`
+(`.data.messages[]` for messages, with `ChatJID`, `ChatName`, `SenderJID`,
+`Timestamp`, `FromMe`, `Text`, `DisplayText`, `MediaType`).
 
-Default output is human-formatted (columns, truncation, **senders shown as bare `@lid` numbers**). `--json` produces structured rows that pipe straight into `jq`. Use it everywhere the result feeds back to the agent — and **never attribute a quote from the human output** (see "Attribution" below).
+```bash
+# Search inside a known chat
+wacli --read-only messages search "<query>" --chat <jid> --limit 50 --json
 
-Every `--json` response is an envelope: `{"success":bool, "data":…, "error":…}`. The payload is under `.data`:
+# Topic only: one global search, then scope follow-up reads to the matching chat
+wacli --read-only messages search "<query>" --limit 30 --json
 
-- `messages list/search` → `.data.messages[]`, each with PascalCase keys: `ChatJID`, `ChatName`, `SenderJID`, `Timestamp`, `FromMe`, `Text`, `DisplayText`, `MediaType`, `Snippet`.
-- `chats list` → `.data[]` with `JID`, `Kind`, `Name`, `LastMessageTS`.
-- `contacts search` → `.data[]` with `JID`, `Phone`, `Name`, `Alias`, `Tags`.
+# Context around a hit
+wacli --read-only messages context --chat <jid> --id <message-id> --before 10 --after 10 --json
 
-```sh
-wacli messages search "project update" --limit 20 --json \
-  | jq '.data.messages[] | {ChatName, FromMe, Timestamp, Text}'
+# A time window (--before is exclusive)
+wacli --read-only messages list --chat <jid> --after 2026-04-01 --limit 500 --json
 ```
 
-## Attribution — who sent each message (read before quoting anyone)
+When a 500-row page fills before the window is covered, page from its last timestamp
+and dedupe by message ID. If you can't reach the window, say it is truncated.
 
-Getting "who said X" wrong is the most common and most damaging wacli mistake. Two traps cause it; both are avoided by the same two rules.
+An empty search does not prove nobody said it. Fall back once: list the exact chat for
+the requested window and match each message's own `Text`. Don't scan unrelated chats
+or start broad backfills unless asked.
 
-1. **`FromMe` is the only reliable speaker signal — never infer the sender from the JID or the human output.** In a DM both sides come back. Only the account owner is reliably identifiable, via the boolean `FromMe`. The other party's `SenderJID` is a raw `@lid` (e.g. `<device-id>@lid`), not a name, and the same person appears under device variants (`…@lid`, `…:19@lid`). The human output prints your messages as `me` and theirs as the bare `@lid`. **Rule: attribute every quote from `FromMe` — `true` = the account owner (you), `false` = the other party.** Resolve a `@lid` to a name with `wacli contacts search`/`show` only for labelling, never for deciding direction.
+## Who said what
 
-2. **`Text` is the message's own words; `DisplayText`/`Snippet` bundle quoted-reply context — so a search can pin a phrase on the wrong author.** When B replies to A, B's `DisplayText`/`Snippet` contains A's quoted line, so a substring search matches *both* A's original *and* B's reply — making it look like B said A's words. **Rule: when deciding who said a phrase, match the `Text` field only — never `DisplayText` or `Snippet`.**
+Getting attribution wrong is the most damaging mistake here.
 
-Correct attribution recipe — a clean transcript labelled by `FromMe`, using each message's own `Text`:
+- **`FromMe` decides direction.** `true` is the account owner; `false` is the other
+  party in a DM. Never infer the speaker from `SenderJID` (a raw `@lid` that varies by
+  device) or from the human-formatted output.
+- **`Text` is the message's own words.** `DisplayText` and `Snippet` include quoted
+  replies, so a search can pin someone's words on the person who replied. Match
+  phrases against `Text` only.
+- In groups, resolve senders with `wacli contacts show --jid <jid> --json` and say so
+  plainly when a sender stays unresolved.
 
-```sh
-wacli messages list --chat <jid> --limit 200 --json \
+A clean transcript:
+
+```bash
+wacli --read-only messages list --chat <jid> --limit 200 --json \
   | jq -r '.data.messages[] | select(.Text != "")
            | (if .FromMe then "ME  " else "THEM" end) + " | " + .Timestamp + " | " + .Text'
 ```
 
-Build any "who said what" answer from this — not from the human output, not from `DisplayText`. If a phrase isn't in anyone's own `Text` (only in quoted replies), it means nobody in the window said it as their own message — don't attribute it, and `history backfill` if it predates the sync window.
+Return only the relevant excerpts, dates, chat name, attribution, and coverage limits.
+Don't expose JIDs, phone numbers, session data, or unrelated conversations.
 
-## Read recipes
+## Media
 
-### Find the chat / contact JID
-
-```sh
-# Browse chats sorted by recent activity
-wacli chats list --limit 30 --json
-
-# Substring match on a contact name
-wacli contacts search "Alice" --json
-
-# Show full contact record (aliases, tags, JID, push name)
-wacli contacts show --jid <jid> --json
-```
-
-### Search messages
-
-```sh
-# Global search across all chats
-wacli messages search "<query>" --limit 50 --json
-
-# Constrain to a chat
-wacli messages search "<query>" --chat <jid> --json
-
-# Constrain by sender (DMs include both sides; --from filters senders)
-wacli messages search "<query>" --from <jid> --json
-
-# Time window (RFC3339 or YYYY-MM-DD; --before is exclusive)
-wacli messages search "<query>" --after 2026-04-01 --before 2026-04-28 --json
-
-# Only media of a specific type
-wacli messages search "" --chat <jid> --type image --json
-```
-
-### List a chat's recent messages
-
-```sh
-wacli messages list --chat <jid> --limit 100 --json
-wacli messages list --chat <jid> --after 2026-04-25 --json
-```
-
-### Get context around a message
-
-Once a search returns a hit, expand the surrounding thread:
-
-```sh
-wacli messages context --chat <jid> --id <message-id> --before 10 --after 10 --json
-```
-
-### Pull older messages a primary device hasn't yet shared
-
-```sh
-wacli history backfill --chat <jid> --count 50 --requests 3 --wait 60s
-```
-
-This asks the user's phone to send a history slab. Best-effort — phone must be online and recently active.
-
-## Send recipes
-
-Send only when the user explicitly requests it. Check the exact store and its lock owner. Wait for a bounded sync to finish, or pause only that store's managed follower through its supervisor and restore it after the send, including on failure. If ownership or restart behavior is uncertain, report the blocker.
-
-### Text
-
-```sh
-wacli send text --to <phone-or-jid> --message "your text"
-# Phone form is auto-converted to JID; omit `+`. E.g. --to 61400000000
-```
-
-### File (image / video / audio / document)
-
-```sh
-wacli send file --to <jid> --file /abs/path.png --caption "look at this"
-wacli send file --to <jid> --file /abs/notes.pdf --filename "Meeting notes.pdf"
-```
-
-`--mime` overrides detection if `wacli` mis-classifies an attachment.
-
-## Group management
-
-```sh
-wacli groups list --json                              # known groups (from local DB)
-wacli groups refresh                                  # pull fresh group list from server
-wacli groups info --jid <group-jid>                   # participants, name, description
-wacli groups join --code <invite-code>
-wacli groups leave --jid <group-jid>
-wacli groups participants add --jid <group> --participants <jid>,<jid>
-wacli groups participants remove --jid <group> --participants <jid>
-wacli groups invite get --jid <group-jid>             # current invite link
-```
-
-## Media download
-
-Search returned a media message ID? Pull the binary:
-
-```sh
+```bash
 wacli media download --chat <jid> --id <message-id> --output /tmp/media
 ```
 
-Outputs to the configured media dir under the store by default.
+## Send (explicit request only)
+
+A send needs the store lock. If a bounded sync holds it, wait. If a managed follower
+holds it, pause only that store's follower through its supervisor and restore it
+afterwards, including on failure. If ownership is unclear, report the blocker.
+
+```bash
+wacli send text --to 61400000000 --message "text"          # digits only, no + or spaces
+wacli send file --to <jid> --file /abs/path.png --caption "look"
+```
+
+Resolve a name to exactly one recipient before sending:
+
+```bash
+TO=$(wacli contacts search "Alice" --json \
+  | jq -er 'if (.data | length) == 1 then .data[0].JID else error("ambiguous") end')
+```
+
+Send to the `@s.whatsapp.net` form, never an `@lid` taken from message metadata.
+
+## Groups
+
+```bash
+wacli groups list --json
+wacli groups info --jid <group-jid>
+wacli groups refresh
+```
+
+Joining, leaving, and changing participants (`groups join|leave|participants`) are
+explicit-request actions.
 
 ## Diagnostics
 
-```sh
-wacli doctor                  # store path, lock state, auth, FTS availability
-wacli doctor --connect        # try a live connection (requires lock be free)
-wacli auth status             # auth-only check
-wacli version
+```bash
+wacli doctor              # store path, lock, auth, FTS5 availability
+wacli doctor --connect    # live connection; needs the lock free
 ```
 
-If `LOCKED true`, inspect only the reported PID's executable name and status, not its full arguments. For a live `wacli` owner on the same store, leave it running and use `wacli --read-only` for local reads if the installed CLI supports it. Otherwise report the lock and available freshness. Never kill a process or delete a lock to complete a read. For sends, follow the exact-store lifecycle procedure above.
-
-## Common agent flows
-
-### "Find that WhatsApp thread where we talked about X"
-
-```sh
-wacli messages search "X" --limit 30 --json \
-  | jq '.data.messages[] | {ChatName, FromMe, Timestamp, Text}'
-```
-
-If a hit looks promising, fetch context:
-
-```sh
-wacli messages context --chat <jid> --id <message-id> --before 8 --after 8 --json
-```
-
-### "Send Alice the link to Y"
-
-```sh
-ALICE=$(wacli contacts search "Alice" --json | jq -er 'if (.data | length) == 1 then .data[0].JID else error("ambiguous recipient") end')
-wacli send text --to "$ALICE" --message "Y: https://..."
-```
-
-### "What's in the family group lately?"
-
-```sh
-GROUP=$(wacli groups list --json | jq -r '.data[] | select(.Name=="Family") | .JID')
-wacli messages list --chat "$GROUP" --limit 50 --after $(date -v-7d +%Y-%m-%d) --json
-```
-
-### Confirm sync is fresh before reporting
-
-Check the lock first. With a live owner, use the read-only procedure and report the newest local timestamp; run this catch-up only when the store is available.
-
-```sh
-wacli sync --once --idle-exit 15s   # foreground catch-up, ~15s
-wacli messages list --chat <jid> --limit 5 --json
-```
-
-## Output flags reference
-
-Every command supports:
-
-- `--json` — structured output (use this when piping to jq or returning to the agent)
-- `--store <dir>` — alternate store dir (default `~/.wacli` or `$WACLI_STORE_DIR`)
-- `--timeout <duration>` — bound non-sync commands (default 5m)
-
-## What NOT to do
-
-- A send needs the store lock. Follow the exact-store lifecycle procedure under Send recipes.
-- Don't paste a phone number with `+` or spaces to `--to` — strip to digits only (e.g. `61400000000`).
-- Don't try to send to a JID you fished out of message metadata that ends in `@lid` (linked device alias) — use the `@s.whatsapp.net` form. `wacli contacts show` returns the right one.
-- Don't attribute a quote from the sender JID, the human output, or `DisplayText`/`Snippet` — only `FromMe` (direction) + the message's own `Text` (content) are reliable. See "Attribution" above.
-- Don't expect old history to be there. Run `wacli history backfill` for a specific chat if the user asks about messages older than the sync window.
-- Don't commit `~/.wacli/` — it contains session keys.
+`FTS5 false` on stock macOS SQLite means search falls back to slower `LIKE` matching.
+Every command accepts `--store <dir>` and `--timeout <duration>`.

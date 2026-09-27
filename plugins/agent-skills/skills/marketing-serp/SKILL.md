@@ -3,346 +3,74 @@ name: marketing-serp
 description: "Analyze geo-targeted Google SERPs with DataForSEO, including rankings, competitors, snippets, PAA, and content gaps. Use for who-ranks queries, SERP analysis, ranking domains, or search-result research; supports dry-run costs."
 ---
 
-# SERP Data (DataForSEO)
+# SERP data (DataForSEO)
 
-Geo-targeted SERP analysis CLI using DataForSEO APIs. Unlike WebFetch, this provides accurate local search results (e.g., Australia-specific rankings).
+Shows who ranks for a keyword in a specific country, which SERP features appear, and
+where a domain is missing. Ordinary web fetches can't pin a search to a location; this
+can.
 
-**Setup:** Set the `DATAFORSEO_API_KEY` environment variable. The value is the base64 encoding of your DataForSEO `login:password` pair (it is sent as an HTTP Basic auth header):
+Run everything from this skill directory with `uv run python cli.py …`.
 
-```bash
-echo -n 'login:pass' | base64
-```
+## Setup
 
-Resolve credentials through the user’s configured secret manager or environment.
-Keep values out of chat and the repository. Use dry-run estimates when available
-and stay within the authorized scope and budget.
+Set `DATAFORSEO_API_KEY` to the base64 of your DataForSEO `login:password`
+(`echo -n 'login:pass' | base64`). Load it from the user's secret manager or
+environment; keep it out of chat and the repo.
 
-API calls retry automatically on transient errors (HTTP 429/503/504): 3 attempts, 2s/4s backoff. Shared client code is in `dataforseo.py`, synced from `scripts/shared/dataforseo.py` in the repo — edit the canonical copy, not the synced one.
+Transient errors (429/503/504) retry 3 times with 2s/4s backoff. `dataforseo.py` is
+synced from `scripts/shared/dataforseo.py` in this repo; edit that copy.
 
-## CLI Location
-
-```
-<skill-dir>
-```
-
-## Why This Skill?
-
-WebFetch cannot search by local geography. This skill solves that by using DataForSEO's SERP API to:
-- Get accurate Australian SERP rankings
-- See who ranks for target keywords
-- Identify content gaps and opportunities
-- Analyze SERP features (featured snippets, PAA)
-
----
-
-## Quick Start
-
-```bash
-cd <skill-dir>
-
-# Check balance first
-uv run python cli.py balance
-
-# See who ranks for a keyword in Australia
-uv run python cli.py serp "voidable transaction australia" --location au
-
-# Analyze multiple keywords to find top competitors
-uv run python cli.py bulk "liquidator" "doca" "voluntary administration"
-
-# Find SERP feature opportunities
-uv run python cli.py features "what is voluntary administration"
-
-# Find content gaps (where you don't rank)
-uv run python cli.py gaps example-site.com "liquidator" "rocap form" "form 507"
-```
-
----
+Calls are cheap (about $0.003 per keyword), but use `--dry-run` to preview cost and
+stay inside the budget the user gave you. `balance`, `costs`, and `locations` are free.
 
 ## Commands
 
-### 1. `serp` - Single keyword SERP analysis
+| Command | Use it to | Cost |
+|---|---|---|
+| `serp "kw"` | see the organic top 10/20 and SERP features for one keyword | ~$0.003 / 10 results (`-a` all features: $0.004) |
+| `bulk "kw1" "kw2" …` | find which domains rank across a set of keywords | ~$0.003 / keyword |
+| `features "question kw"` | featured snippet holder, People Also Ask, related searches, knowledge graph, and suggestions | ~$0.004 / 10 results |
+| `gaps domain.com "kw1" …` | keywords where a domain misses the top 20, its current ranks elsewhere, and who holds #1 | ~$0.003 / keyword |
+| `balance`, `costs`, `locations` | check account and shortcuts | free |
 
-Get organic rankings and SERP features for one keyword.
+Options (`--device`, `-a`, and `-j` are `serp` only; `-o` is `serp` and `bulk`):
 
-```bash
-cd <skill-dir>
+| Option | Meaning |
+|---|---|
+| `-l`, `--location` | `au` (default), `us`, `uk`, `ca`, `nz`, or a numeric code |
+| `-d`, `--depth` | number of results (default 10 or 20) |
+| `--device` | `desktop` (default) or `mobile` |
+| `-a`, `--advanced` | include every SERP feature |
+| `-o`, `--output` | also write a CSV to a chosen path |
+| `-j`, `--json-output` | also save the raw JSON |
+| `--dry-run` | preview cost without calling |
 
-# Basic usage (Australia default)
-uv run python cli.py serp "rocap form"
-
-# Specify location
-uv run python cli.py serp "liquidator" --location au
-uv run python cli.py serp "liquidator" --location us
-
-# Get more results
-uv run python cli.py serp "voluntary administration" --depth 20
-
-# Include all SERP features (advanced)
-uv run python cli.py serp "unfair preference" -a
-
-# Save raw JSON for detailed analysis
-uv run python cli.py serp "form 507" -j
-```
-
-**Cost:** ~$0.003 per 10 results
-
----
-
-### 2. `bulk` - Multi-keyword competitor analysis
-
-Analyze multiple keywords and identify which domains rank across them.
+## A research pass
 
 ```bash
-cd <skill-dir>
-
-# Analyze competitor landscape
-uv run python cli.py bulk "liquidator" "voluntary administration" "doca" "winding up"
-
-# Check form-related keywords
-uv run python cli.py bulk "form 507" "rocap form" "asic forms" "form 505"
-```
-
-**Output:** Competitor ranking summary showing domains that rank for multiple keywords.
-
-**Cost:** ~$0.003 per keyword
-
----
-
-### 3. `features` - SERP feature opportunities
-
-Deep analysis of SERP features including featured snippets, People Also Ask, related searches.
-
-```bash
-cd <skill-dir>
-
-# Analyze SERP features
-uv run python cli.py features "what is voluntary administration"
-
-# Find PAA questions to target
-uv run python cli.py features "voidable transaction australia"
-
-# Check for featured snippet opportunity
-uv run python cli.py features "relation back day meaning"
-```
-
-**Output:**
-- Featured snippet holder (if any)
-- People Also Ask questions
-- Related searches
-- Knowledge graph presence
-- Optimization recommendations
-
-**Cost:** ~$0.004 per 10 results
-
----
-
-### 4. `gaps` - Content gap analysis
-
-Find keywords where a target domain doesn't rank but competitors do.
-
-```bash
-cd <skill-dir>
-
-# Find where example-site doesn't rank
-uv run python cli.py gaps example-site.com "liquidator" "doca" "form 507" "rocap"
-
-# Analyze competitor's gaps
-uv run python cli.py gaps svpartners.com.au "voidable transaction" "unfair preference"
-```
-
-**Output:**
-- Keywords where domain doesn't rank in top 20
-- Current rankings for keywords where domain does rank
-- Top competitor for each gap keyword
-
-**Cost:** ~$0.003 per keyword
-
----
-
-### 5. `balance` - Check account balance (FREE)
-
-```bash
-cd <skill-dir> && uv run python cli.py balance
-```
-
-### 6. `costs` - Show cost estimates (FREE)
-
-```bash
-cd <skill-dir> && uv run python cli.py costs
-```
-
-### 7. `locations` - List location shortcuts (FREE)
-
-```bash
-cd <skill-dir> && uv run python cli.py locations
-```
-
----
-
-## Options
-
-| Option | Description |
-|--------|-------------|
-| `--location`, `-l` | Location shortcut (au, us, uk, ca, nz) or code |
-| `--depth`, `-d` | Number of results (default: 10 or 20) |
-| `--device` | desktop or mobile (default: desktop) |
-| `--advanced`, `-a` | Include all SERP features |
-| `--output`, `-o` | Save results to CSV file |
-| `--json-output`, `-j` | Also save raw JSON response |
-| `--dry-run` | Preview cost before executing |
-
----
-
-## Location Shortcuts
-
-| Shortcut | Code | Country |
-|----------|------|---------|
-| au | 2036 | Australia |
-| us | 2840 | United States |
-| uk | 2826 | United Kingdom |
-| ca | 2124 | Canada |
-| nz | 2554 | New Zealand |
-
----
-
-## Cost Reference
-
-| Command | Cost |
-|---------|------|
-| `serp` (regular) | $0.003 per 10 results |
-| `serp -a` (advanced) | $0.004 per 10 results |
-| `bulk` | $0.003 per keyword (10 results) |
-| `features` | $0.004 per 10 results |
-| `gaps` | $0.003 per keyword |
-| `balance`, `costs`, `locations` | FREE |
-
-**Example session costs:**
-- Single keyword analysis: ~$0.003
-- 10 keyword competitor scan: ~$0.03
-- 50 keyword gap analysis: ~$0.15
-
----
-
-## Auto-Save
-
-All results are automatically saved to:
-```
-<skill-dir>/results/
-```
-
-Filenames: `{command}_{keyword}_{location}_{timestamp}.csv`
-
-Examples:
-- `serp_voidable-transaction-australia_au_2026-02-05_143022.csv`
-- `bulk_liquidator_au_2026-02-05_144155.csv`
-- `gaps_example-site.com_au_2026-02-05_145230.csv`
-
----
-
-## Example: Australian Insolvency SERP Research
-
-```bash
-cd <skill-dir>
-
-# 1. Check balance
 uv run python cli.py balance
 
-# 2. Scan competitor landscape for high-volume terms (~$0.03)
-uv run python cli.py bulk "liquidator" "voluntary administration" "doca" "winding up" "insolvent trading"
+# Who dominates the category? (~$0.03 for 10 keywords)
+uv run python cli.py bulk "liquidator" "voluntary administration" "doca" "winding up"
 
-# 3. Check specific keyword SERPs (~$0.01)
+# One SERP in detail
 uv run python cli.py serp "rocap form" --location au -a
-uv run python cli.py serp "form 507 asic" --location au -a
 
-# 4. Find SERP feature opportunities (~$0.01)
-uv run python cli.py features "what is a voidable transaction"
-uv run python cli.py features "voluntary administration meaning"
-
-# 5. Analyze content gaps (~$0.06)
-uv run python cli.py gaps example-site.com \
-  "liquidator" "doca" "voluntary administration" \
-  "form 507" "rocap form" "unfair preference" \
-  "insolvent trading" "winding up" "relation back day"
-
-# Total: ~$0.11 for comprehensive SERP analysis
-```
-
----
-
-## Workflow: SERP Analysis for Content Strategy
-
-### Step 1: Competitor Discovery
-```bash
-# Find who dominates your target keywords
-uv run python cli.py bulk "liquidator" "voluntary administration" "doca" \
-  "winding up" "insolvent trading" "rocap form" "form 507"
-```
-
-### Step 2: SERP Feature Opportunities
-```bash
-# Check for featured snippet opportunities on question keywords
+# Snippet and PAA openings on question keywords
 uv run python cli.py features "what is voluntary administration"
-uv run python cli.py features "what is a voidable transaction"
-uv run python cli.py features "how to fill form 507"
+
+# Where does my site not rank?
+uv run python cli.py gaps example.com "liquidator" "doca" "form 507"
 ```
 
-### Step 3: Gap Analysis
-```bash
-# Find keywords where you don't rank
-uv run python cli.py gaps yourdomain.com [list of target keywords]
-```
+Pair it with `marketing-keyword-data`: find and size keywords there, then check the
+high-volume ones here with `bulk`, `features`, and `gaps`.
 
-### Step 4: Update Strategy Document
-Use results to update SERP Analysis section in STRATEGY.md with actual Australian ranking data.
+## Output
 
----
+Every call saves a CSV to `results/` as `{command}_{keyword}_{location}_{timestamp}.csv`.
 
-## Integration with marketing-keyword-data Skill
-
-Use both skills together for complete SEO research:
-
-```bash
-# 1. Discover keywords (marketing-keyword-data skill)
-cd <marketing-keyword-data-skill-dir>
-uv run python cli.py suggestions "insolvency" --limit 100
-
-# 2. Get volume data (marketing-keyword-data skill)
-uv run python cli.py volume "liquidator" "doca" "voluntary administration"
-
-# 3. Analyze SERPs for high-volume terms (serp-data skill)
-cd <skill-dir>
-uv run python cli.py bulk "liquidator" "doca" "voluntary administration"
-
-# 4. Deep-dive on opportunities
-uv run python cli.py features "liquidator"
-uv run python cli.py gaps example-site.com "liquidator" "doca"
-```
-
----
-
-## Output Fields
-
-### serp/bulk
-| Field | Description |
-|-------|-------------|
-| rank | Position in SERP (1 = top) |
-| domain | Ranking domain |
-| title | Page title |
-| url | Full URL |
-| description | Meta description snippet |
-
-### features
-Returns structured data for:
-- Featured snippets (domain, title, content)
-- People Also Ask questions
-- Related searches
-- Knowledge graph
-- Organic rankings
-
-### gaps
-| Field | Description |
-|-------|-------------|
-| keyword | Search term |
-| domain_rank | Your rank (null if not ranking) |
-| top_competitor | Domain ranking #1 |
-| top_rank | Competitor's rank |
+- `serp` / `bulk`: rank, domain, title, url, description.
+- `features`: featured snippet (domain, title, content), PAA questions, related
+  searches, knowledge graph, organic rankings.
+- `gaps`: keyword, domain_rank (null when not ranking), top_competitor, top_rank.

@@ -1,0 +1,416 @@
+#!/usr/bin/env bash
+# memclean — AI-agent + dev-runtime hygiene for macOS.
+#
+# Unifies the system-memory-cleanup scanners behind one dry-run-first CLI.
+# Ideas borrowed from the public z-clean / zclean project (MIT) and rewritten
+# for stricter rules: process groups, footprint, launchd-aware, never
+# name-based pkill of node/electron.
+#
+# Commands:
+#   memclean                 full dry-run audit (default)
+#   memclean audit|report    same as default
+#   memclean clean [--yes] [--force] [--min-age-hours N]
+#   memclean mcp|claude|helpers|dev|launchd|zombies|hogs  [flags]
+#   memclean doctor
+#   memclean protect list
+#   memclean init|uninstall  hourly read-only audit LaunchAgent
+#   memclean install-path    print bin dir (for PATH wiring)
+#   memclean help|version
+
+set -euo pipefail
+
+# Resolve symlinks so PATH installs (e.g. ~/.local/bin/memclean) still find scripts/
+_src="${BASH_SOURCE[0]}"
+while [ -L "$_src" ]; do
+  _dir=$(cd "$(dirname "$_src")" && pwd)
+  _src=$(readlink "$_src")
+  [[ $_src != /* ]] && _src="$_dir/$_src"
+done
+SCRIPT_DIR=$(cd "$(dirname "$_src")" && pwd)
+SKILL_DIR=$(cd "$SCRIPT_DIR/.." && pwd)
+unset _src _dir
+SCRIPTS="$SKILL_DIR/scripts"
+VERSION="0.1.0"
+STATE_DIR="${MEMCLEAN_HOME:-$HOME/.memclean}"
+PLIST_LABEL="${MEMCLEAN_PLIST_LABEL:-local.memclean.hourly-audit}"
+PLIST_PATH="$HOME/Library/LaunchAgents/${PLIST_LABEL}.plist"
+
+red()    { printf '\033[31m%s\033[0m\n' "$*" >&2; }
+yellow() { printf '\033[33m%s\033[0m\n' "$*" >&2; }
+green()  { printf '\033[32m%s\033[0m\n' "$*" >&2; }
+bold()   { printf '\033[1m%s\033[0m\n' "$*"; }
+log()    { printf '%s\n' "$*"; }
+die()    { red "memclean: $*"; exit 1; }
+
+need_script() {
+  local name="$1"
+  [ -x "$SCRIPTS/$name" ] || [ -f "$SCRIPTS/$name" ] || die "missing script: $SCRIPTS/$name"
+}
+
+run_script() {
+  local name="$1"; shift
+  need_script "$name"
+  bash "$SCRIPTS/$name" "$@"
+}
+
+usage() {
+  cat <<'EOF'
+memclean — reclaim CPU/RAM from agent orphans and stale dev runtimes (macOS)
+
+Usage:
+  memclean [audit|report]              Full dry-run report (default)
+  memclean clean --yes [--force]       Kill only eligible candidates (SIGTERM, then optional SIGKILL)
+  memclean mcp|claude|helpers|dev|launchd|zombies|hogs [--kill|--yes] [--force]
+  memclean doctor                      Health check for scripts, pressure, launchd
+  memclean protect list                Show never-kill classes
+  memclean init                        Install hourly *read-only* audit LaunchAgent
+  memclean uninstall                   Remove that LaunchAgent
+  memclean install-path                Print this bin directory
+  memclean version | help
+
+Flags (where applicable):
+  --yes | --kill     Perform cleanup (default is dry-run)
+  --force            After SIGTERM, SIGKILL survivors (requires --yes/--kill)
+  --min-age-hours N  Age floor (default 24 for most scanners)
+  --json             Machine-readable summary for audit/report (best-effort)
+
+Safety:
+  dry-run by default · user-owned only · process-group aware · never kills
+  kernel_task / WindowServer / fseventsd / launchd · never broad pkill -f node
+EOF
+}
+
+parse_mode_flags() {
+  MODE=dry-run
+  FORCE=0
+  MIN_AGE=24
+  JSON=0
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --yes|--kill) MODE=kill; shift ;;
+      --force) FORCE=1; shift ;;
+      --min-age-hours)
+        [ "$#" -ge 2 ] || die "Missing value for --min-age-hours"
+        MIN_AGE="$2"; shift 2
+        ;;
+      --json) JSON=1; shift ;;
+      --dry-run) MODE=dry-run; shift ;;
+      -h|--help) usage; exit 0 ;;
+      *)
+        EXTRA_ARGS+=("$1"); shift ;;
+    esac
+  done
+  case "$MIN_AGE" in ''|*[!0-9]*) die "min-age-hours must be a non-negative integer" ;; esac
+  [ "$FORCE" -eq 0 ] || [ "$MODE" = kill ] || die "--force requires --yes/--kill"
+}
+
+script_flags() {
+  if [ "$MODE" = kill ]; then
+    printf '%s' "--kill"
+    [ "$FORCE" -eq 1 ] && printf ' %s' "--force"
+  else
+    printf '%s' "--dry-run"
+  fi
+  printf ' %s %s' "--min-age-hours" "$MIN_AGE"
+}
+
+section() {
+  printf '\n'
+  bold "── $1 ──"
+}
+
+pressure_snapshot() {
+  if command -v memory_pressure >/dev/null 2>&1; then
+    memory_pressure 2>/dev/null | head -12 || true
+  else
+    log "(memory_pressure unavailable)"
+  fi
+  if command -v vm_stat >/dev/null 2>&1; then
+    pages_free=$(vm_stat 2>/dev/null | awk '/Pages free/ {gsub("\\.","",$3); print $3}')
+    page_size=$(pagesize 2>/dev/null || echo 16384)
+    if [ -n "${pages_free:-}" ]; then
+      free_mb=$(( pages_free * page_size / 1024 / 1024 ))
+      log "Approx free pages: ${free_mb} MiB (page size ${page_size})"
+    fi
+  fi
+  uptime 2>/dev/null || true
+}
+
+cmd_audit() {
+  local mode_label="DRY-RUN"
+  [ "$MODE" = kill ] && mode_label="KILL"
+  bold "memclean v${VERSION} — ${mode_label} full audit"
+  log "skill: $SKILL_DIR"
+  log "state: $STATE_DIR"
+  section "Memory pressure"
+  pressure_snapshot
+
+  section "Top processes (footprint-ranked via top)"
+  run_script top-processes.sh 2>/dev/null || run_script audit-memory-hogs.sh || true
+
+  section "Memory hogs / pressure audit"
+  run_script audit-memory-hogs.sh || true
+
+  section "Orphan Claude"
+  if [ "$MODE" = kill ]; then
+    # shellcheck disable=SC2046
+    run_script kill-orphan-claude.sh $(script_flags) || true
+  else
+    run_script find-orphan-claude.sh || true
+    # shellcheck disable=SC2046
+    run_script kill-orphan-claude.sh --dry-run --min-age-hours "$MIN_AGE" || true
+  fi
+
+  section "Agent zombies (MCP / browsers / subagents / generic)"
+  # shellcheck disable=SC2046
+  run_script scan-agent-zombies.sh $(script_flags) || true
+
+  section "Stale MCP generations"
+  # shellcheck disable=SC2046
+  run_script cleanup-stale-mcp.sh $(script_flags) || true
+
+  section "Stale user helpers"
+  # shellcheck disable=SC2046
+  run_script cleanup-stale-user-processes.sh $(script_flags) || true
+
+  section "Detached dev trees"
+  run_script find-dev-trees.sh || true
+
+  section "Launchd dev jobs"
+  if [ "$MODE" = kill ]; then
+    # shellcheck disable=SC2046
+    run_script cleanup-launchd-dev-jobs.sh $(script_flags) || true
+  else
+    run_script cleanup-launchd-dev-jobs.sh --dry-run --min-age-hours "$MIN_AGE" || true
+  fi
+
+  section "Next steps"
+  if [ "$MODE" = dry-run ]; then
+    log "Review candidates above. Kill eligible ones with:"
+    log "  memclean clean --yes"
+    log "Scoped: memclean mcp --yes | claude --yes | helpers --yes | zombies --yes"
+    log "Dev trees need an exact root: memclean stop-dev --pid <PID> --yes"
+  else
+    log "Cleanup pass finished. Re-run: memclean audit"
+  fi
+
+  if [ "$JSON" -eq 1 ]; then
+    section "JSON summary"
+    printf '{"tool":"memclean","version":"%s","mode":"%s","minAgeHours":%s,"skillDir":%s}\n' \
+      "$VERSION" "$MODE" "$MIN_AGE" "$(printf '%s' "$SKILL_DIR" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read().rstrip()))' 2>/dev/null || printf '"%s"' "$SKILL_DIR")"
+  fi
+}
+
+cmd_scoped() {
+  local which="$1"; shift
+  EXTRA_ARGS=()
+  parse_mode_flags "$@"
+  case "$which" in
+    mcp)
+      # shellcheck disable=SC2046
+      run_script cleanup-stale-mcp.sh $(script_flags)
+      ;;
+    claude)
+      if [ "$MODE" = kill ]; then
+        # shellcheck disable=SC2046
+        run_script kill-orphan-claude.sh $(script_flags)
+      else
+        run_script find-orphan-claude.sh
+        # shellcheck disable=SC2046
+        run_script kill-orphan-claude.sh --dry-run --min-age-hours "$MIN_AGE"
+      fi
+      ;;
+    helpers)
+      # shellcheck disable=SC2046
+      run_script cleanup-stale-user-processes.sh $(script_flags)
+      ;;
+    zombies)
+      # shellcheck disable=SC2046
+      run_script scan-agent-zombies.sh $(script_flags)
+      ;;
+    launchd)
+      # shellcheck disable=SC2046
+      run_script cleanup-launchd-dev-jobs.sh $(script_flags)
+      ;;
+    dev)
+      run_script find-dev-trees.sh
+      log "To stop a tree: memclean stop-dev --pid <ROOT_PID> --yes"
+      ;;
+    hogs)
+      run_script audit-memory-hogs.sh
+      run_script top-processes.sh 2>/dev/null || true
+      ;;
+    stop-dev)
+      local pid=""
+      local i=0
+      for ((i=0; i<${#EXTRA_ARGS[@]}; i++)); do
+        case "${EXTRA_ARGS[$i]}" in
+          --pid)
+            pid="${EXTRA_ARGS[$((i+1))]:-}"
+            ;;
+        esac
+      done
+      [ -n "$pid" ] || die "stop-dev requires --pid <ROOT_PID>"
+      if [ "$MODE" = kill ]; then
+        run_script stop-dev-tree.sh --pid "$pid" --kill ${FORCE:+--force}
+      else
+        run_script stop-dev-tree.sh --pid "$pid"
+      fi
+      ;;
+    *) die "unknown scope: $which" ;;
+  esac
+}
+
+cmd_doctor() {
+  bold "memclean doctor"
+  local ok=0 fail=0
+  check() {
+    local label="$1"; shift
+    if "$@"; then green "ok  $label"; ok=$((ok+1))
+    else red "FAIL $label"; fail=$((fail+1)); fi
+  }
+  check "scripts dir" test -d "$SCRIPTS"
+  for s in audit-memory-hogs.sh find-orphan-claude.sh kill-orphan-claude.sh \
+           cleanup-stale-mcp.sh cleanup-stale-user-processes.sh \
+           cleanup-launchd-dev-jobs.sh find-dev-trees.sh stop-dev-tree.sh \
+           scan-agent-zombies.sh memory-process-lib.sh; do
+    check "script $s" test -f "$SCRIPTS/$s"
+  done
+  check "ps" test -x /bin/ps
+  check "memory_pressure" command -v memory_pressure >/dev/null
+  check "footprint" test -x /usr/bin/footprint
+  if [ -f "$PLIST_PATH" ]; then
+    green "ok  launch agent present ($PLIST_LABEL)"
+    launchctl print "gui/$(id -u)/$PLIST_LABEL" >/dev/null 2>&1 \
+      && green "ok  launch agent loaded" \
+      || yellow "warn launch agent not loaded (run: launchctl bootstrap gui/\$(id -u) $PLIST_PATH)"
+  else
+    yellow "info no hourly audit agent (optional: memclean init)"
+  fi
+  section "Pressure"
+  pressure_snapshot
+  log ""
+  log "checks ok=$ok fail=$fail"
+  [ "$fail" -eq 0 ]
+}
+
+cmd_protect_list() {
+  cat <<'EOF'
+Never kill (protected classes)
+  kernel_task, fseventsd, launchservicesd, WindowServer, launchd, memory_pressure
+  Active Codex / ChatGPT / Claude / Grok / Cursor sessions with a live terminal
+  Simulators, Hangar leases, live builds (Swift/Clang/Hermes/EAS)
+  portless proxy start --foreground (persistent proxy)
+  Newest Notion / Argent MCP generation per client parent
+
+Prefer process-group stop over name kill
+  Kill by PGID / known launchd label / exact tree root
+  Never: pkill -f node|next|chrome|claude|grok|electron
+
+Eligibility (scheduled / --yes default policy)
+  user-owned
+  detached (no live session) or allowlisted helper class
+  age ≥ 24h (unless retired MCP kind or explicit one-off)
+  high CPU (≥90%) or large footprint (≥500 MiB) for generic cases
+  pattern match for agent zombies / MCP / helpers
+EOF
+}
+
+cmd_init() {
+  mkdir -p "$STATE_DIR" "$(dirname "$PLIST_PATH")"
+  local bin="$SCRIPT_DIR/memclean"
+  [ -x "$bin" ] || chmod +x "$bin"
+  cat > "$PLIST_PATH" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>${PLIST_LABEL}</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>${bin}</string>
+    <string>audit</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>3600</integer>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>StandardOutPath</key>
+  <string>${STATE_DIR}/hourly-audit.log</string>
+  <key>StandardErrorPath</key>
+  <string>${STATE_DIR}/hourly-audit.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>
+EOF
+  # Read-only: never passes --yes. Load agent.
+  launchctl bootout "gui/$(id -u)/$PLIST_LABEL" 2>/dev/null || true
+  launchctl bootstrap "gui/$(id -u)" "$PLIST_PATH" 2>/dev/null \
+    || launchctl load -w "$PLIST_PATH" 2>/dev/null \
+    || yellow "plist written but load failed; load manually: launchctl bootstrap gui/\$(id -u) $PLIST_PATH"
+  green "Installed hourly *read-only* audit → $PLIST_PATH"
+  log "Log: $STATE_DIR/hourly-audit.log"
+  log "Uninstall: memclean uninstall"
+}
+
+cmd_uninstall() {
+  launchctl bootout "gui/$(id -u)/$PLIST_LABEL" 2>/dev/null || true
+  launchctl unload -w "$PLIST_PATH" 2>/dev/null || true
+  rm -f "$PLIST_PATH"
+  green "Removed $PLIST_LABEL"
+}
+
+main() {
+  local cmd="${1:-audit}"
+  if [ "$#" -gt 0 ]; then shift; fi
+  EXTRA_ARGS=()
+
+  case "$cmd" in
+    help|-h|--help) usage; exit 0 ;;
+    version|-V|--version) log "memclean $VERSION"; exit 0 ;;
+    install-path) printf '%s\n' "$SCRIPT_DIR"; exit 0 ;;
+    doctor) cmd_doctor; exit $? ;;
+    protect)
+      case "${1:-list}" in
+        list) cmd_protect_list ;;
+        *) die "usage: memclean protect list" ;;
+      esac
+      ;;
+    init) cmd_init ;;
+    uninstall) cmd_uninstall ;;
+    audit|report)
+      parse_mode_flags "$@"
+      [ "$MODE" = dry-run ] || die "audit/report is read-only; use: memclean clean --yes"
+      cmd_audit
+      ;;
+    clean)
+      parse_mode_flags "$@"
+      [ "$MODE" = kill ] || die "clean requires --yes (refusing to kill on dry-run alone)"
+      cmd_audit
+      ;;
+    mcp|claude|helpers|dev|launchd|zombies|hogs|stop-dev)
+      cmd_scoped "$cmd" "$@"
+      ;;
+    # bare flags: memclean --yes
+    --yes|--kill|--force|--min-age-hours|--json|--dry-run)
+      parse_mode_flags "$cmd" "$@"
+      if [ "$MODE" = kill ]; then
+        cmd_audit
+      else
+        cmd_audit
+      fi
+      ;;
+    *)
+      # allow: memclean --yes as first arg already handled; unknown
+      die "unknown command: $cmd (try memclean help)"
+      ;;
+  esac
+}
+
+main "$@"

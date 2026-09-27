@@ -17,6 +17,19 @@ df -h /System/Volumes/Data
 df -h
 ```
 
+For a broad scan, use the bundled single-pass index instead of serial `du` runs:
+
+```sh
+scripts/scan.sh                 # build or reuse the index, print the report
+scripts/scan.sh --refresh       # force a rescan
+scripts/scan.sh --report        # report from the cached index only
+scripts/scan.sh --top ~/Projects 15
+```
+
+It caches to `~/.cache/system-disk-cleanup/index.tsv`. Reuse it for follow-up
+questions, but take a fresh measurement when age or deletion scope depends on it.
+A cached index doesn't prove a directory is idle.
+
 Use the Data volume for user files and inspect separate simulator/runtime
 volumes. Start with likely large roots and avoid repeatedly traversing the same
 tree. Use exact paths and quote paths containing spaces. Shared APFS clone or
@@ -45,6 +58,13 @@ concurrent writes.
 - Package stores, model caches, browser profiles, unknown directories, and
   archives need their own scope decision. Being old or large does not establish
   that they are unused. Preserve credentials, user data, and active runtimes.
+- Shared package stores (pnpm, Yarn, CocoaPods caches, Gradle `modules-2`): report
+  their size but keep them unless the user names that store. Don't add store
+  pruning to a worktree removal.
+- App updater and code-sign scratch (Chrome code-sign clones, Sparkle installer
+  payloads): inspect the exact subdirectory, its age, and running app/updater
+  processes. Never delete the parent tree wholesale. Keep the current iOS
+  DeviceSupport version unless the user selects it.
 - APFS snapshots: inspect if reclamation is unexpectedly delayed. Do not thin or
   delete backups just to make a reclaim number match an estimate.
 
