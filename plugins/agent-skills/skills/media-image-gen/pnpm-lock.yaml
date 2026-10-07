@@ -11,9 +11,6 @@ importers:
       commander:
         specifier: ^12.1.0
         version: 12.1.0
-      gpt-tokenizer:
-        specifier: ^2.8.1
-        version: 2.9.0
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
@@ -329,9 +326,6 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  gpt-tokenizer@2.9.0:
-    resolution: {integrity: sha512-YSpexBL/k4bfliAzMrRqn3M6+it02LutVyhVpDeMKrC/O9+pCe/5s8U2hYKa2vFLD5/vHhsKc8sOn/qGqII8Kg==}
-
   is-arrayish@0.3.4:
     resolution: {integrity: sha512-m6UrgzFVUYawGBh1dUsWR5M2Clqic9RVXC/9f8ceNlv2IcO9j9J/z8UoCLPqtsPBFNzEpfR3xftohbfqDx8EQA==}
 
@@ -578,8 +572,6 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
-
-  gpt-tokenizer@2.9.0: {}
 
   is-arrayish@0.3.4: {}
 

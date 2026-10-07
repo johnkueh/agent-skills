@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Codex Images 2.5 CLI with ChatGPT-plan usage; Flare for API-only workflows.",
+  "description": "Codex Images 2.5 CLI on the ChatGPT plan for agents and scripts outside Codex.",
   "bin": {
     "image-gen": "cli.ts"
   },
   "scripts": {
     "image-gen": "tsx cli.ts",
-    "test": "node --test codex-image.test.mjs"
+    "test": "node --test codex-image.test.mjs aspect.test.mjs",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "commander": "^12.1.0",
-    "gpt-tokenizer": "^2.8.1",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
