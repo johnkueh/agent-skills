@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-daily-digest — per-project digest of signups, activities, and costs from
-bq-analytics, with the latest x-monitor posts appended.
+daily-digest — per-project digest of installs, activity, purchases, and
+freshness from the dev-telemetry views (GA4 -> BigQuery), or signups,
+activities, and costs from the legacy bq-analytics layout, with the latest
+x-monitor posts appended.
 
 Designed to be invoked daily via `/loop`. Emits structured JSON the
 parent agent reformats for the user.
@@ -15,7 +17,9 @@ Usage:
                           [--json] [--no-state]
 
 Flags for `add`:
-    --bq-project ID         GCP project for bq-analytics tables
+    --repo PATH             repo root; if it has .telemetry.json the project
+                            is read from the dev-telemetry views
+    --bq-project ID         GCP project for legacy bq-analytics tables
     --group-type T          bq-analytics group_type to attach to signups
                             (e.g. household, workspace)
     --description TEXT      one-line note shown in digest header
@@ -98,10 +102,13 @@ def parse_duration(s: str) -> timedelta:
 # bq runner
 # ---------------------------------------------------------------------------
 
-def bq(project: str, sql: str) -> list[dict]:
+def bq(project: str, sql: str, account: str | None = None) -> list[dict]:
     cmd = ["bq", "query", f"--project_id={project}",
            "--nouse_legacy_sql", "--format=json", "--max_rows=1000"]
-    p = subprocess.run(cmd, input=sql, capture_output=True, text=True)
+    env = None
+    if account:
+        env = {**os.environ, "CLOUDSDK_CORE_ACCOUNT": account}
+    p = subprocess.run(cmd, input=sql, capture_output=True, text=True, env=env)
     if p.returncode != 0:
         return [{"_error": p.stderr.strip() or p.stdout.strip()}]
     out = p.stdout.strip()
@@ -252,6 +259,177 @@ ORDER BY ts DESC LIMIT 20
 
 
 
+# ---------------------------------------------------------------------------
+# dev-telemetry views (GA4 -> BigQuery export, shared `telemetry` dataset)
+# ---------------------------------------------------------------------------
+
+def telemetry_config(repo: str | None) -> dict | None:
+    """Read <repo>/.telemetry.json. Returns None when the repo isn't on
+    dev-telemetry (no file, unreadable, or no gcpProject)."""
+    if not repo:
+        return None
+    path = Path(os.path.expanduser(repo)) / ".telemetry.json"
+    if not path.exists():
+        return None
+    try:
+        raw = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+    project = raw.get("gcpProject")
+    if not project:
+        return None
+    dataset = (raw.get("views") or {}).get("dataset") or "telemetry"
+    return {"project": project, "dataset": dataset,
+            "account": telemetry_account(project, raw.get("gcpAccount"))}
+
+
+def telemetry_account(project: str, pinned: str | None) -> str:
+    """dev-telemetry account pinning: gcpAccount, else by project name."""
+    if pinned:
+        return pinned
+    if project.startswith(("vibejar-", "popkr-")):
+        return "john.kueh.dev@gmail.com"
+    return "john.kueh@gmail.com"
+
+
+def tel_window(since: datetime, until: datetime | None = None) -> str:
+    """Event-time window over `telemetry.events`. Provisional (intraday)
+    rows only count when the window reaches today; for closed past days
+    the final daily export is the only source of truth."""
+    since_iso = iso(since)
+    clauses = [f'event_ts >= TIMESTAMP("{since_iso}")',
+               f'event_date >= DATE_SUB(DATE(TIMESTAMP("{since_iso}")), INTERVAL 1 DAY)']
+    if until is not None:
+        clauses.append(f'event_ts < TIMESTAMP("{iso(until)}")')
+        if until.date() < now_utc().date():
+            clauses.append("NOT provisional")
+    return "\n  AND ".join(clauses)
+
+
+def tel_error(rows: list[dict]) -> dict | None:
+    if rows and "_error" in rows[0]:
+        return {"error": rows[0]["_error"]}
+    return None
+
+
+def tel_installs(t: dict, since: datetime) -> dict:
+    """New prod app installs (IOS/ANDROID, not internal) by platform."""
+    since_iso = iso(since)
+    sql = f"""
+SELECT platform,
+       COUNTIF(first_seen_ts >= TIMESTAMP("{since_iso}")) AS new_installs,
+       COUNTIF(first_seen_ts >= TIMESTAMP("{since_iso}") AND has_first_open) AS new_with_first_open,
+       COUNT(*) AS total_installs
+FROM `{t["project"]}.{t["dataset"]}.installs`
+WHERE env = 'prod' AND NOT IFNULL(is_internal, FALSE)
+  AND platform IN ('IOS', 'ANDROID')
+GROUP BY platform ORDER BY platform
+"""
+    rows = bq(t["project"], sql, t["account"])
+    if err := tel_error(rows):
+        return err
+    by_platform = [{"platform": r["platform"],
+                    "new": int(r["new_installs"]),
+                    "new_with_first_open": int(r["new_with_first_open"]),
+                    "total": int(r["total_installs"])} for r in rows]
+    return {"new": sum(p["new"] for p in by_platform),
+            "total": sum(p["total"] for p in by_platform),
+            "by_platform": by_platform}
+
+
+def tel_active(t: dict, since: datetime) -> dict:
+    """Distinct prod, non-internal installs with any event, by platform.
+    WEB installs are the web readers."""
+    sql = f"""
+SELECT platform,
+       COUNT(DISTINCT install_id) AS installs,
+       COUNTIF(provisional) AS provisional_rows
+FROM `{t["project"]}.{t["dataset"]}.events`
+WHERE {tel_window(since)}
+  AND env = 'prod' AND NOT IFNULL(is_internal, FALSE)
+GROUP BY platform ORDER BY platform
+"""
+    rows = bq(t["project"], sql, t["account"])
+    if err := tel_error(rows):
+        return err
+    by_platform = {r["platform"]: int(r["installs"]) for r in rows}
+    return {"app_installs": sum(n for p, n in by_platform.items() if p != "WEB"),
+            "web_readers": by_platform.get("WEB", 0),
+            "by_platform": by_platform,
+            "includes_provisional": any(int(r["provisional_rows"]) for r in rows)}
+
+
+def tel_events(t: dict, since: datetime) -> dict:
+    sql = f"""
+SELECT event_name, COUNT(*) AS n,
+       COUNT(DISTINCT install_id) AS installs
+FROM `{t["project"]}.{t["dataset"]}.events`
+WHERE {tel_window(since)}
+  AND env = 'prod' AND NOT IFNULL(is_internal, FALSE)
+GROUP BY event_name ORDER BY n DESC LIMIT 15
+"""
+    rows = bq(t["project"], sql, t["account"])
+    if err := tel_error(rows):
+        return err
+    return {"top": [{"event_name": r["event_name"],
+                     "n": int(r["n"]),
+                     "installs": int(r["installs"])} for r in rows]}
+
+
+def tel_purchases(t: dict, since: datetime) -> dict:
+    """RevenueCat purchases. The view is optional; absent -> available=False."""
+    since_iso = iso(since)
+    sql = f"""
+SELECT COUNTIF(is_first_paid) AS new_paid,
+       COUNTIF(is_trial) AS trials,
+       COUNTIF(is_refunded) AS refunds,
+       ROUND(SUM(IF(is_paid AND NOT IFNULL(is_refunded, FALSE), price_usd, 0)), 2) AS revenue_usd
+FROM `{t["project"]}.{t["dataset"]}.purchases`
+WHERE purchased_at >= TIMESTAMP("{since_iso}")
+"""
+    rows = bq(t["project"], sql, t["account"])
+    if err := tel_error(rows):
+        if "Not found" in err["error"]:
+            return {"available": False}
+        return err
+    r = rows[0] if rows else {}
+    return {"available": True,
+            "new_paid": int(r.get("new_paid") or 0),
+            "trials": int(r.get("trials") or 0),
+            "refunds": int(r.get("refunds") or 0),
+            "revenue_usd": float(r.get("revenue_usd") or 0)}
+
+
+def tel_freshness(t: dict, since: datetime) -> dict:
+    """Per-stream data_through from source_health. A stream is stale when
+    its final data ends before the window starts, so its zeros mean
+    'not landed yet', not 'nothing happened'."""
+    sql = f"""
+SELECT source, stream,
+       FORMAT_DATE('%F', data_through) AS data_through,
+       FORMAT_TIMESTAMP('%FT%TZ', last_event_ts) AS last_event_ts,
+       has_provisional, rows_yesterday
+FROM `{t["project"]}.{t["dataset"]}.source_health`
+ORDER BY source, stream
+"""
+    rows = bq(t["project"], sql, t["account"])
+    if err := tel_error(rows):
+        return err
+    window_start = since.date().isoformat()
+    streams = []
+    for r in rows:
+        through = r.get("data_through")
+        streams.append({"source": r["source"], "stream": r["stream"],
+                        "data_through": through,
+                        "last_event_ts": r.get("last_event_ts"),
+                        "has_provisional": r.get("has_provisional") in (True, "true"),
+                        "rows_yesterday": int(r.get("rows_yesterday") or 0),
+                        "stale": not through or through < window_start})
+    return {"window_start": window_start,
+            "any_stale": any(s["stale"] for s in streams),
+            "streams": streams}
+
+
 
 # ---------------------------------------------------------------------------
 # x-monitor — read directly from per-handle archives
@@ -335,7 +513,10 @@ def cmd_add(args) -> int:
     data = load_projects()
     if args.name in data["projects"] and not args.force:
         sys.exit(f"project {args.name!r} already exists; pass --force to overwrite")
+    if not args.bq_project and not args.repo:
+        sys.exit("pass --repo (dev-telemetry) and/or --bq-project (legacy bq-analytics)")
     data["projects"][args.name] = {
+        "repo": os.path.abspath(os.path.expanduser(args.repo)) if args.repo else None,
         "bq_project": args.bq_project,
         "group_type": args.group_type,
         "description": args.description,
@@ -366,10 +547,11 @@ def cmd_list(args) -> int:
     if not data["projects"]:
         print("no projects configured (run `add` first)"); return 0
     for name, p in data["projects"].items():
-        bq = p.get("bq_project") or "—"
-        gt = p.get("group_type") or "—"
+        tel = telemetry_config(p.get("repo"))
+        layout = "telemetry" if tel else ("bq-analytics" if p.get("bq_project") else "—")
+        bq = (tel or {}).get("project") or p.get("bq_project") or "—"
         desc = p.get("description") or ""
-        print(f"{name:24} bq={bq:18} group_type={gt:12} {desc}")
+        print(f"{name:24} layout={layout:12} bq={bq:24} {desc}")
     return 0
 
 
@@ -403,15 +585,25 @@ def digest_project(name: str, cfg: dict, since: datetime) -> dict:
         "since": iso(since),
         "description": cfg.get("description"),
     }
+    tel = telemetry_config(cfg.get("repo"))
     bq_proj = cfg.get("bq_project")
-    if bq_proj:
+    if tel:
+        out["layout"] = "telemetry"
+        out["telemetry"] = {"project": tel["project"], "dataset": tel["dataset"]}
+        out["freshness"] = tel_freshness(tel, since)
+        out["installs"] = tel_installs(tel, since)
+        out["active"] = tel_active(tel, since)
+        out["activities"] = tel_events(tel, since)
+        out["purchases"] = tel_purchases(tel, since)
+    elif bq_proj:
+        out["layout"] = "bq-analytics"
         out["users"] = bq_users(bq_proj, since, cfg.get("group_type"))
         out["activities"] = bq_activities(bq_proj, since)
         out["costs"] = bq_costs(bq_proj, since)
         out["errors"] = bq_errors(bq_proj, since)
         out["feedback"] = bq_feedback(bq_proj, since)
     else:
-        out["bq_skipped"] = "no bq_project configured"
+        out["bq_skipped"] = "no .telemetry.json in repo and no bq_project configured"
 
     return out
 
@@ -465,7 +657,8 @@ def main() -> int:
 
     a = sub.add_parser("add")
     a.add_argument("name")
-    a.add_argument("--bq-project")
+    a.add_argument("--repo", help="repo root; .telemetry.json there selects the dev-telemetry views")
+    a.add_argument("--bq-project", help="GCP project for the legacy bq-analytics tables")
     a.add_argument("--group-type", help="bq-analytics group_type to attach to signups (e.g. household, workspace)")
     a.add_argument("--description")
     a.add_argument("--force", action="store_true")
