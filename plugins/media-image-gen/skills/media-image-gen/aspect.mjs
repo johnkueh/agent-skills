@@ -32,3 +32,21 @@ export function centerCropBox(width, height, aspect) {
     height: cropH,
   };
 }
+
+function orientation(w, h) {
+  return w === h ? "square" : w < h ? "portrait" : "landscape";
+}
+
+/** Prompt size hint for an aspect when --size is auto, so Codex picks the right canvas orientation. */
+export function sizeHintForAspect(aspect) {
+  const o = orientation(aspect.w, aspect.h);
+  const preset = o === "portrait" ? "1024x1536" : o === "landscape" ? "1536x1024" : "1024x1024";
+  return `${preset} (${o}, ${aspect.w}:${aspect.h} aspect ratio)`;
+}
+
+/** Warning text when native output's orientation differs from the requested aspect, else null. */
+export function orientationMismatch(width, height, aspect) {
+  const got = orientation(width, height);
+  const want = orientation(aspect.w, aspect.h);
+  return got === want ? null : `Codex returned a ${got} ${width}x${height} image for ${want} ${aspect.w}:${aspect.h}; the crop drops part of the subject.`;
+}

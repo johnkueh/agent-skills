@@ -14,7 +14,7 @@ import { dirname, join, parse as parsePath } from "node:path";
 import { Command, Option } from "commander";
 import sharp from "sharp";
 
-import { centerCropBox, parseAspect } from "./aspect.mjs";
+import { centerCropBox, orientationMismatch, parseAspect, sizeHintForAspect } from "./aspect.mjs";
 import { codexBinary, codexEnvironment, codexLoginStatus, generateNativeImage } from "./codex-image.mjs";
 
 const LOG_PATH = join(homedir(), ".config", "image-gen", "usage.jsonl");
@@ -81,12 +81,20 @@ function targetPath(job: ImageJob, index: number): string {
   return join(p.dir, `${p.name}-${index + 1}${p.ext}`);
 }
 
+/** Size hint sent to Codex: an explicit --size wins; otherwise --aspect picks the orientation. */
+function nativeSize(job: ImageJob): string {
+  return job.size === "auto" && job.aspect ? sizeHintForAspect(parseAspect(job.aspect)) : job.size;
+}
+
 async function writeOutput(source: string, target: string, job: ImageJob): Promise<string> {
   let image = sharp(source);
   let note = "";
   if (job.aspect) {
     const { width = 0, height = 0 } = await image.metadata();
-    const box = centerCropBox(width, height, parseAspect(job.aspect));
+    const aspect = parseAspect(job.aspect);
+    const mismatch = orientationMismatch(width, height, aspect);
+    if (mismatch) err(`  warning: ${mismatch}`);
+    const box = centerCropBox(width, height, aspect);
     image = image.extract(box);
     note = ` (${width}x${height} -> ${box.width}x${box.height})`;
   }
@@ -104,7 +112,7 @@ async function runJob(job: ImageJob): Promise<{ saved: string[]; elapsed: number
     const result = await generateNativeImage({
       prompt: job.prompt,
       refs: job.refs,
-      size: job.size,
+      size: nativeSize(job),
       quality: job.quality,
       background: job.background,
     });
@@ -191,7 +199,7 @@ function imageCommand(name: "generate" | "edit", description: string): Command {
       err(`Prompt (${job.prompt.length} chars):\n${job.prompt}`);
       if (opts.dryRun) {
         const { prompt: _prompt, fmt: format, ...rest } = job;
-        console.log(JSON.stringify({ dry_run: true, auth: "codex-chatgpt", ...rest, format }, null, 2));
+        console.log(JSON.stringify({ dry_run: true, auth: "codex-chatgpt", ...rest, native_size: nativeSize(job), format }, null, 2));
         return;
       }
       const { saved, elapsed } = await runJob(job);

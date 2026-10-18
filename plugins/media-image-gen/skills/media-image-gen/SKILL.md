@@ -38,7 +38,7 @@ node --import tsx cli.ts batch --manifest ./images.json --concurrency 2 --skip-e
 
 - `--ref <path>` attaches a reference; repeat for several (up to 4). Works on `generate` and `edit`.
 - `--size` is `auto` or any `WxH`, and `--quality` is `low|medium|high|xhigh|max|auto`. Both are prompt guidance only, so the model may not hit the exact pixels.
-- `--aspect W:H` (e.g. `4:5`, `2:3`, `9:16`, `1:1`) post-processes the output to that exact ratio. It centre-crops to the largest box with that ratio and never pads or upscales. Native output is often a little off-aspect (e.g. 1092×1440). Leave margin near the edges for anything that must not be cropped.
+- `--aspect W:H` (e.g. `4:5`, `2:3`, `9:16`, `1:1`) post-processes the output to that exact ratio. It centre-crops to the largest box with that ratio and never pads or upscales. Native output is often a little off-aspect (e.g. 1092×1440). Leave margin near the edges for anything that must not be cropped. With `--size auto`, `--aspect` also asks Codex for the matching orientation (e.g. portrait 1024x1536 for 4:5), and the CLI warns if Codex still returns the wrong orientation.
 - `--format png|jpeg|webp` converts locally. `--transparent` asks for native alpha and forces PNG.
 - `--n` makes several images through separate calls. `--dry-run` prints the request without generating.
 - Batch manifests are JSON arrays of `{ "prompt", "out", "size"?, "quality"?, "format"?, "aspect"? }`.

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { centerCropBox, parseAspect } from "./aspect.mjs";
+import { centerCropBox, orientationMismatch, parseAspect, sizeHintForAspect } from "./aspect.mjs";
 
 test("parseAspect accepts W:H and rejects bad or extreme ratios", () => {
   assert.deepEqual(parseAspect("4:5"), { w: 4, h: 5 });
@@ -26,4 +26,16 @@ test("centerCropBox returns the largest centred box with the exact ratio", () =>
     assert.ok(box.left + box.width <= w && box.top + box.height <= h);
   }
   assert.throws(() => centerCropBox(1, 1, parseAspect("2:3")), /too small/);
+});
+
+test("sizeHintForAspect asks for the matching orientation", () => {
+  assert.equal(sizeHintForAspect(parseAspect("4:5")), "1024x1536 (portrait, 4:5 aspect ratio)");
+  assert.equal(sizeHintForAspect(parseAspect("16:9")), "1536x1024 (landscape, 16:9 aspect ratio)");
+  assert.equal(sizeHintForAspect(parseAspect("1:1")), "1024x1024 (square, 1:1 aspect ratio)");
+});
+
+test("orientationMismatch flags landscape output for a portrait aspect", () => {
+  assert.match(orientationMismatch(1536, 1024, parseAspect("4:5")), /landscape 1536x1024 .* portrait 4:5/);
+  assert.equal(orientationMismatch(1092, 1440, parseAspect("4:5")), null);
+  assert.equal(orientationMismatch(1024, 1024, parseAspect("1:1")), null);
 });
