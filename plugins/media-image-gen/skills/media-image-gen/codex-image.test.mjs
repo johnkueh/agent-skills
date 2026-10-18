@@ -41,7 +41,6 @@ process.stdin.on("end", () => {
   try {
     const result = await generateNativeImage({ prompt: "A blue circle", background: "transparent", size: "1024x1024" });
     assert.equal(result.auth, "codex-chatgpt");
-    assert.equal(result.api_cost_usd, 0);
     assert.equal(result.paths.length, 1);
     const request = JSON.parse(readFileSync(join(root, "request.json")));
     assert.equal(request.apiKeyPresent, false);

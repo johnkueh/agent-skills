@@ -125,7 +125,7 @@ export async function generateNativeImage(request) {
       paths = [];
     }
     if (paths.length !== 1) throw new Error(`Expected one generated image in this Codex thread; found ${paths.length}. No API fallback was attempted.`);
-    return { paths, thread_id: threadId, usage, auth: "codex-chatgpt", image_model: "codex-managed", plan_quota: true, api_cost_usd: 0 };
+    return { paths, thread_id: threadId, usage, auth: "codex-chatgpt", image_model: "codex-managed" };
   } finally {
     rmSync(workdir, { recursive: true, force: true });
   }
