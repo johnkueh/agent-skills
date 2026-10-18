@@ -40,7 +40,7 @@
     },
     {
       "name": "data-digest",
-      "description": "Build a per-project digest of signups, product activity, API costs, initiative changes, git activity, and monitoring. Use for morning, daily, yesterday, or recurring cross-project roundups.",
+      "description": "Build a per-project digest of installs, signups, product activity, revenue, API costs, initiative changes, git activity, and monitoring. Use for morning, daily, yesterday, or recurring cross-project roundups.",
       "source": "./plugins/data-digest"
     },
     {
