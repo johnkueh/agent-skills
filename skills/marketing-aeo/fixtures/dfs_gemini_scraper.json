@@ -1,0 +1,252 @@
+{
+ "version": "0.1.20260917",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "48.4408 sec.",
+ "cost": 0.004,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "00000000-0000-0000-0000-000000000000",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "48.3620 sec.",
+   "cost": 0.004,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "ai_optimization",
+    "gemini",
+    "llm_scraper",
+    "live",
+    "advanced"
+   ],
+   "data": {
+    "api": "ai_optimization",
+    "function": "live",
+    "se": "gemini",
+    "keyword": "how to monitor company insolvency notices in Australia",
+    "location_code": 2840,
+    "language_code": "en",
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "how to monitor company insolvency notices in Australia",
+     "location_code": 2840,
+     "language_code": "en",
+     "model": "3.5 Flash-Lite",
+     "datetime": "2026-10-19 21:09:16 +00:00",
+     "markdown": "Monitoring company insolvency notices in Australia involves tracking official regulatory databases, setting up automated alerts, or utilizing third-party corporate intelligence platforms. \n\n### 1. The Official Source: ASIC Published Notices Website\nThe Australian Securities and Investments Commission (ASIC) operates a centralized, free public platform where external administration, liquidation, restructuring, and insolvency notices are legally required to be published:\n* **Website:** [ASIC Published Notices Website](https://publishednotices.asic.gov.au/) (or via `insolvencynotices.asic.gov.au`)[publishednotices.asic.gov.au](https://publishednotices.asic.gov.au/#:~:text=This%20publication%20website%20operates%20independently%20of%20ASIC's,July%202012%20%28when%20the%20website%20commenced%20operation%29.)\n* **How to use it:** You can search manually by company name or Australian Company Number (ACN) without needing to register.[ggadvisory.com.au](https://ggadvisory.com.au/company-liquidation/check-if-a-company-is-in-liquidation/) \n* **What you’ll find:** Creditor meetings, appointments of voluntary administrators, liquidators or receivers, court applications for winding up, and proposals for company arrangements. The database tracks notices published from July 1, 2012 onward.[publishednotices.asic.gov.au](https://publishednotices.asic.gov.au/#:~:text=If%20you%20only%20want%20to%20search%20the,top%20right%20corner%20and%20enter%20your%20details.)\n\n### 2. Automated Tracking and A",
+     "sources": [
+      {
+       "type": "gemini_source",
+       "title": "ASIC Published Notices",
+       "snippet": null,
+       "domain": "asicpublishednotices.au",
+       "url": "https://asicpublishednotices.au/",
+       "thumbnail": "https://t3.gstatic.com/faviconV2?url=https://asicpublishednotices.au/&client=BARD&type=FAVICON&size=256&fallback_opts=TYPE,SIZE,URL",
+       "source_name": "asicpublishednotices.au",
+       "publication_date": null,
+       "markdown": "ASIC Published Notices"
+      },
+      {
+       "type": "gemini_source",
+       "title": "Insolvency notices - ASIC",
+       "snippet": null,
+       "domain": "www.asic.gov.au",
+       "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices",
+       "thumbnail": "https://t1.gstatic.com/faviconV2?url=https://www.asic.gov.au/&client=BARD&type=FAVICON&size=256&fallback_opts=TYPE,SIZE,URL",
+       "source_name": "www.asic.gov.au",
+       "publication_date": null,
+       "markdown": "Insolvency notices - ASIC"
+      },
+      {
+       "type": "gemini_source",
+       "title": "How to Check if a Company Is in Liquidation - Greengate Advisory",
+       "snippet": "Search the company's name or ACN on ASIC's Published notices website, which \nis free to search and holds insolvency and external administration notices",
+       "domain": "ggadvisory.com.au",
+       "url": "https://ggadvisory.com.au/company-liquidation/check-if-a-company-is-in-liquidation/",
+       "thumbnail": "https://t2.gstatic.com/faviconV2?url=https://ggadvisory.com.au/&client=BARD&type=FAVICON&size=256&fallback_opts=TYPE,SIZE,URL",
+       "source_name": "Greengate Advisory",
+       "publication_date": null,
+       "markdown": "How to Check if a Company Is in Liquidation - Greengate Advisory"
+      },
+      {
+       "type": "gemini_source",
+       "title": "ASIC Insolvency Notices - Court Data Australia Help",
+       "snippet": null,
+       "domain": "court-data-australia.elevio.help",
+       "url": "https://court-data-australia.elevio.help/en-gb/articles/61-asic-insolvency-notices",
+       "thumbnail": "https://t3.gstatic.com/faviconV2?url=https://court-data-australia.elevio.help/&client=BARD&type=FAVICON&size=256&fallback_opts=TYPE,SIZE,URL",
+       "source_name": "court-data-australia.elevio.help",
+       "publication_date": null,
+       "markdown": "ASIC Insolvency Notices - Court Data Australia Help"
+      },
+      {
+       "type": "gemini_source",
+       "title": "Published Notices - ASIC",
+       "snippet": null,
+       "domain": "publishednotices.asic.gov.au",
+       "url": "https://publishednotices.asic.gov.au/",
+       "thumbnail": "https://t2.gstatic.com/faviconV2?url=https://publishednotices.asic.gov.au/&client=BARD&type=FAVICON&size=256&fallback_opts=TYPE,SIZE,URL",
+       "source_name": "publishednotices.asic.gov.au",
+       "publication_date": null,
+       "markdown": "Published Notices - ASIC"
+      },
+      {
+       "type": "gemini_source",
+       "title": "How to Check if a Company is in Liquidation in Australia - 2026 Guide",
+       "snippet": null,
+       "domain": "svpartners.com.au",
+       "url": "https://svpartners.com.au/how-to-check-if-a-company-is-in-liquidation-australia/",
+       "thumbnail": "https://t3.gstatic.com/faviconV2?url=https://svpartners.com.au/&client=BARD&type=FAVICON&size=256&fallback_opts=TYPE,SIZE,URL",
+       "source_name": "svpartners.com.au",
+       "publication_date": null,
+       "markdown": "How to Check if a Company is in Liquidation in Australia - 2026 Guide"
+      },
+      {
+       "type": "gemini_source",
+       "title": "How to check if a company is in liquidation in Australia | Worrells",
+       "snippet": null,
+       "domain": "worrells.net.au",
+       "url": "https://worrells.net.au/resources/news/how-to-check-if-a-company-is-in-liquidation-in-australia",
+       "thumbnail": "https://t2.gstatic.com/faviconV2?url=https://worrells.net.au/&client=BARD&type=FAVICON&size=256&fallback_opts=TYPE,SIZE,URL",
+       "source_name": "worrells.net.au",
+       "publication_date": null,
+       "markdown": "How to check if a company is in liquidation in Australia | Worrells"
+      },
+      {
+       "type": "gemini_source",
+       "title": "Australian Insolvency Notices & Company Monitoring | Insolvency",
+       "snippet": null,
+       "domain": "www.insolvencynotices.com.au",
+       "url": "https://www.insolvencynotices.com.au/",
+       "thumbnail": "https://t2.gstatic.com/faviconV2?url=https://www.insolvencynotices.com.au/&client=BARD&type=FAVICON&size=256&fallback_opts=TYPE,SIZE,URL",
+       "source_name": "www.insolvencynotices.com.au",
+       "publication_date": null,
+       "markdown": "Australian Insolvency Notices & Company Monitoring | Insolvency"
+      },
+      {
+       "type": "gemini_source",
+       "title": "Published Notices - ASIC",
+       "snippet": "This publication website operates independently of ASIC's main website \nwhich can be found at: www.asic.gov.au. This site provides an easy to \nsearch central loca...",
+       "domain": "publishednotices.asic.gov.au",
+       "url": "https://publishednotices.asic.gov.au/#:~:text=This%20publication%20website%20operates%20independently%20of%20ASIC's,July%202012%20(when%20the%20website%20commenced%20operation).",
+       "thumbnail": "https://encrypted-tbn2.gstatic.com/favicon-tbn?q=tbn%3AANd9GcTX9kn74YzluixmZdB-PErPGh7cXRm33PgG73Xh5F5wFKUXNxOEdsUdJXeOMYvfhW4rhAS6YIMjByyNuRe_TApA3My2zlp3pjqZ_L_OcLZBFRDYBrgV8k0",
+       "source_name": "ASIC",
+       "publication_date": null,
+       "markdown": "Published Notices - ASIC"
+      },
+      {
+       "type": "gemini_source",
+       "title": "Published Notices - ASIC",
+       "snippet": "If you only want to search the publication website, you don't need to \nregister; just click on the browse/search tab and start searching. Note \nthat the publicati...",
+       "domain": "publishednotices.asic.gov.au",
+       "url": "https://publishednotices.asic.gov.au/#:~:text=If%20you%20only%20want%20to%20search%20the,top%20right%20corner%20and%20enter%20your%20details.",
+       "thumbnail": "https://encrypted-tbn2.gstatic.com/favicon-tbn?q=tbn%3AANd9GcTX9kn74YzluixmZdB-PErPGh7cXRm33PgG73Xh5F5wFKUXNxOEdsUdJXeOMYvfhW4rhAS6YIMjByyNuRe_TApA3My2zlp3pjqZ_L_OcLZBFRDYBrgV8k0",
+       "source_name": "ASIC",
+       "publication_date": null,
+       "markdown": "Published Notices - ASIC"
+      },
+      {
+       "type": "gemini_source",
+       "title": "ASIC Published Notices",
+       "snippet": "The website www.insolvencynotices.com.au allows you to view all of the \ninsolvency notices that have been created by ASIC. You can set up alerts \nand also search ...",
+       "domain": "asicpublishednotices.au",
+       "url": "https://asicpublishednotices.au/#:~:text=The%20website%20www.insolvencynotices.com.au%20allows%20you%20to%20view,informed.%20Go%20To%20Insolvency%20Notices.%20*%20%233.",
+       "thumbnail": "https://encrypted-tbn3.gstatic.com/favicon-tbn?q=tbn%3AANd9GcT4UrFplZma_WBH4puiKC8ReXNXUthdqq2yAb5EMegNqh0NcLZgj8J9-7FUfjob07esK7t910n0_ZOUPXo8SMrF8QkpHzikWT12AiTDJvKHHy-D",
+       "source_name": "asicpublishednotices.au",
+       "publication_date": null,
+       "markdown": "ASIC Published Notices"
+      },
+      {
+       "type": "gemini_source",
+       "title": "Australian Insolvency Notices & Company Monitoring | Insolvency",
+       "snippet": " You stay informed. * 1Add Companies. Search and add companies to your \nwatchlist. * 2We Monitor. We monitor ASIC, courts and other sources in real \ntime. * 3Inst...",
+       "domain": "www.insolvencynotices.com.au",
+       "url": "https://www.insolvencynotices.com.au/#:~:text=You%20stay%20informed.%20*%201Add%20Companies.%20Search,Action.%20Make%20informed%20decisions%20and%20reduce%20risk.",
+       "thumbnail": "https://encrypted-tbn3.gstatic.com/favicon-tbn?q=tbn%3AANd9GcSdNzvMD5Yep9y5QfVriIal7kFhJOddMH945IyQFejQFlha9xwfQ1gFs_zC_KUrAYbOaklwXWYy381TcDLfHdCDJxPuSI5ByhfocUkUbgfasu0k0ukFN5k",
+       "source_name": "www.insolvencynotices.com.au",
+       "publication_date": null,
+       "markdown": "Australian Insolvency Notices & Company Monitoring | Insolvency"
+      }
+     ],
+     "se_results_count": 0,
+     "item_types": [
+      "gemini_text"
+     ],
+     "items_count": 1,
+     "items": [
+      {
+       "type": "gemini_text",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "markdown": "Monitoring company insolvency notices in Australia involves tracking official regulatory databases, setting up automated alerts, or utilizing third-party corporate intelligence platforms. \n\n### 1. The Official Source: ASIC Published Notices Website\nThe Australian Securities and Investments Commissio",
+       "original_text": "Monitoring company insolvency notices in Australia involves tracking official regulatory databases, setting up automated alerts, or utilizing third-party corporate intelligence platforms. \n\n### 1. The Official Source: ASIC Published Notices Website\nThe Australian Securities and Investments Commission (ASIC) operates a centralized, free public platform where external administration, liquidation, restructuring, and insolvency notices are legally required to be published:\n* **Website:** [ASIC Published Notices Website](https://publishednotices.asic.gov.au/) (or via `insolvencynotices.asic.gov.au`)\n* **How to use it:** You can search manually by company name or Australian Company Number (ACN) without needing to register. \n* **What you’ll find:** Creditor meetings, appointments of voluntary administrators, liquidators or receivers, court applications for winding up, and proposals for company arrangements. The database tracks notices published from July 1, 2012 onward.\n\n### 2. Automated Tracking and Alerts\nChecking the ASIC database manually requires constant effort. To monitor specific debtors, competitors, suppliers, or clients proactively, you can use automated alert systems:\n* **ASIC Watchlists & Third-Party Platforms:** Specialized portals (such as *Insolvency Notices* at `insolvencynotices.com.au` or broader corporate credit bureaus like Equifax, CreditorWatch, and Illion) allow you to build customized watchlists.\n* **Email Notifications:** By adding a company to a watchlist on these monitoring platforms, you can configure instant or daily email summaries that trigger the moment an ASIC notice, external administration appointment, or court winding-up action is officially lodged.\n\n### 3. Comprehensive Credit and Risk Monitoring Services\nIf you need broader financial health indicators alongside pure insolvency notices (such as credit score changes, registered default judgments, or court writs), commercial credit bureaus offer advanced dashboards:\n* **CreditorWatch / Illion / Equifax:** These commercial services pull live feeds directly from ASIC, courts, and mercantile agents. They alert you not only when an insolvency event occurs, but often flag early warning signs—such as multiple defaults logged by other suppliers or legal actions.",
+       "sources": [
+        {
+         "type": "gemini_source",
+         "title": "Published Notices - ASIC",
+         "snippet": "This publication website operates independently of ASIC's main website \nwhich can be found at: www.asic.gov.au. This site provides an easy to \nsearch central loca...",
+         "domain": "publishednotices.asic.gov.au",
+         "url": "https://publishednotices.asic.gov.au/#:~:text=This%20publication%20website%20operates%20independently%20of%20ASIC's,July%202012%20(when%20the%20website%20commenced%20operation).",
+         "thumbnail": "https://encrypted-tbn2.gstatic.com/favicon-tbn?q=tbn%3AANd9GcTX9kn74YzluixmZdB-PErPGh7cXRm33PgG73Xh5F5wFKUXNxOEdsUdJXeOMYvfhW4rhAS6YIMjByyNuRe_TApA3My2zlp3pjqZ_L_OcLZBFRDYBrgV8k0",
+         "source_name": "ASIC",
+         "publication_date": null,
+         "markdown": "Published Notices - ASIC"
+        },
+        {
+         "type": "gemini_source",
+         "title": "How to Check if a Company Is in Liquidation - Greengate Advisory",
+         "snippet": "Search the company's name or ACN on ASIC's Published notices website, which \nis free to search and holds insolvency and external administration notices",
+         "domain": "ggadvisory.com.au",
+         "url": "https://ggadvisory.com.au/company-liquidation/check-if-a-company-is-in-liquidation/",
+         "thumbnail": "https://t2.gstatic.com/faviconV2?url=https://ggadvisory.com.au/&client=BARD&type=FAVICON&size=256&fallback_opts=TYPE,SIZE,URL",
+         "source_name": "Greengate Advisory",
+         "publication_date": null,
+         "markdown": "How to Check if a Company Is in Liquidation - Greengate Advisory"
+        },
+        {
+         "type": "gemini_source",
+         "title": "Published Notices - ASIC",
+         "snippet": "If you only want to search the publication website, you don't need to \nregister; just click on the browse/search tab and start searching. Note \nthat the publicati...",
+         "domain": "publishednotices.asic.gov.au",
+         "url": "https://publishednotices.asic.gov.au/#:~:text=If%20you%20only%20want%20to%20search%20the,top%20right%20corner%20and%20enter%20your%20details.",
+         "thumbnail": "https://encrypted-tbn2.gstatic.com/favicon-tbn?q=tbn%3AANd9GcTX9kn74YzluixmZdB-PErPGh7cXRm33PgG73Xh5F5wFKUXNxOEdsUdJXeOMYvfhW4rhAS6YIMjByyNuRe_TApA3My2zlp3pjqZ_L_OcLZBFRDYBrgV8k0",
+         "source_name": "ASIC",
+         "publication_date": null,
+         "markdown": "Published Notices - ASIC"
+        },
+        {
+         "type": "gemini_source",
+         "title": "ASIC Published Notices",
+         "snippet": "The website www.insolvencynotices.com.au allows you to view all of the \ninsolvency notices that have been created by ASIC. You can set up alerts \nand also search ...",
+         "domain": "asicpublishednotices.au",
+         "url": "https://asicpublishednotices.au/#:~:text=The%20website%20www.insolvencynotices.com.au%20allows%20you%20to%20view,informed.%20Go%20To%20Insolvency%20Notices.%20*%20%233.",
+         "thumbnail": "https://encrypted-tbn3.gstatic.com/favicon-tbn?q=tbn%3AANd9GcT4UrFplZma_WBH4puiKC8ReXNXUthdqq2yAb5EMegNqh0NcLZgj8J9-7FUfjob07esK7t910n0_ZOUPXo8SMrF8QkpHzikWT12AiTDJvKHHy-D",
+         "source_name": "asicpublishednotices.au",
+         "publication_date": null,
+         "markdown": "ASIC Published Notices"
+        },
+        {
+         "type": "gemini_source",
+         "title": "Australian Insolvency Notices & Company Monitoring | Insolvency",
+         "snippet": " You stay informed. * 1Add Companies. Search and add companies to your \nwatchlist. * 2We Monitor. We monitor ASIC, courts and other sources in real \ntime. * 3Inst...",
+         "domain": "www.insolvencynotices.com.au",
+         "url": "https://www.insolvencynotices.com.au/#:~:text=You%20stay%20informed.%20*%201Add%20Companies.%20Search,Action.%20Make%20informed%20decisions%20and%20reduce%20risk.",
+         "thumbnail": "https://encrypted-tbn3.gstatic.com/favicon-tbn?q=tbn%3AANd9GcSdNzvMD5Yep9y5QfVriIal7kFhJOddMH945IyQFejQFlha9xwfQ1gFs_zC_KUrAYbOaklwXWYy381TcDLfHdCDJxPuSI5ByhfocUkUbgfasu0k0ukFN5k",
+         "source_name": "www.insolvencynotices.com.au",
+         "publication_date": null,
+         "markdown": "Australian Insolvency Notices & Company Monitoring | Insolvency"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

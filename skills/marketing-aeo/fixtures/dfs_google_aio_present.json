@@ -1,0 +1,420 @@
+{
+ "version": "0.1.20260917",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "4.3391 sec.",
+ "cost": 0.002,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "00000000-0000-0000-0000-000000000000",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "4.2231 sec.",
+   "cost": 0.002,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "organic",
+    "live",
+    "advanced"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "live",
+    "se": "google",
+    "se_type": "organic",
+    "keyword": "how does retatrutide work",
+    "location_code": 2840,
+    "language_code": "en",
+    "load_async_ai_overview": true,
+    "depth": 10,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "how does retatrutide work",
+     "type": "organic",
+     "se_domain": "google.com",
+     "location_code": 2840,
+     "language_code": "en",
+     "check_url": "https://www.google.com/search?q=how%20does%20retatrutide%20work&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+     "datetime": "2026-10-19 21:10:21 +00:00",
+     "spell": null,
+     "refinement_chips": null,
+     "item_types": [
+      "ai_overview",
+      "organic",
+      "people_also_ask",
+      "related_searches"
+     ],
+     "se_results_count": 81,
+     "pages_count": 1,
+     "items_count": 3,
+     "items": [
+      {
+       "type": "ai_overview",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "page": 1,
+       "position": "left",
+       "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+       "asynchronous_ai_overview": false,
+       "markdown": "Retatrutide works as a **triple-receptor agonist** , meaning it mimics and activates three distinct metabolic hormones in the body: **GLP-1**, **GIP** , and **glucagon**.[[1]](https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926)[[2]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)[[3]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)\n\nUnlike older single-agonist drugs (like [Ozempic](https://www.uchealth.org/today/retatrutide-for-weight-loss/) / Wegovy) that only target GLP-1 or dual-agonist drugs (like Zepbound / Mounjaro) that target GLP-1 and GIP, retatrutide's triple-action approach combines appetite suppression, blood sugar regulation, and increased energy expenditure.[[1]](https://www.uchealth.org/today/retatrutide-for-weight-loss/)[[2]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)\n\n\n\n---\n\n### How the Three Receptors Work\n\n- **GLP-1 (Glucagon-Like Peptide-1) Receptor:** \n\t- Slows down digestion and gastric emptying.\n\t- Promotes a feeling of fullness and significantly reduces appetite and food cravings.\n\t- Stimulates insulin secretion from the pancreas to lower blood sugar levels.[[1]](https://synapse.patsnap.com/article/what-is-the-mechanism-of-action-of-retatrutide)[[2]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)[[3]](https://onlinedoctor.superdrug.com/retatrutide.html)[[4]](https://www.youtube.com/watch?v=v4yYFJCchT8&t=93)\n- **GIP (Glucose-Dependent Insulinotropic Polypeptide) Receptor:** \n\t- Enhances insulin release and improves glucose homeostasis.\n\t- Works alongside GLP-1 to further curb food intake and optimize metabolic regulation.\n\t- Retatrutide is especially potent at activating the GIP receptor (roughly 8.9 times more potent than natural GIP).[[1]](https://onlinedoctor.superdrug.com/retatrutide.html)[[2]](https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926)[[3]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)[[4]](https://www.youtube.com/watch?v=v4yYFJCchT8&t=93)[[5]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)\n- **Glucagon (GCG) Receptor:** \n\t- Stimulates the breakdown of stored fat (lipolysis and fatty acid oxidation).\n\t- Increases energy expenditure (calorie burning) rather than just lowering calorie intake.\n\t- Helps break down fat deposits in the liver and supports metabolic health.[[1]](https://www.youtube.com/watch?v=04dt_3ksaLk&t=228)[[2]](https://onlinedoctor.superdrug.com/retatrutide.html)[[3]](https://www.youtube.com/shorts/f1vQVytu8Ho)[[4]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)[[5]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)[[6]](https://www.theindependentpharmacy.co.uk/weight-loss/guides/what-is-retatrutide)\n\n\n\n---\n\n### Current Status\n\n- **Investigational Drug:** Retatrutide is developed by [Eli Lilly](https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926) and is currently undergoing late-stage clinical trials (Phase 3).\n- **Not FDA-Approved:** As of 2026, it is **not yet approved** by the U.S. Food and Drug Administration (FDA) for routine prescription use.[[1]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)[[2]](https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926)[[3]](https://onlinedoctor.superdrug.com/retatrutide.html)[[4]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)\n\nWould you like to know more about the **clinical trial results (such as weight-loss percentages)** or the **known side effects** reported in trials?",
+       "items": [
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "Retatrutide works as a triple-receptor agonist, meaning it mimics and activates three distinct metabolic hormones in the body: GLP-1, GIP, and glucagon.",
+         "markdown": "Retatrutide works as a **triple-receptor agonist** , meaning it mimics and activates three distinct metabolic hormones in the body: **GLP-1**, **GIP** , and **glucagon**.[[1]](https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926)[[2]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)[[3]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)",
+         "links": null,
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Lilly Medical",
+           "domain": "medical.lilly.com",
+           "url": "https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926",
+           "title": "What is the mechanism of action of retatrutide?",
+           "text": "Mechanism: Retatrutide is a synthetic triple agonist activating GIP, GLP-1, and glucagon receptors, featuring a C20 fatty diacid m..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "InCare Integrated Medical Care",
+           "domain": "www.incarenow.com",
+           "url": "https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/",
+           "title": "How Does Retatrutide Actually Work Inside the Body?",
+           "text": "How Does Retatrutide Actually Work Inside the Body? Key Takeaways Retatrutide is a triple-receptor agonist targeting GLP-1, GIP, a..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Weight Watchers",
+           "domain": "www.weightwatchers.com",
+           "url": "https://www.weightwatchers.com/us/blog/what-is-retatrutide",
+           "title": "What Is Retatrutide For Weight Loss?",
+           "text": "Retatrutide is an investigational once-weekly injectable drug designed to treat type 2 diabetes and obesity, made by the drug comp..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "Unlike older single-agonist drugs (like Ozempic / Wegovy) that only target GLP-1 or dual-agonist drugs (like Zepbound / Mounjaro) that target GLP-1 and GIP, retatrutide's triple-action approach combines appetite suppression, blood sugar regulation, and increased energy expenditure.",
+         "markdown": "Unlike older single-agonist drugs (like [Ozempic](https://www.uchealth.org/today/retatrutide-for-weight-loss/) / Wegovy) that only target GLP-1 or dual-agonist drugs (like Zepbound / Mounjaro) that target GLP-1 and GIP, retatrutide's triple-action approach combines appetite suppression, blood sugar regulation, and increased energy expenditure.[[1]](https://www.uchealth.org/today/retatrutide-for-weight-loss/)[[2]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)",
+         "links": [
+          {
+           "type": "link_element",
+           "title": "Ozempic",
+           "description": null,
+           "url": "https://www.uchealth.org/today/retatrutide-for-weight-loss/",
+           "domain": "www.uchealth.org"
+          }
+         ],
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "UCHealth",
+           "domain": "www.uchealth.org",
+           "url": "https://www.uchealth.org/today/retatrutide-for-weight-loss/",
+           "title": "Retatrutide for weight loss: Study shows 30% body weight loss - UCHealth Today",
+           "text": "What is retatrutide and how is it different from other weight-loss drugs? Retatrutide is more powerful than earlier weight-loss dr..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "InCare Integrated Medical Care",
+           "domain": "www.incarenow.com",
+           "url": "https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/",
+           "title": "How Does Retatrutide Actually Work Inside the Body?",
+           "text": "How Does Retatrutide Actually Work Inside the Body? Key Takeaways Retatrutide is a triple-receptor agonist targeting GLP-1, GIP, a..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": "How the Three Receptors Work",
+         "text": "GLP-1 (Glucagon-Like Peptide-1) Receptor: Slows down digestion and gastric emptying. Promotes a feeling of fullness and significantly reduces appetite and food cravings. Stimulates insulin secretion from the pancreas to lower blood sugar levels. GIP (Glucose-Dependent Insulinotropic Polypeptide) Receptor: Enhances insulin release and improves glucose homeostasis. Works alongside GLP-1 to further curb food intake and optimize metabolic regulation. Retatrutide is especially potent at activating the GIP receptor (roughly 8.9 times more potent than natural GIP). Glucagon (GCG) Receptor: Stimulates the breakdown of stored fat (lipolysis and fatty acid oxidation). Increases energy expenditure (calorie burning) rather than just lowering calorie intake. Helps break down fat deposits in the liver and supports metabolic health.",
+         "markdown": "- **GLP-1 (Glucagon-Like Peptide-1) Receptor:** \n\t- Slows down digestion and gastric emptying.\n\t- Promotes a feeling of fullness and significantly reduces appetite and food cravings.\n\t- Stimulates insulin secretion from the pancreas to lower blood sugar levels.[[1]](https://synapse.patsnap.com/article/what-is-the-mechanism-of-action-of-retatrutide)[[2]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)[[3]](https://onlinedoctor.superdrug.com/retatrutide.html)[[4]](https://www.youtube.com/watch?v=v4yYFJCchT8&t=93)\n- **GIP (Glucose-Dependent Insulinotropic Polypeptide) Receptor:** \n\t- Enhances insulin release and improves glucose homeostasis.\n\t- Works alongside GLP-1 to further curb food intake and optimize metabolic regulation.\n\t- Retatrutide is especially potent at activating the GIP receptor (roughly 8.9 times more potent than natural GIP).[[1]](https://onlinedoctor.superdrug.com/retatrutide.html)[[2]](https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926)[[3]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)[[4]](https://www.youtube.com/watch?v=v4yYFJCchT8&t=93)[[5]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)\n- **Glucagon (GCG) Receptor:** \n\t- Stimulates the breakdown of stored fat (lipolysis and fatty acid oxidation).\n\t- Increases energy expenditure (calorie burning) rather than just lowering calorie intake.\n\t- Helps break down fat deposits in the liver and supports metabolic health.[[1]](https://www.youtube.com/watch?v=04dt_3ksaLk&t=228)[[2]](https://onlinedoctor.superdrug.com/retatrutide.html)[[3]](https://www.youtube.com/shorts/f1vQVytu8Ho)[[4]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)[[5]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)[[6]](https://www.theindependentpharmacy.co.uk/weight-loss/guides/what-is-retatrutide)",
+         "links": null,
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Patsnap Synapse",
+           "domain": "synapse.patsnap.com",
+           "url": "https://synapse.patsnap.com/article/what-is-the-mechanism-of-action-of-retatrutide",
+           "title": "What is the mechanism of action of Retatrutide?",
+           "text": "Explore Retatrutide with Hiro LS Researcher → Molecular Mechanism of Action Interaction with Receptors At its core, retatrutide ac..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Weight Watchers",
+           "domain": "www.weightwatchers.com",
+           "url": "https://www.weightwatchers.com/us/blog/what-is-retatrutide",
+           "title": "What Is Retatrutide For Weight Loss?",
+           "text": "Retatrutide is an investigational once-weekly injectable drug designed to treat type 2 diabetes and obesity, made by the drug comp..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Superdrug Online Doctor",
+           "domain": "onlinedoctor.superdrug.com",
+           "url": "https://onlinedoctor.superdrug.com/retatrutide.html",
+           "title": "Retatrutide: The New Triple-Agonist Weight Loss Treatment",
+           "text": "1. How retatrutide works for weight loss Clinical trials and results Retatrutide dosage Side effects of retatrutide Difference bet..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "YouTube",
+           "domain": "www.youtube.com",
+           "url": "https://www.youtube.com/watch?v=v4yYFJCchT8&t=93",
+           "title": "Retatrutide: The Most Effective Weight-Loss Medicine Yet? ...",
+           "text": "Retatrutide: The Most Effective Weight-Loss Medicine Yet? Weight Loss Doctor Explains many are calling retatrotide the triple agon..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Lilly Medical",
+           "domain": "medical.lilly.com",
+           "url": "https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926",
+           "title": "What is the mechanism of action of retatrutide?",
+           "text": "Mechanism: Retatrutide is a synthetic triple agonist activating GIP, GLP-1, and glucagon receptors, featuring a C20 fatty diacid moiety providing a ~6-day half-lif..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "InCare Integrated Medical Care",
+           "domain": "www.incarenow.com",
+           "url": "https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/",
+           "title": "How Does Retatrutide Actually Work Inside the Body?",
+           "text": "How Does Retatrutide Actually Work Inside the Body? Key Takeaways Retatrutide is a triple-receptor agonist targeting GLP-1, GIP, a..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "YouTube",
+           "domain": "www.youtube.com",
+           "url": "https://www.youtube.com/watch?v=04dt_3ksaLk&t=228",
+           "title": "Retatrutide Works Differently Than GLP-1s — Here's Why That Matters",
+           "text": "Retatrutide Works Differently Than GLP-1s — Here’s Why That Matters so far experts fully anticipate potential FDA approval for the..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "YouTube",
+           "domain": "www.youtube.com",
+           "url": "https://www.youtube.com/shorts/f1vQVytu8Ho",
+           "title": "Retatrutide The Triple Agonist Revolutionizing Weight Loss!",
+           "text": "Retatrutide The Triple Agonist Revolutionizing Weight Loss! likely is the reason weight loss is much more than what we've seen wit..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "The Independent Pharmacy",
+           "domain": "www.theindependentpharmacy.co.uk",
+           "url": "https://www.theindependentpharmacy.co.uk/weight-loss/guides/what-is-retatrutide",
+           "title": "What Is Retatrutide And Can It Help Me Lose Weight?",
+           "text": "Key Takeaway 3 What Is Retatrutide? Retatrutide is a new drug that's currently being studied to see how well it works to support w..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": "Current Status",
+         "text": "Investigational Drug: Retatrutide is developed by Eli Lilly and is currently undergoing late-stage clinical trials (Phase 3). Not FDA-Approved: As of 2026, it is not yet approved by the U.S. Food and Drug Administration (FDA) for routine prescription use.",
+         "markdown": "- **Investigational Drug:** Retatrutide is developed by [Eli Lilly](https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926) and is currently undergoing late-stage clinical trials (Phase 3).\n- **Not FDA-Approved:** As of 2026, it is **not yet approved** by the U.S. Food and Drug Administration (FDA) for routine prescription use.[[1]](https://www.weightwatchers.com/us/blog/what-is-retatrutide)[[2]](https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926)[[3]](https://onlinedoctor.superdrug.com/retatrutide.html)[[4]](https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/)",
+         "links": [
+          {
+           "type": "link_element",
+           "title": "Eli Lilly",
+           "description": null,
+           "url": "https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926",
+           "domain": "medical.lilly.com"
+          }
+         ],
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Weight Watchers",
+           "domain": "www.weightwatchers.com",
+           "url": "https://www.weightwatchers.com/us/blog/what-is-retatrutide",
+           "title": "What Is Retatrutide For Weight Loss?",
+           "text": "Retatrutide is an investigational once-weekly injectable drug designed to treat type 2 diabetes and obesity, made by the drug comp..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Lilly Medical",
+           "domain": "medical.lilly.com",
+           "url": "https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926",
+           "title": "What is the mechanism of action of retatrutide?",
+           "text": "Mechanism: Retatrutide is a synthetic triple agonist activating GIP, GLP-1, and glucagon receptors, featuring a C20 fatty diacid moiety providing a ~6-day half-lif..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Superdrug Online Doctor",
+           "domain": "onlinedoctor.superdrug.com",
+           "url": "https://onlinedoctor.superdrug.com/retatrutide.html",
+           "title": "Retatrutide: The New Triple-Agonist Weight Loss Treatment",
+           "text": "1. How retatrutide works for weight loss Clinical trials and results Retatrutide dosage Side effects of retatrutide Difference bet..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "InCare Integrated Medical Care",
+           "domain": "www.incarenow.com",
+           "url": "https://www.incarenow.com/how-does-retatrutide-actually-work-inside-the-body/",
+           "title": "How Does Retatrutide Actually Work Inside the Body?",
+           "text": "How Does Retatrutide Actually Work Inside the Body? Key Takeaways Retatrutide is a triple-receptor agonist targeting GLP-1, GIP, a..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "Would you like to know more about the clinical trial results (such as weight-loss percentages) or the known side effects reported in trials?",
+         "markdown": "Would you like to know more about the **clinical trial results (such as weight-loss percentages)** or the **known side effects** reported in trials?",
+         "links": null,
+         "images": null,
+         "references": null
+        }
+       ],
+       "references": [
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "UCHealth",
+         "domain": "www.uchealth.org",
+         "url": "https://www.uchealth.org/today/retatrutide-for-weight-loss/",
+         "title": "Retatrutide for weight loss: Study shows 30% body weight loss - UCHealth Today",
+         "text": "What is retatrutide and how is it different from other weight-loss drugs? Retatrutide is more powerful than earlier weight-loss drugs because it's a triple-agonist..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Lilly Medical",
+         "domain": "medical.lilly.com",
+         "url": "https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926",
+         "title": "What is the mechanism of action of retatrutide?",
+         "text": "Mechanism: Retatrutide is a synthetic triple agonist activating GIP, GLP-1, and glucagon receptors, featuring a C20 fatty diacid moiety providing a ~6-day half-lif..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "YouTube",
+         "domain": "www.youtube.com",
+         "url": "https://www.youtube.com/watch?v=04dt_3ksaLk&t=228",
+         "title": "Retatrutide Works Differently Than GLP-1s — Here's Why That Matters",
+         "text": "Retatrutide Works Differently Than GLP-1s — Here’s Why That Matters so far experts fully anticipate potential FDA approval for their obesity. and weight loss. mana"
+        }
+       ],
+       "rectangle": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 1,
+       "rank_absolute": 2,
+       "page": 1,
+       "position": "left",
+       "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]",
+       "domain": "www.uchealth.org",
+       "title": "Retatrutide for weight loss: Study shows 30% body ...",
+       "url": "https://www.uchealth.org/today/retatrutide-for-weight-loss/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.uchealth.org › today › retatrutide-for-weig...",
+       "website_name": "UCHealth",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Jun 16, 2026 — retatrutide works by activating three receptors. These receptors stimulate hormones that control blood sugar levels and reduce appetite, ...",
+       "pre_snippet": "06/16/2026 00:00:00",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "retatrutide works by activating three receptors"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": "2026-06-16 00:00:00 +00:00",
+       "rectangle": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 2,
+       "rank_absolute": 4,
+       "page": 1,
+       "position": "left",
+       "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]",
+       "domain": "pmc.ncbi.nlm.nih.gov",
+       "title": "Retatrutide—A Game Changer in Obesity Pharmacotherapy",
+       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12190491/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://pmc.ncbi.nlm.nih.gov › articles › PMC12190491",
+       "website_name": "National Institutes of Health (NIH) | (.gov)",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "by V Katsi · 2025 · Cited by 42 — It predominantly acts by activating a receptor that induces stimulation of insulin release, decreases glucagon secretion, reduces food intake, ... Read more",
+       "pre_snippet": "by V Katsi · 2025 · Cited by 42",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": null,
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12190491/#:~:text=It%20predominantly%20acts%20by%20activating,gastric%20and%20intestinal%20motility%20%5B19%5D.",
+         "domain": "pmc.ncbi.nlm.nih.gov"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null,
+       "rectangle": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

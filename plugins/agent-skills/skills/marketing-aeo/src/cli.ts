@@ -1,566 +1,448 @@
-#!/usr/bin/env node
-// AEO Monitor — track AI chatbot citations across ChatGPT, Perplexity, Google AI Overview, Claude.
+#!/usr/bin/env bun
+/**
+ * aeo: track whether AI answer engines cite or mention a site for a set of
+ * buyer questions. Data lives in <project>/.aeo/ (SQLite + gzipped raw responses).
+ *
+ * Run from the project directory: `aeo <command>`; `aeo help` lists commands.
+ * Secrets come only from environment variables (see `aeo platforms`).
+ */
 
-import { Command } from "commander";
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join, basename } from "node:path";
-import * as db from "./db.ts";
-import { scrape, SUPPORTED_PLATFORMS, type Platform } from "./scrapers.ts";
-import { extract } from "./extract.ts";
-import { firecrawlScrapeCents, geminiFlashCents, anthropicHaikuCents } from "./costs.ts";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { parseArgs, type ParseArgsOptionsConfig } from "node:util";
+import { buildReport, checkRecord } from "./analyze.ts";
+import { DEFAULT_PLATFORMS, PLATFORMS, callPlatform, platformById, type PlatformDef } from "./platforms.ts";
+import { COUNTRY_LOCATION, defaultConfig, runConfig, Store, type CheckRow } from "./store.ts";
+import { cleanDomain, mapLimit, pct, table, toCsv, usd } from "./util.ts";
 
-const program = new Command();
-program.name("aeo").description("Track AI chatbot citations for your project. Data lives in <cwd>/.aeo/.").version("0.1.0");
+const HELP = `aeo: AI answer-engine citation tracking (data in ./.aeo/)
 
-// ---------- helpers ----------
+  init [--country US] [--language en]       create .aeo/ here
+  doctor                                    check keys with free API pings
+  platforms                                 list surfaces, providers, env vars, est. cost
+  config show | config set <key> <value>    country, language_code, location_code, platforms,
+                                            concurrency, chatgpt_force_web_search, model.<platform>
+  query add <text> [--tag t] | list | remove <id|text> | import <file>
+  domain add <domain> --own|--competitor [--brand "Name"]... | list | remove <domain>
+  run [--platform a,b] [--query <text|id>] [--dry-run] [--max-cost 1.00] [--concurrency 4]
+  report [--days 7] [--platform a,b] [--json]
+  competitors [--days 30] [--limit 20] [--json]
+  history --query <text|id> [--days 30] [--platform a,b] [--json]
+  cost [--days 30] [--by platform|day|provider] [--json]
+  export [--what checks|citations] [--format jsonl|csv] [--days 30] [-o file]
+  raw <check_id>                            print the stored raw request/response
+`;
 
-const now = () => Math.floor(Date.now() / 1000);
-const since = (days: number) => now() - days * 86400;
+const cwd = process.cwd();
+const [cmd, ...rest] = process.argv.slice(2);
 
-function projectName(d: db.DB): string {
-  return db.getMeta(d, "project_name") ?? basename(process.cwd());
+function opts<const O extends ParseArgsOptionsConfig>(args: string[], options: O) {
+  return parseArgs({ args, options, allowPositionals: true, strict: true });
 }
 
-function firecrawlPlan(d: db.DB): string {
-  return db.getMeta(d, "firecrawl_plan") ?? "hobby";
+function sinceDays(days: number): string {
+  return new Date(Date.now() - days * 86_400_000).toISOString();
 }
 
-function budgetCents(d: db.DB): number | null {
-  const v = db.getMeta(d, "budget_cents");
-  return v ? Number(v) : null;
+function splitList(v: string | undefined): string[] | undefined {
+  return v ? v.split(",").map((s) => s.trim()).filter(Boolean) : undefined;
 }
 
-function fmt$(cents: number): string {
-  return `$${(cents / 100).toFixed(4)}`;
+function resolveQuery(store: Store, v: string): string {
+  if (/^\d+$/.test(v)) {
+    const q = store.queries(true).find((x) => x.id === Number(v));
+    if (q) return q.text;
+  }
+  return v;
 }
 
-// ---------- init / doctor / config ----------
-
-program
-  .command("init")
-  .description("Create .aeo/ in the current directory and initialize SQLite.")
-  .option("--name <name>", "Project name (defaults to current directory name)")
-  .action((opts: { name?: string }) => {
-    const d = db.connect();
-    const project = opts.name ?? basename(process.cwd());
-    db.setMeta(d, "project_name", project);
-    db.setMeta(d, "schema_version", String(db.SCHEMA_VERSION));
-    console.log(`✓ initialized .aeo/ at ${db.aeoDir()}`);
-    console.log(`  project: ${project}`);
-    console.log("");
-    console.log("Next steps:");
-    console.log("  1. Add domains to detect:   aeo domain add <yourdomain.com>");
-    console.log("  2. Add queries to monitor:  aeo query add \"...\"");
-    console.log("  3. Verify setup:            aeo doctor");
-    console.log("  4. Run a check:             aeo run");
-  });
-
-program
-  .command("doctor")
-  .description("Check API keys, account balances, config, and DB stats.")
-  .action(async () => {
-    const d = db.connect();
-    const c = db.counts(d);
-    const aeoPath = db.aeoDir();
-    const dbBytes = db.dbSizeBytes();
-
-    console.log(`Project:    ${projectName(d)}`);
-    console.log(`Data dir:   ${aeoPath}`);
-    console.log(`DB:         ${db.dbPath()} (${dbBytes.toLocaleString()} bytes)`);
-    console.log(`Queries:    ${c.queries} registered`);
-    console.log(`Domains:    ${c.domains} registered`);
-    console.log(`Runs:       ${c.runs} total`);
-    console.log("");
-
-    const keys: Record<string, [string, string]> = {
-      FIRECRAWL_API_KEY:  ["ChatGPT + Perplexity scraping", "https://firecrawl.dev"],
-      DATAFORSEO_API_KEY: ["Google AI Overview",            "https://dataforseo.com — set as base64(login:password)"],
-      GEMINI_API_KEY:     ["Structured extraction",         "https://aistudio.google.com/apikey"],
-      ANTHROPIC_API_KEY:  ["Claude (optional)",             "https://console.anthropic.com"],
-    };
-    console.log("API Keys:");
-    for (const [k, [purpose, src]] of Object.entries(keys)) {
-      if (process.env[k]) {
-        console.log(`  ✓ ${k.padEnd(24)} set     (${purpose})`);
-      } else {
-        console.log(`  ✗ ${k.padEnd(24)} missing (${purpose}) — get it: ${src}`);
-      }
-    }
-    console.log("");
-
-    if (process.env.DATAFORSEO_API_KEY) {
-      try {
-        const res = await fetch("https://api.dataforseo.com/v3/appendix/user_data", {
-          headers: { Authorization: `Basic ${process.env.DATAFORSEO_API_KEY}` },
-        });
-        const data = (await res.json()) as { tasks?: Array<{ result?: Array<{ money?: { balance?: number } }> }> };
-        for (const task of data.tasks ?? []) {
-          for (const r of task.result ?? []) {
-            const bal = r.money?.balance ?? 0;
-            console.log(`DataForSEO balance: $${bal.toFixed(2)}`);
-          }
-        }
-      } catch (e) {
-        console.log(`DataForSEO balance: error — ${(e as Error).message}`);
-      }
-    }
-
-    const bud = budgetCents(d);
-    const spent = db.monthSpendCents(d);
-    if (bud !== null) {
-      const pct = bud > 0 ? (spent / bud * 100) : 0;
-      console.log(`Budget:     $${(bud / 100).toFixed(2)}/mo, $${(spent / 100).toFixed(2)} spent this month (${pct.toFixed(0)}%)`);
-    } else {
-      console.log(`Budget:     unset; $${(spent / 100).toFixed(2)} spent this month`);
-    }
-
-    const plan = firecrawlPlan(d);
-    console.log(`Firecrawl:  ${plan} plan (set via: aeo config set firecrawl_plan <hobby|standard|growth>)`);
-  });
-
-// ---------- config ----------
-
-const config = program.command("config").description("Get/set per-project config.");
-config
-  .command("set")
-  .argument("<key>")
-  .argument("<value>")
-  .action((key: string, value: string) => {
-    const d = db.connect();
-    db.setMeta(d, key, value);
-    console.log(`set ${key} = ${value}`);
-  });
-config
-  .command("show")
-  .action(() => {
-    const d = db.connect();
-    const rows = db.listMeta(d);
-    if (rows.length === 0) {
-      console.log("(empty)");
-      return;
-    }
-    for (const r of rows) console.log(`${r.key.padEnd(20)} = ${r.value}`);
-  });
-
-// ---------- queries ----------
-
-const queryCmd = program.command("query").description("Manage tracked queries.");
-queryCmd
-  .command("add")
-  .argument("<text...>")
-  .action((text: string[]) => {
-    const d = db.connect();
-    const q = text.join(" ");
-    const id = db.addQuery(d, q);
-    if (id) console.log(`+ ${id}: ${q}`);
-    else console.log(`(already registered) ${q}`);
-  });
-queryCmd
-  .command("list")
-  .action(() => {
-    const d = db.connect();
-    for (const r of db.listQueries(d)) {
-      console.log(`${String(r.id).padStart(4)}  ${r.text}`);
-    }
-  });
-queryCmd
-  .command("remove")
-  .argument("<id>")
-  .action((id: string) => {
-    const d = db.connect();
-    const n = db.removeQuery(d, Number(id));
-    console.log(`removed ${n} row(s)`);
-  });
-
-// ---------- domains ----------
-
-const domainCmd = program.command("domain").description("Manage domains to detect in citations.");
-domainCmd
-  .command("add")
-  .argument("<domain>")
-  .option("--label <label>", "Optional tag (e.g. 'own', 'competitor')")
-  .action((domain: string, opts: { label?: string }) => {
-    const d = db.connect();
-    const id = db.addDomain(d, domain, opts.label);
-    console.log(`+ ${id}: ${domain}${opts.label ? `  [${opts.label}]` : ""}`);
-  });
-domainCmd
-  .command("list")
-  .action(() => {
-    const d = db.connect();
-    for (const r of db.listDomains(d)) {
-      console.log(`${String(r.id).padStart(4)}  ${r.domain}${r.label ? `  [${r.label}]` : ""}`);
-    }
-  });
-domainCmd
-  .command("remove")
-  .argument("<id>")
-  .action((id: string) => {
-    const d = db.connect();
-    const n = db.removeDomain(d, Number(id));
-    console.log(`removed ${n} row(s)`);
-  });
-
-// ---------- budget ----------
-
-const budgetCmd = program.command("budget").description("Set/show monthly cost budget (warning only, never blocks).");
-budgetCmd
-  .command("set")
-  .argument("<cents>")
-  .action((cents: string) => {
-    const d = db.connect();
-    db.setMeta(d, "budget_cents", cents);
-    console.log(`budget set to $${(Number(cents) / 100).toFixed(2)}/month`);
-  });
-budgetCmd
-  .command("clear")
-  .action(() => {
-    const d = db.connect();
-    db.deleteMeta(d, "budget_cents");
-    console.log("budget cleared");
-  });
-budgetCmd
-  .command("show")
-  .action(() => {
-    const d = db.connect();
-    const bud = budgetCents(d);
-    const spent = db.monthSpendCents(d);
-    if (bud === null) {
-      console.log(`No budget set. $${(spent / 100).toFixed(2)} spent this month.`);
-    } else {
-      const pct = bud > 0 ? (spent / bud * 100) : 0;
-      console.log(`$${(spent / 100).toFixed(2)} / $${(bud / 100).toFixed(2)} this month (${pct.toFixed(0)}%)`);
-    }
-  });
-
-// ---------- run ----------
-
-program
-  .command("run")
-  .description("Execute all (query × platform) checks and store results.")
-  .option("-p, --platform <platforms...>", "Limit to specific platform(s)")
-  .option("-q, --query <text>", "Run a single query (not from DB)")
-  .option("--dry-run", "Print estimated cost without running")
-  .option("--serial", "Run platforms serially instead of in parallel")
-  .action(async (opts: { platform?: string[]; query?: string; dryRun?: boolean; serial?: boolean }) => {
-    const d = db.connect();
-    const queries = opts.query ? [opts.query] : db.listQueries(d).map((q) => q.text);
-    if (queries.length === 0) {
-      console.log("No queries registered. Use `aeo query add \"...\"` first.");
-      return;
-    }
-
-    let platforms = (opts.platform && opts.platform.length > 0)
-      ? opts.platform.filter((p) => SUPPORTED_PLATFORMS.includes(p as Platform)) as Platform[]
-      : [...SUPPORTED_PLATFORMS];
-
-    if (platforms.includes("claude") && !process.env.ANTHROPIC_API_KEY) {
-      console.log("note: skipping claude (ANTHROPIC_API_KEY not set)");
-      platforms = platforms.filter((p) => p !== "claude");
-    }
-
-    const totalJobs = queries.length * platforms.length;
-    if (totalJobs === 0) {
-      console.log("Nothing to run.");
-      return;
-    }
-
-    if (opts.dryRun) {
-      const plan = firecrawlPlan(d);
-      const perPlatform: Record<Platform, number> = {
-        chatgpt:    firecrawlScrapeCents(plan) + geminiFlashCents(8000, 1000),
-        perplexity: firecrawlScrapeCents(plan) + geminiFlashCents(8000, 1000),
-        "google-ai": 0.2 + geminiFlashCents(5000, 1000),
-        claude:     anthropicHaikuCents(1000, 800, 1) + geminiFlashCents(3000, 800),
-      };
-      const total = platforms.reduce((acc, p) => acc + perPlatform[p], 0) * queries.length;
-      console.log(`Dry run: ${totalJobs} jobs (${queries.length} queries × ${platforms.length} platforms)`);
-      for (const p of platforms) {
-        console.log(`  ${p.padEnd(15)} ~${fmt$(perPlatform[p])}/query`);
-      }
-      console.log(`Estimated total: ${fmt$(total)}`);
-      return;
-    }
-
-    const bud = budgetCents(d);
-    if (bud !== null) {
-      const spent = db.monthSpendCents(d);
-      if (spent >= bud) {
-        console.log(`⚠ over budget: $${(spent / 100).toFixed(2)} / $${(bud / 100).toFixed(2)} this month — continuing anyway`);
-      } else if (spent >= bud * 0.8) {
-        console.log(`⚠ ${(spent / bud * 100).toFixed(0)}% of monthly budget used ($${(spent / 100).toFixed(2)} / $${(bud / 100).toFixed(2)})`);
-      }
-    }
-
-    const own = db.ownDomains(d);
-    const plan = firecrawlPlan(d);
-    const rawDir = join(db.aeoDir(), "raw");
-    mkdirSync(rawDir, { recursive: true });
-
-    console.log(`Running ${totalJobs} jobs across ${platforms.length} platform(s)...`);
-    const t0 = Date.now();
-    let citedCount = 0;
-    let errorCount = 0;
-    let totalCostCents = 0;
-
-    const jobs: Array<{ query: string; platform: Platform }> = [];
-    for (const q of queries) for (const p of platforms) jobs.push({ query: q, platform: p });
-
-    const runOne = async (query: string, platform: Platform) => {
-      const scrapeRes = await scrape(platform, query, plan);
-      const safeQ = query.replace(/[^a-zA-Z0-9]/g, "_").slice(0, 40);
-      const rawPath = join(rawDir, `${Math.floor(Date.now() / 1000)}_${platform}_${safeQ}.txt`);
-      writeFileSync(rawPath, scrapeRes.text || (scrapeRes.error ?? ""));
-
-      if (scrapeRes.error) {
-        const runId = db.insertRun(d, {
-          queryText: query, platform, responseText: "", aiUsedWebSearch: false,
-          responseStructure: "", rawScrapePath: rawPath, status: "error", errorMessage: scrapeRes.error,
-        });
-        db.recordCost(d, {
-          provider: scrapeRes.provider, operation: scrapeRes.operation, costCents: scrapeRes.costCents,
-          runId, inputTokens: scrapeRes.inputTokens, outputTokens: scrapeRes.outputTokens,
-          credits: scrapeRes.credits, metadata: scrapeRes.metadata,
-        });
-        errorCount += 1;
-        totalCostCents += scrapeRes.costCents;
-        console.log(`  ✗ ${platform.padEnd(15)} ${query.slice(0, 50).padEnd(50)}  ERROR: ${scrapeRes.error}`);
-        return;
-      }
-
-      const extracted = await extract(scrapeRes.text, platform);
-      const status = (extracted.responseText || extracted.citations.length > 0) ? "ok" : "empty";
-
-      const runId = db.insertRun(d, {
-        queryText: query, platform,
-        responseText: extracted.responseText, aiUsedWebSearch: extracted.aiUsedWebSearch,
-        responseStructure: extracted.responseStructure, rawScrapePath: rawPath, status,
-      });
-      db.insertCitations(d, runId, extracted.citations);
-      db.recordCost(d, {
-        provider: scrapeRes.provider, operation: scrapeRes.operation, costCents: scrapeRes.costCents,
-        runId, inputTokens: scrapeRes.inputTokens, outputTokens: scrapeRes.outputTokens,
-        credits: scrapeRes.credits, metadata: scrapeRes.metadata,
-      });
-      if (extracted.inputTokens || extracted.outputTokens) {
-        db.recordCost(d, {
-          provider: "gemini", operation: "extract", costCents: extracted.costCents, runId,
-          inputTokens: extracted.inputTokens, outputTokens: extracted.outputTokens,
-          metadata: { platform },
-        });
-      }
-
-      const citedDomains = new Set(extracted.citations.map((c) => c.domain));
-      const citedOwn = own.some((d) => citedDomains.has(d));
-      const marker = citedOwn ? "✓ CITED" : "      ";
-      const cost = scrapeRes.costCents + extracted.costCents;
-      totalCostCents += cost;
-      if (citedOwn) citedCount += 1;
-      console.log(`  ${marker} ${platform.padEnd(15)} ${query.slice(0, 50).padEnd(50)}  ${fmt$(cost)}  (${extracted.citations.length} citations)`);
-    };
-
-    if (opts.serial) {
-      for (const j of jobs) await runOne(j.query, j.platform);
-    } else {
-      // Bounded concurrency. Unbounded Promise.all fires every job at once, which
-      // saturates the Firecrawl hobby plan's concurrency limit → server-side
-      // SCRAPE_TIMEOUTs on ChatGPT/Perplexity (a single scrape succeeds in ~15s).
-      // Default 3; tune with AEO_CONCURRENCY, or --serial for one at a time.
-      const limit = Math.max(1, Number(process.env.AEO_CONCURRENCY ?? 3));
-      let next = 0;
-      await Promise.all(
-        Array.from({ length: Math.min(limit, jobs.length) }, async () => {
-          while (next < jobs.length) { const j = jobs[next++]; await runOne(j.query, j.platform); }
-        }),
-      );
-    }
-
-    const elapsed = ((Date.now() - t0) / 1000).toFixed(1);
-    console.log("");
-    console.log(`Done in ${elapsed}s`);
-    console.log(`Cited: ${citedCount}/${totalJobs}   Errors: ${errorCount}`);
-    console.log(`Cost:  ${fmt$(totalCostCents)}`);
-  });
-
-// ---------- reports ----------
-
-program
-  .command("report")
-  .description("Citation rate per query per platform.")
-  .option("--days <n>", "Window size in days", "7")
-  .option("--json", "Output JSON")
-  .action((opts: { days: string; json?: boolean }) => {
-    const d = db.connect();
-    const own = db.ownDomains(d);
-    const days = Number(opts.days);
-    const rows = db.citationRateByQueryPlatform(d, since(days), own);
-
-    if (opts.json) {
-      console.log(JSON.stringify(rows, null, 2));
-      return;
-    }
-    if (rows.length === 0) {
-      console.log(`No runs in the last ${days} days.`);
-      return;
-    }
-    console.log(`Citation rate — last ${days} days (own: ${own.join(", ") || "none"})`);
-    console.log("");
-    let currentQ = "";
-    for (const r of rows) {
-      if (r.query_text !== currentQ) {
-        console.log(`\n  ${r.query_text}`);
-        currentQ = r.query_text;
-      }
-      const pct = r.total_runs > 0 ? (100 * r.cited_count / r.total_runs) : 0;
-      console.log(`    ${r.platform.padEnd(15)}  ${r.cited_count}/${r.total_runs} (${pct.toFixed(0)}%)`);
-    }
-  });
-
-program
-  .command("competitors")
-  .description("Top cited domains across all your queries.")
-  .option("--days <n>", "Window in days", "30")
-  .option("--limit <n>", "Top N", "30")
-  .option("--json", "Output JSON")
-  .action((opts: { days: string; limit: string; json?: boolean }) => {
-    const d = db.connect();
-    const rows = db.topCitedDomains(d, since(Number(opts.days)), Number(opts.limit));
-    const own = new Set(db.ownDomains(d));
-    if (opts.json) {
-      console.log(JSON.stringify(rows, null, 2));
-      return;
-    }
-    if (rows.length === 0) {
-      console.log("No citations yet.");
-      return;
-    }
-    console.log(`Top ${opts.limit} cited domains — last ${opts.days} days`);
-    console.log("");
-    for (const r of rows) {
-      const marker = own.has(r.domain) ? "★" : " ";
-      console.log(`  ${marker} ${String(r.mentions).padStart(4)}  ${r.domain}`);
-    }
-  });
-
-program
-  .command("history")
-  .description("Full citation history for a single query.")
-  .requiredOption("-q, --query <text>")
-  .option("--days <n>", "Window in days", "30")
-  .option("--json", "Output JSON")
-  .action((opts: { query: string; days: string; json?: boolean }) => {
-    const d = db.connect();
-    const own = db.ownDomains(d);
-    const rows = db.historyForQuery(d, opts.query, since(Number(opts.days)), own);
-    if (opts.json) {
-      console.log(JSON.stringify(rows, null, 2));
-      return;
-    }
-    if (rows.length === 0) {
-      console.log(`No runs for '${opts.query}' in last ${opts.days} days.`);
-      return;
-    }
-    console.log(`History — '${opts.query}' — last ${opts.days} days`);
-    for (const r of rows) {
-      const dt = new Date(r.ts * 1000).toISOString().replace("T", " ").slice(0, 16);
-      const marker = r.cited_own ? "✓" : " ";
-      const doms = r.all_domains.slice(0, 5).join(", ") || "(no citations)";
-      console.log(`  ${marker} ${dt}  ${r.platform.padEnd(15)}  ${doms}`);
-    }
-  });
-
-// ---------- cost ----------
-
-program
-  .command("cost")
-  .description("Show actual spend breakdown.")
-  .option("--days <n>", "Window in days (default: current month)")
-  .option("--by <dimension>", "provider | platform | query", "provider")
-  .option("--month <ym>", "Specific month YYYY-MM")
-  .option("--json", "Output JSON")
-  .action((opts: { days?: string; by: string; month?: string; json?: boolean }) => {
-    const d = db.connect();
-    let sinceTs: number;
-    let label: string;
-    if (opts.month) {
-      const m = opts.month.match(/^(\d{4})-(\d{2})$/);
-      if (!m) {
-        console.log("Bad month format. Use YYYY-MM.");
-        return;
-      }
-      const y = Number(m[1]); const mo = Number(m[2]);
-      sinceTs = Math.floor(new Date(Date.UTC(y, mo - 1, 1)).getTime() / 1000);
-      label = opts.month;
-    } else if (opts.days !== undefined) {
-      sinceTs = since(Number(opts.days));
-      label = `last ${opts.days} days`;
-    } else {
-      const n = new Date();
-      sinceTs = Math.floor(new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), 1)).getTime() / 1000);
-      label = n.toISOString().slice(0, 7);
-    }
-
-    const summary = db.costSummary(d, sinceTs);
-    if (opts.json) {
-      if (opts.by === "provider") console.log(JSON.stringify(summary, null, 2));
-      else if (opts.by === "platform") console.log(JSON.stringify(db.costByPlatform(d, sinceTs), null, 2));
-      else console.log(JSON.stringify(db.costByQuery(d, sinceTs), null, 2));
-      return;
-    }
-
-    console.log(`Cost — ${label}  ·  ${fmt$(summary.total_cents)} total`);
-    console.log("");
-
-    if (opts.by === "provider") {
-      console.log("By provider:");
-      for (const r of summary.by_provider) {
-        console.log(`  ${r.provider.padEnd(15)}  ${fmt$(r.cents ?? 0)}  (${r.calls} calls)`);
-      }
-    } else if (opts.by === "platform") {
-      const rows = db.costByPlatform(d, sinceTs);
-      console.log("By platform:");
-      for (const r of rows) {
-        console.log(`  ${(r.platform ?? "?").padEnd(15)}  ${fmt$(r.cents ?? 0)}  (${r.calls} calls)`);
-      }
-    } else if (opts.by === "query") {
-      const rows = db.costByQuery(d, sinceTs);
-      console.log("By query:");
-      for (const r of rows) {
-        console.log(`  ${fmt$(r.cents ?? 0)}  ${r.query.slice(0, 70)}`);
-      }
-    }
-  });
-
-// ---------- export ----------
-
-program
-  .command("export")
-  .description("Dump all runs + citations for external analysis.")
-  .option("--format <fmt>", "json | csv", "json")
-  .option("-o, --output <path>")
-  .action((opts: { format: string; output?: string }) => {
-    const d = db.connect();
-    const rows = db.exportRuns(d);
-    let text: string;
-    if (opts.format === "csv") {
-      const headers = ["id", "ts", "query_text", "platform", "status", "cited_domains"];
-      const escape = (v: unknown) => {
-        const s = v == null ? "" : String(v);
-        return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-      };
-      text = [headers.join(","), ...rows.map((r) => headers.map((h) => escape((r as Record<string, unknown>)[h])).join(","))].join("\n");
-    } else {
-      text = JSON.stringify(rows, null, 2);
-    }
-    if (opts.output) {
-      writeFileSync(opts.output, text);
-      console.log(`wrote ${rows.length} rows to ${opts.output}`);
-    } else {
-      console.log(text);
-    }
-  });
-
-program.parseAsync().catch((e) => {
-  console.error(e);
+function fail(msg: string): never {
+  console.error(`error: ${msg}`);
   process.exit(1);
-});
+}
+
+function print(json: boolean, data: unknown, text: () => string): void {
+  console.log(json ? JSON.stringify(data, null, 2) : text());
+}
+
+// ---------------------------------------------------------------------------
+
+async function cmdInit(args: string[]) {
+  const { values } = opts(args, { country: { type: "string" }, language: { type: "string" } });
+  const country = (values.country ?? "US").toUpperCase();
+  if (!COUNTRY_LOCATION[country]) {
+    console.error(`note: no built-in DataForSEO location for ${country}; set it with \`aeo config set location_code <code>\`.`);
+  }
+  const existed = existsSync(`${Store.dirFor(cwd)}/config.json`);
+  Store.init(cwd, defaultConfig(country, values.language ?? "en"));
+  console.log(existed ? "Already initialized: .aeo/ (left config as is)" : `Initialized .aeo/ (country ${country}). It ignores itself in git.`);
+  console.log("Next: aeo doctor, then aeo domain add <yours> --own, aeo query add \"...\", aeo run --dry-run");
+}
+
+async function ping(url: string, headers: Record<string, string>): Promise<{ ok: boolean; status: number; json: any }> {
+  try {
+    const res = await fetch(url, { headers, signal: AbortSignal.timeout(20_000) });
+    const json = await res.json().catch(() => null);
+    return { ok: res.ok, status: res.status, json };
+  } catch (e) {
+    return { ok: false, status: 0, json: { error: (e as Error).message } };
+  }
+}
+
+async function cmdDoctor() {
+  let failed = false;
+  const line = (ok: boolean | null, label: string, detail: string) => {
+    if (ok === false) failed = true;
+    console.log(`${ok === null ? "SKIP" : ok ? "OK  " : "FAIL"}  ${label.padEnd(18)} ${detail}`);
+  };
+  line(true, "bun", Bun.version);
+  let enabled = DEFAULT_PLATFORMS;
+  if (existsSync(`${Store.dirFor(cwd)}/config.json`)) {
+    const store = Store.open(cwd);
+    const c = store.config();
+    enabled = c.platforms;
+    line(true, "project", `.aeo/ country=${c.country} location=${c.location_code} platforms=${c.platforms.join(",")}`);
+    line(store.queries().length > 0, "queries", `${store.queries().length} active`);
+    line(store.domains().some((d) => d.role === "own"), "own domain", store.domains().filter((d) => d.role === "own").map((d) => d.domain).join(", ") || "none: aeo domain add <domain> --own");
+  } else {
+    line(null, "project", "no .aeo/ here (aeo init)");
+  }
+  const needed = new Set(enabled.map((id) => platformById(id)?.envVar).filter(Boolean));
+  const check = async (envVar: string, label: string, fn: (key: string) => Promise<[boolean, string]>) => {
+    const key = process.env[envVar];
+    if (!key) {
+      line(needed.has(envVar) ? false : null, label, `${envVar} not set${needed.has(envVar) ? " (needed by enabled platforms)" : " (optional)"}`);
+      return;
+    }
+    const [ok, detail] = await fn(key);
+    line(ok, label, detail);
+  };
+  await check("DATAFORSEO_API_KEY", "dataforseo", async (k) => {
+    const r = await ping("https://api.dataforseo.com/v3/appendix/user_data", { Authorization: `Basic ${k}` });
+    const bal = r.json?.tasks?.[0]?.result?.[0]?.money?.balance;
+    return r.json?.status_code === 20000 ? [true, `balance $${Number(bal).toFixed(2)}`] : [false, `auth failed (${r.json?.status_message ?? r.status}); value must be base64("login:password")`];
+  });
+  await check("OPENAI_API_KEY", "openai", async (k) => {
+    const r = await ping("https://api.openai.com/v1/models", { Authorization: `Bearer ${k}` });
+    return r.ok ? [true, "key valid"] : [false, `HTTP ${r.status}`];
+  });
+  await check("GEMINI_API_KEY", "gemini", async (k) => {
+    const r = await ping("https://generativelanguage.googleapis.com/v1beta/models?pageSize=1", { "x-goog-api-key": k });
+    return r.ok ? [true, "key valid (billing/credits not checked)"] : [false, `HTTP ${r.status}`];
+  });
+  await check("ANTHROPIC_API_KEY", "anthropic", async (k) => {
+    const r = await ping("https://api.anthropic.com/v1/models?limit=1", { "x-api-key": k, "anthropic-version": "2023-06-01" });
+    return r.ok ? [true, "key valid"] : [false, `HTTP ${r.status}`];
+  });
+  process.exit(failed ? 1 : 0);
+}
+
+function cmdPlatforms() {
+  const store = existsSync(`${Store.dirFor(cwd)}/config.json`) ? Store.open(cwd) : null;
+  const enabled = new Set(store?.config().platforms ?? DEFAULT_PLATFORMS);
+  const models = store?.config().models ?? {};
+  console.log(
+    table(
+      ["platform", "on", "provider", "env var", "model", "est/check", "how"],
+      PLATFORMS.map((p) => [p.id, enabled.has(p.id) ? "yes" : "", p.provider, p.envVar, models[p.id] ?? p.defaultModel ?? "-", usd(p.estimateUsd), p.how]),
+    ),
+  );
+}
+
+function cmdConfig(args: string[]) {
+  const store = Store.open(cwd);
+  const [sub, key, ...valueParts] = args;
+  const c = store.config();
+  if (!sub || sub === "show") {
+    console.log(JSON.stringify(c, null, 2));
+    return;
+  }
+  if (sub !== "set" || !key || valueParts.length === 0) fail("usage: aeo config set <key> <value>");
+  const value = valueParts.join(" ");
+  if (key.startsWith("model.")) {
+    const id = key.slice(6);
+    if (!platformById(id)) fail(`unknown platform ${id}`);
+    c.models[id] = value;
+  } else if (key === "platforms") {
+    const list = splitList(value) ?? [];
+    for (const id of list) if (!platformById(id)) fail(`unknown platform ${id}`);
+    c.platforms = list;
+  } else if (key === "country") {
+    c.country = value.toUpperCase();
+    c.location_code = COUNTRY_LOCATION[c.country] ?? c.location_code;
+  } else if (key === "location_code" || key === "concurrency") {
+    c[key] = Number(value);
+  } else if (key === "language_code") {
+    c.language_code = value;
+  } else if (key === "chatgpt_force_web_search") {
+    c.chatgpt_force_web_search = value === "true" || value === "1";
+  } else {
+    fail(`unknown key ${key}`);
+  }
+  store.saveConfig(c);
+  console.log(JSON.stringify(c, null, 2));
+}
+
+function cmdQuery(args: string[]) {
+  const store = Store.open(cwd);
+  const [sub, ...more] = args;
+  if (sub === "add") {
+    const { values, positionals } = opts(more, { tag: { type: "string" } });
+    const text = positionals.join(" ").trim();
+    if (!text) fail("usage: aeo query add <text>");
+    console.log(store.addQuery(text, values.tag ?? null) ? `added: ${text}` : `exists: ${text}`);
+  } else if (sub === "import") {
+    const file = more[0];
+    if (!file) fail("usage: aeo query import <file> (one query per line)");
+    let n = 0;
+    for (const l of readFileSync(file, "utf8").split("\n")) if (l.trim() && !l.startsWith("#") && store.addQuery(l.trim(), null)) n++;
+    console.log(`added ${n} queries`);
+  } else if (sub === "remove") {
+    const v = more.join(" ");
+    console.log(store.removeQuery(v) ? `removed ${v}` : `not found: ${v}`);
+  } else {
+    const qs = store.queries();
+    console.log(qs.length ? table(["id", "tag", "query"], qs.map((q) => [q.id, q.tag ?? "", q.text])) : "no queries: aeo query add \"...\"");
+  }
+}
+
+function cmdDomain(args: string[]) {
+  const store = Store.open(cwd);
+  const [sub, ...more] = args;
+  if (sub === "add") {
+    const { values, positionals } = opts(more, {
+      own: { type: "boolean" },
+      competitor: { type: "boolean" },
+      brand: { type: "string", multiple: true },
+    });
+    const domain = cleanDomain(positionals[0] ?? "");
+    if (!domain || values.own === values.competitor) fail("usage: aeo domain add <domain> --own|--competitor [--brand Name]");
+    store.addDomain(domain, values.own ? "own" : "competitor", values.brand ?? []);
+    console.log(`${values.own ? "own" : "competitor"}: ${domain}${values.brand?.length ? ` (brands: ${values.brand.join(", ")})` : ""}`);
+  } else if (sub === "remove") {
+    const d = cleanDomain(more[0] ?? "");
+    console.log(store.removeDomain(d) ? `removed ${d}` : `not found: ${d}`);
+  } else {
+    const ds = store.domains();
+    console.log(ds.length ? table(["role", "domain", "brand terms"], ds.map((d) => [d.role, d.domain, d.brands.join(", ")])) : "no domains: aeo domain add <domain> --own");
+  }
+}
+
+function estimateFor(p: PlatformDef, history: Map<string, number>): number {
+  return history.get(p.id) ?? p.estimateUsd;
+}
+
+async function cmdRun(args: string[]) {
+  const { values } = opts(args, {
+    platform: { type: "string", short: "p" },
+    query: { type: "string", short: "q" },
+    "dry-run": { type: "boolean" },
+    "max-cost": { type: "string" },
+    concurrency: { type: "string" },
+  });
+  const store = Store.open(cwd);
+  const cfg = store.config();
+  const ids = splitList(values.platform) ?? cfg.platforms;
+  const platforms = ids.map((id) => platformById(id) ?? fail(`unknown platform ${id} (see aeo platforms)`));
+  const queries = values.query ? [resolveQuery(store, values.query)] : store.queries().map((q) => q.text);
+  if (!queries.length) fail("no queries: aeo query add \"...\"");
+  if (!store.domains().some((d) => d.role === "own")) console.error("warning: no own domain set; citations are stored but nothing is scored as yours");
+
+  const history = store.avgCostByPlatform();
+  const perQuery = platforms.reduce((s, p) => s + estimateFor(p, history), 0);
+  const estimate = perQuery * queries.length;
+  const breakdown = platforms.map((p) => [p.id, p.provider, usd(estimateFor(p, history)), history.has(p.id) ? "history" : "list price"]);
+  if (values["dry-run"]) {
+    console.log(table(["platform", "provider", "est/check", "basis"], breakdown));
+    console.log(`\n${queries.length} queries x ${platforms.length} platforms = ${queries.length * platforms.length} checks, est. ${usd(estimate)}`);
+    const missing = [...new Set(platforms.map((p) => p.envVar))].filter((v) => !process.env[v]);
+    if (missing.length) console.log(`missing env: ${missing.join(", ")}`);
+    return;
+  }
+  const max = values["max-cost"] ? Number(values["max-cost"]) : null;
+  if (max !== null && estimate > max) fail(`estimate ${usd(estimate)} exceeds --max-cost ${usd(max)}; narrow with --platform/--query`);
+  for (const v of new Set(platforms.map((p) => p.envVar))) if (!process.env[v]) fail(`${v} is not set (needed by ${platforms.filter((p) => p.envVar === v).map((p) => p.id).join(", ")})`);
+
+  const runId = store.startRun(ids, estimate);
+  const rc = runConfig(cfg);
+  const jobs = queries.flatMap((q) => platforms.map((p) => ({ q, p })));
+  const domains = store.domains();
+  const concurrency = Number(values.concurrency ?? process.env.AEO_CONCURRENCY ?? cfg.concurrency) || 4;
+  console.error(`run ${runId}: ${jobs.length} checks, est. ${usd(estimate)}, concurrency ${concurrency}`);
+
+  const rows = await mapLimit(jobs, concurrency, async ({ q, p }) => {
+    const ts = new Date().toISOString();
+    const base = { run_id: runId, ts, query: q, platform: p.id, provider: p.provider, country: cfg.country };
+    try {
+      const r = await callPlatform(p, q, rc);
+      const raw_path = store.writeRaw(ts, p.id, q, { platform: p.id, query: q, request: r.request, response: r.response });
+      const id = store.insertCheck(
+        {
+          ...base,
+          model: r.parsed.model ?? cfg.models[p.id] ?? p.defaultModel,
+          status: "ok",
+          error: null,
+          answer_present: r.parsed.answerPresent ? 1 : 0,
+          answer_text: r.parsed.answerText,
+          cost_usd: r.parsed.costUsd,
+          latency_ms: r.latencyMs,
+          raw_path,
+          meta: JSON.stringify(r.parsed.meta),
+        },
+        r.parsed.citations,
+      );
+      const c = store.check(id) as CheckRow;
+      const rec = checkRecord(c, store.citationsFor([id]).get(id) ?? [], domains);
+      console.error(`  ${p.id.padEnd(15)} ${rec.own_cited ? "CITED" : rec.own_mentioned ? "named" : "  -  "}  ${rec.source_count} sources  ${usd(c.cost_usd)}  ${q.slice(0, 60)}`);
+      return rec;
+    } catch (e) {
+      const err = e as Error & { request?: unknown; response?: unknown; spentUsd?: number };
+      const raw_path = store.writeRaw(ts, p.id, q, { platform: p.id, query: q, request: err.request ?? null, response: err.response ?? null, error: err.message });
+      const id = store.insertCheck(
+        { ...base, model: cfg.models[p.id] ?? p.defaultModel, status: "error", error: err.message, answer_present: 0, answer_text: null, cost_usd: err.spentUsd ?? 0, latency_ms: null, raw_path, meta: null },
+        [],
+      );
+      console.error(`  ${p.id.padEnd(15)} ERROR  ${err.message.slice(0, 120)}  ${q.slice(0, 40)}`);
+      return checkRecord(store.check(id) as CheckRow, [], domains);
+    }
+  });
+  store.finishRun(runId);
+  const cost = rows.reduce((s, r) => s + r.cost_usd, 0);
+  const errors = rows.filter((r) => r.status === "error").length;
+  console.log(`run ${runId}: ${rows.length} checks, ${rows.filter((r) => r.own_cited).length} cited, ${rows.filter((r) => r.own_mentioned).length} named, ${errors} errors, cost ${usd(cost)}`);
+  if (errors === rows.length) process.exit(1);
+}
+
+function loadReport(days: number, platform?: string[], query?: string) {
+  const store = Store.open(cwd);
+  const since = sinceDays(days);
+  const checks = store.checksSince(since, { platform, query });
+  const cits = store.citationsFor(checks.map((c) => c.id));
+  const domains = store.domains();
+  return { store, since, checks, cits, domains, report: buildReport(checks, cits, domains, days, since) };
+}
+
+function cmdReport(args: string[]) {
+  const { values } = opts(args, { days: { type: "string" }, platform: { type: "string" }, json: { type: "boolean" } });
+  const days = Number(values.days ?? 7);
+  const { report } = loadReport(days, splitList(values.platform));
+  print(Boolean(values.json), report, () => {
+    if (!report.cells.length) return `no checks in the last ${days} days: aeo run`;
+    const out: string[] = [`Last ${days} days. cited = own domain in the answer's sources; named = brand/domain in the answer text.\n`];
+    out.push(
+      table(
+        ["query", "platform", "checks", "cited", "named", "retrieved only", "answer shown", "top competitor", "errors"],
+        report.cells.map((c) => [c.query.slice(0, 50), c.platform, c.checks, `${c.cited} (${pct(c.cited, c.checks)})`, `${c.mentioned} (${pct(c.mentioned, c.checks)})`, c.retrievedNotCited, `${c.answered}/${c.checks}`, c.topCompetitor ?? "", c.errors]),
+      ),
+    );
+    if (report.domains.length) {
+      out.push("\nTracked domains (share of all successful checks):");
+      out.push(table(["role", "domain", "cited", "named"], report.domains.map((d) => [d.role, d.domain, `${d.cited}/${d.checks} (${pct(d.cited, d.checks)})`, `${d.mentioned}/${d.checks} (${pct(d.mentioned, d.checks)})`])));
+    }
+    out.push(report.ownUrls.length ? "\nYour URLs that got cited:" : "\nNone of your URLs were cited in this window.");
+    if (report.ownUrls.length) out.push(table(["times", "platforms", "url"], report.ownUrls.map((u) => [u.count, u.platforms.join(","), u.url])));
+    out.push(`\nSpend in window: ${usd(report.costUsd)}`);
+    return out.join("\n");
+  });
+}
+
+function cmdCompetitors(args: string[]) {
+  const { values } = opts(args, { days: { type: "string" }, limit: { type: "string" }, json: { type: "boolean" } });
+  const days = Number(values.days ?? 30);
+  const limit = Number(values.limit ?? 20);
+  const { report } = loadReport(days);
+  const top = report.topDomains.slice(0, limit);
+  print(Boolean(values.json), { days, tracked: report.domains, top }, () =>
+    [
+      `Most-cited domains across your queries, last ${days} days (checks = answers citing it at least once):`,
+      table(["domain", "checks", "citations", "tracked"], top.map((t) => [t.domain, t.checks, t.citations, t.tracked ?? ""])),
+      "\nAdd one to track: aeo domain add <domain> --competitor",
+    ].join("\n"),
+  );
+}
+
+function cmdHistory(args: string[]) {
+  const { values } = opts(args, { query: { type: "string", short: "q" }, days: { type: "string" }, platform: { type: "string" }, json: { type: "boolean" } });
+  if (!values.query) fail("usage: aeo history --query <text|id>");
+  const store = Store.open(cwd);
+  const q = resolveQuery(store, values.query);
+  const { checks, cits, domains } = loadReport(Number(values.days ?? 30), splitList(values.platform), q);
+  const recs = checks.map((c) => checkRecord(c, cits.get(c.id) ?? [], domains));
+  print(Boolean(values.json), recs, () =>
+    recs.length
+      ? table(["id", "ts", "platform", "status", "cited", "named", "sources", "own urls / error"], recs.map((r) => [r.check_id, r.ts.slice(0, 16), r.platform, r.status, r.own_cited ? "yes" : "", r.own_mentioned ? "yes" : "", r.source_count, r.status === "ok" ? r.own_urls.join(" ") : (r.error ?? "").slice(0, 60)]))
+      : `no checks for "${q}"`,
+  );
+}
+
+function cmdCost(args: string[]) {
+  const { values } = opts(args, { days: { type: "string" }, by: { type: "string" }, json: { type: "boolean" } });
+  const days = Number(values.days ?? 30);
+  const by = values.by ?? "platform";
+  const col = by === "day" ? "substr(ts, 1, 10)" : by === "provider" ? "provider" : by === "platform" ? "platform" : fail("--by platform|day|provider");
+  const store = Store.open(cwd);
+  const rows = store.db
+    .query(`SELECT ${col} AS k, COUNT(*) AS checks, SUM(cost_usd) AS usd FROM checks WHERE ts >= ? GROUP BY k ORDER BY k`)
+    .all(sinceDays(days)) as { k: string; checks: number; usd: number }[];
+  const total = rows.reduce((s, r) => s + r.usd, 0);
+  print(Boolean(values.json), { days, by, rows, total }, () =>
+    `${table([by, "checks", "usd", "per check"], rows.map((r) => [r.k, r.checks, usd(r.usd), usd(r.usd / r.checks)]))}\n\nTotal last ${days} days: ${usd(total)}`,
+  );
+}
+
+function cmdExport(args: string[]) {
+  const { values } = opts(args, { what: { type: "string" }, format: { type: "string" }, days: { type: "string" }, output: { type: "string", short: "o" } });
+  const what = values.what ?? "checks";
+  const format = values.format ?? "jsonl";
+  const { checks, cits, domains } = loadReport(Number(values.days ?? 3650));
+  const byId = new Map(checks.map((c) => [c.id, c]));
+  let rows: Record<string, unknown>[];
+  if (what === "checks") rows = checks.map((c) => checkRecord(c, cits.get(c.id) ?? [], domains));
+  else if (what === "citations")
+    rows = [...cits.values()].flat().map((x) => {
+      const c = byId.get(x.check_id);
+      return { check_id: x.check_id, ts: c?.ts, query: c?.query, platform: c?.platform, kind: x.kind, position: x.position, domain: x.domain, url: x.url, title: x.title };
+    });
+  else fail("--what checks|citations");
+  const body = format === "csv" ? toCsv(rows) : format === "jsonl" ? rows.map((r) => JSON.stringify(r)).join("\n") + (rows.length ? "\n" : "") : fail("--format jsonl|csv");
+  if (values.output) {
+    writeFileSync(values.output, body);
+    console.error(`wrote ${rows.length} ${what} rows to ${values.output}`);
+  } else process.stdout.write(body);
+}
+
+function cmdRaw(args: string[]) {
+  const store = Store.open(cwd);
+  const c = store.check(Number(args[0]));
+  if (!c?.raw_path) fail(`no raw response for check ${args[0]}`);
+  console.log(JSON.stringify(store.readRaw(c.raw_path), null, 2));
+}
+
+const commands: Record<string, (args: string[]) => unknown> = {
+  init: cmdInit,
+  setup: cmdInit,
+  doctor: cmdDoctor,
+  platforms: cmdPlatforms,
+  config: cmdConfig,
+  query: cmdQuery,
+  queries: cmdQuery,
+  domain: cmdDomain,
+  domains: cmdDomain,
+  run: cmdRun,
+  report: cmdReport,
+  competitors: cmdCompetitors,
+  history: cmdHistory,
+  cost: cmdCost,
+  export: cmdExport,
+  raw: cmdRaw,
+};
+
+const handler = cmd ? commands[cmd] : undefined;
+if (!handler) {
+  console.log(HELP);
+  process.exit(cmd && !["help", "--help", "-h"].includes(cmd) ? 1 : 0);
+}
+try {
+  await handler(rest);
+} catch (e) {
+  fail((e as Error).message);
+}

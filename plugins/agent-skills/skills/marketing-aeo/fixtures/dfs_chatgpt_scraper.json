@@ -1,0 +1,539 @@
+{
+ "version": "0.1.20260917",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "25.1869 sec.",
+ "cost": 0.004,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "00000000-0000-0000-0000-000000000000",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "25.1165 sec.",
+   "cost": 0.004,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "ai_optimization",
+    "chat_gpt",
+    "llm_scraper",
+    "live",
+    "advanced"
+   ],
+   "data": {
+    "api": "ai_optimization",
+    "function": "live",
+    "se": "chat_gpt",
+    "keyword": "how to monitor company insolvency notices in Australia",
+    "location_code": 2840,
+    "language_code": "en",
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "how to monitor company insolvency notices in Australia",
+     "location_code": 2840,
+     "language_code": "en",
+     "model": "gpt-6",
+     "check_url": "https://chatgpt.com/?prompt=how%20to%20monitor%20company%20insolvency%20notices%20in%20Australia",
+     "datetime": "2026-10-19 21:08:52 +00:00",
+     "markdown": "If you need to monitor company insolvency notices in Australia, the best approach is to combine **official ASIC notices, the Australian Government’s insolvency notices register, and automated alerts for the companies you care about**\\.\n\nThis is particularly useful if you're monitoring customers, suppliers, borrowers, competitors, or companies in a credit-risk portfolio.\n\n## 1\\. The main sources to monitor\n\n![ASIC needs major overhaul: Senate report - ABC listen](https://images.openai.com/static-rsc-4/UcdLIZGb9IOkRdGOnfczn0-iZTFKAfW-V8gtuU6n-EQ51ZaiF_ZLpn0tK3boU1UECWe3XCSfGnsViqkXhl2cMHfHKMHswuerB4q3v-BzgLS6LYmzs_BKSPhCKGGajLBSMTHjzH3WGY2s8NY4exLFmoFKz0kOdLzrSHlOrR4RAHwg_eKVJnP8csySHf4GljMP?purpose=fullsize)\n\n**1\\. ASIC — Australian Securities and Investments Commission**\n\nOfficial regulator\n\nStart with the [ASIC website](https://asic.gov.au/) and its company and insolvency resources. ASIC publishes information about external administration, liquidators, receivers, and other corporate insolvency matters.\n\nBest for checking company details, appointed insolvency practitioners, and regulatory records.\n\n---\n\n![Associations Forum - Trading Names to be retired in October](https://images.openai.com/static-rsc-4/prLF7ov_lu5Pos9FICl0V4eOaMxh_ig2G6eAZ34DAX-eryZf_pS9PuhpfIXqJ8KKYozoK_UR_EmtJXpC2bbnRh9X4E3kugx7cJqDQMT7W3XSaiZYXE9GaDwH1s8hoyuX_JiwVtX9XRWSbVwA6Vt6fEH59oq5Ovjz73f5cKVfO-GdC1bPueO3WNhtOx4sjxVC?purpose=fullsize)\n\n**2\\. Published notices — ASIC's Published Notices website**\n\nPri",
+     "search_results": [
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices",
+       "domain": "www.asic.gov.au",
+       "title": "Insolvency notices | ASIC",
+       "description": null,
+       "breadcrumb": "www.asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://www.asic.gov.au/online-services/search-asic-registers",
+       "domain": "www.asic.gov.au",
+       "title": "Search ASIC registers | ASIC",
+       "description": null,
+       "breadcrumb": "www.asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/insolvency-forms-and-published-notices/lodging-notices-for-publication-on-the-asic-published-notices-website",
+       "domain": "www.asic.gov.au",
+       "title": "Lodging notices for publication on the ASIC Published notices website | ASIC",
+       "description": null,
+       "breadcrumb": "www.asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://www.asic.gov.au/regulatory-resources/insolvency",
+       "domain": "www.asic.gov.au",
+       "title": "Insolvency | ASIC",
+       "description": null,
+       "breadcrumb": "www.asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/external-administration-controller-appointments-and-schemes-of-arrangement-most-commonly-lodged-forms",
+       "domain": "www.asic.gov.au",
+       "title": "External administration, controller appointments and schemes of arrangement: Most commonly lodged forms | ASIC",
+       "description": null,
+       "breadcrumb": "www.asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://www.asic.gov.au/gazettes",
+       "domain": "www.asic.gov.au",
+       "title": "ASIC Gazette | ASIC",
+       "description": null,
+       "breadcrumb": "www.asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information",
+       "domain": "www.asic.gov.au",
+       "title": "More insolvency information | ASIC",
+       "description": null,
+       "breadcrumb": "www.asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://asic.gov.au/online-services/search-asic-s-registers/",
+       "domain": "asic.gov.au",
+       "title": "Search ASIC registers | ASIC",
+       "description": null,
+       "breadcrumb": "asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices/",
+       "domain": "asic.gov.au",
+       "title": "Insolvency notices | ASIC",
+       "description": null,
+       "breadcrumb": "asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://asic.gov.au/regulatory-resources/insolvency/",
+       "domain": "asic.gov.au",
+       "title": "Insolvency | ASIC",
+       "description": null,
+       "breadcrumb": "asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://asic.gov.au/for-consumers/dealing-with-insolvent-companies/",
+       "domain": "asic.gov.au",
+       "title": "Dealing with insolvent companies | ASIC",
+       "description": null,
+       "breadcrumb": "asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-as-a-registered-liquidator/registered-liquidators-lodging-notices-for-publication-on-insolvency-notices-website/",
+       "domain": "asic.gov.au",
+       "title": "Registered liquidators - Lodging notices for publication on insolvency notices website | ASIC",
+       "description": null,
+       "breadcrumb": "asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://asic.gov.au/about-asic/corporate-publications/newsletters/asic-corporate-insolvency-update/",
+       "domain": "asic.gov.au",
+       "title": "ASIC Corporate Insolvency Update | ASIC",
+       "description": null,
+       "breadcrumb": "asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://connectonline.asic.gov.au/HLP/SearchRegisters/sch-using-this-service/sch-whatyoucansearch/other-information/index.htm",
+       "domain": "connectonline.asic.gov.au",
+       "title": "ASIC External Portal Help - Other information",
+       "description": null,
+       "breadcrumb": "connectonline.asic.gov.au"
+      },
+      {
+       "type": "chatgpt_search_result",
+       "url": "https://download.asic.gov.au/media/gfsjajnz/b04.pdf",
+       "domain": "download.asic.gov.au",
+       "title": "ASIC Business Gazette",
+       "description": null,
+       "breadcrumb": "download.asic.gov.au"
+      }
+     ],
+     "sources": [
+      {
+       "type": "chat_gpt_source",
+       "title": "ASIC website",
+       "snippet": null,
+       "domain": "asic.gov.au",
+       "url": "https://asic.gov.au/",
+       "thumbnail": null,
+       "source_name": null,
+       "publication_date": null,
+       "markdown": "[ASIC website](https://asic.gov.au/)"
+      },
+      {
+       "type": "chat_gpt_source",
+       "title": "Published Notices",
+       "snippet": null,
+       "domain": "publishednotices.asic.gov.au",
+       "url": "https://publishednotices.asic.gov.au/",
+       "thumbnail": null,
+       "source_name": null,
+       "publication_date": null,
+       "markdown": "[Published Notices](https://publishednotices.asic.gov.au/)"
+      },
+      {
+       "type": "chat_gpt_source",
+       "title": "ASIC's company information services",
+       "snippet": null,
+       "domain": "asic.gov.au",
+       "url": "https://asic.gov.au/for-business-and-companies/companies/company-officeholder-and-company-address-changes/company-search/",
+       "thumbnail": null,
+       "source_name": null,
+       "publication_date": null,
+       "markdown": "[ASIC's company information services](https://asic.gov.au/for-business-and-companies/companies/company-officeholder-and-company-address-changes/company-search/)"
+      },
+      {
+       "type": "chat_gpt_source",
+       "title": "Set up company alerts via ASIC",
+       "snippet": null,
+       "domain": "asic.gov.au",
+       "url": "https://asic.gov.au/online-services/search-asic-s-registers/",
+       "thumbnail": null,
+       "source_name": null,
+       "publication_date": null,
+       "markdown": "[Set up company alerts via ASIC](https://asic.gov.au/online-services/search-asic-s-registers/)"
+      },
+      {
+       "type": "chat_gpt_source",
+       "title": "Lodging notices for publication on the ASIC Published notices website",
+       "snippet": null,
+       "domain": "www.asic.gov.au",
+       "url": "https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/insolvency-forms-and-published-notices/lodging-notices-for-publication-on-the-asic-published-notices-website?utm_source=chatgpt.com",
+       "thumbnail": null,
+       "source_name": "ASIC",
+       "publication_date": null,
+       "markdown": null
+      },
+      {
+       "type": "chat_gpt_source",
+       "title": "Search ASIC registers",
+       "snippet": null,
+       "domain": "asic.gov.au",
+       "url": "https://asic.gov.au/online-services/search-asic-s-registers/?utm_source=chatgpt.com",
+       "thumbnail": null,
+       "source_name": "ASIC",
+       "publication_date": "2025-06-15 00:00:00 +00:00",
+       "markdown": null
+      },
+      {
+       "type": "chat_gpt_source",
+       "title": "Dealing with insolvent companies",
+       "snippet": null,
+       "domain": "asic.gov.au",
+       "url": "https://asic.gov.au/for-consumers/dealing-with-insolvent-companies/?utm_source=chatgpt.com",
+       "thumbnail": null,
+       "source_name": "ASIC",
+       "publication_date": "2024-12-17 00:00:00 +00:00",
+       "markdown": null
+      },
+      {
+       "type": "chat_gpt_source",
+       "title": "Insolvency",
+       "snippet": null,
+       "domain": "www.asic.gov.au",
+       "url": "https://www.asic.gov.au/regulatory-resources/insolvency?utm_source=chatgpt.com",
+       "thumbnail": null,
+       "source_name": "ASIC",
+       "publication_date": null,
+       "markdown": null
+      }
+     ],
+     "fan_out_queries": [
+      "Australia ASIC Published Notices insolvency notices official register monitor company notices",
+      "ASIC insolvency notices Australia subscribe alerts company liquidation notices official"
+     ],
+     "brand_entities": null,
+     "se_results_count": 0,
+     "item_types": [
+      "chat_gpt_text",
+      "chat_gpt_images",
+      "chat_gpt_table"
+     ],
+     "items_count": 9,
+     "items": [
+      {
+       "type": "chat_gpt_text",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "markdown": "If you need to monitor company insolvency notices in Australia, the best approach is to combine **official ASIC notices, the Australian Government’s insolvency notices register, and automated alerts for the companies you care about**\\.\n\nThis is particularly useful if you're monitoring customers, sup",
+       "sources": null,
+       "brand_entities": null
+      },
+      {
+       "type": "chat_gpt_images",
+       "rank_group": 1,
+       "rank_absolute": 2,
+       "markdown": "![ASIC needs major overhaul: Senate report - ABC listen](https://images.openai.com/static-rsc-4/UcdLIZGb9IOkRdGOnfczn0-iZTFKAfW-V8gtuU6n-EQ51ZaiF_ZLpn0tK3boU1UECWe3XCSfGnsViqkXhl2cMHfHKMHswuerB4q3v-BzgLS6LYmzs_BKSPhCKGGajLBSMTHjzH3WGY2s8NY4exLFmoFKz0kOdLzrSHlOrR4RAHwg_eKVJnP8csySHf4GljMP?purpose=ful",
+       "items": [
+        {
+         "type": "chat_gpt_images_element",
+         "url": "https://www.abc.net.au/listen/programs/worldtoday/asic-needs-major-overhaul-senate-report/104058110",
+         "alt": "ASIC needs major overhaul: Senate report - ABC listen",
+         "image_url": "https://images.openai.com/static-rsc-4/UcdLIZGb9IOkRdGOnfczn0-iZTFKAfW-V8gtuU6n-EQ51ZaiF_ZLpn0tK3boU1UECWe3XCSfGnsViqkXhl2cMHfHKMHswuerB4q3v-BzgLS6LYmzs_BKSPhCKGGajLBSMTHjzH3WGY2s8NY4exLFmoFKz0kOdLzrSHlOrR4RAHwg_eKVJnP8csySHf4GljMP?purpose=fullsize",
+         "markdown": "![ASIC needs major overhaul: Senate report - ABC listen](https://images.openai.com/static-rsc-4/UcdLIZGb9IOkRdGOnfczn0-iZTFKAfW-V8gtuU6n-EQ51ZaiF_ZLpn0tK3boU1UECWe3XCSfGnsViqkXhl2cMHfHKMHswuerB4q3v-BzgLS6LYmzs_BKSPhCKGGajLBSMTHjzH3WGY2s8NY4exLFmoFKz0kOdLzrSHlOrR4RAHwg_eKVJnP8csySHf4GljMP?purpose=fullsize)"
+        }
+       ]
+      },
+      {
+       "type": "chat_gpt_text",
+       "rank_group": 2,
+       "rank_absolute": 3,
+       "markdown": "\n\n**1\\. ASIC — Australian Securities and Investments Commission**\n\nOfficial regulator\n\nStart with the [ASIC website](https://asic.gov.au/) and its company and insolvency resources. ASIC publishes information about external administration, liquidators, receivers, and other corporate insolvency matter",
+       "sources": [
+        {
+         "type": "chat_gpt_source",
+         "title": "ASIC website",
+         "snippet": null,
+         "domain": "asic.gov.au",
+         "url": "https://asic.gov.au/",
+         "thumbnail": null,
+         "source_name": null,
+         "publication_date": null,
+         "markdown": "[ASIC website](https://asic.gov.au/)"
+        }
+       ],
+       "brand_entities": null
+      },
+      {
+       "type": "chat_gpt_images",
+       "rank_group": 2,
+       "rank_absolute": 4,
+       "markdown": "![Associations Forum - Trading Names to be retired in October](https://images.openai.com/static-rsc-4/prLF7ov_lu5Pos9FICl0V4eOaMxh_ig2G6eAZ34DAX-eryZf_pS9PuhpfIXqJ8KKYozoK_UR_EmtJXpC2bbnRh9X4E3kugx7cJqDQMT7W3XSaiZYXE9GaDwH1s8hoyuX_JiwVtX9XRWSbVwA6Vt6fEH59oq5Ovjz73f5cKVfO-GdC1bPueO3WNhtOx4sjxVC?purpo",
+       "items": [
+        {
+         "type": "chat_gpt_images_element",
+         "url": "https://associations.net.au/news/sector-news/2023/trading-names-to-be-retired-in-october.html",
+         "alt": "Associations Forum - Trading Names to be retired in October",
+         "image_url": "https://images.openai.com/static-rsc-4/prLF7ov_lu5Pos9FICl0V4eOaMxh_ig2G6eAZ34DAX-eryZf_pS9PuhpfIXqJ8KKYozoK_UR_EmtJXpC2bbnRh9X4E3kugx7cJqDQMT7W3XSaiZYXE9GaDwH1s8hoyuX_JiwVtX9XRWSbVwA6Vt6fEH59oq5Ovjz73f5cKVfO-GdC1bPueO3WNhtOx4sjxVC?purpose=fullsize",
+         "markdown": "![Associations Forum - Trading Names to be retired in October](https://images.openai.com/static-rsc-4/prLF7ov_lu5Pos9FICl0V4eOaMxh_ig2G6eAZ34DAX-eryZf_pS9PuhpfIXqJ8KKYozoK_UR_EmtJXpC2bbnRh9X4E3kugx7cJqDQMT7W3XSaiZYXE9GaDwH1s8hoyuX_JiwVtX9XRWSbVwA6Vt6fEH59oq5Ovjz73f5cKVfO-GdC1bPueO3WNhtOx4sjxVC?purpose=fullsize)"
+        }
+       ]
+      },
+      {
+       "type": "chat_gpt_text",
+       "rank_group": 3,
+       "rank_absolute": 5,
+       "markdown": "\n\n**2\\. Published notices — ASIC's Published Notices website**\n\nPrimary notice-monitoring source\n\nVisit [Published Notices](https://publishednotices.asic.gov.au/)\\.\n\nSearch for notices concerning liquidations, voluntary administration, receiverships, deeds of company arrangement, and creditor meetin",
+       "sources": [
+        {
+         "type": "chat_gpt_source",
+         "title": "Published Notices",
+         "snippet": null,
+         "domain": "publishednotices.asic.gov.au",
+         "url": "https://publishednotices.asic.gov.au/",
+         "thumbnail": null,
+         "source_name": null,
+         "publication_date": null,
+         "markdown": "[Published Notices](https://publishednotices.asic.gov.au/)"
+        }
+       ],
+       "brand_entities": null
+      },
+      {
+       "type": "chat_gpt_images",
+       "rank_group": 3,
+       "rank_absolute": 6,
+       "markdown": "![How do I obtain an ASIC Extract?  | OKX Australia](https://images.openai.com/static-rsc-4/moiGgXCLB6LOdfd-fjtdUzvNcsGJGvDDDOx5uAOA_m3o9e95B4efZ-3NMhPgO0an3mJTcPJVNjNm69eZGXDBcvbAFy4C59tmog-TKN4KyIV3mH6nYvqmcLV8uCtcxY4YcQVKMIHQdlqIE2pQkyy0FHXggdopkmcGBoIXMTEtVjmOnALqv75Fw1fHYNT0YbH5?purpose=fullsiz",
+       "items": [
+        {
+         "type": "chat_gpt_images_element",
+         "url": "https://www.okx.com/en-au/help/how-do-i-obtain-an-asic-extract",
+         "alt": "How do I obtain an ASIC Extract?  | OKX Australia",
+         "image_url": "https://images.openai.com/static-rsc-4/moiGgXCLB6LOdfd-fjtdUzvNcsGJGvDDDOx5uAOA_m3o9e95B4efZ-3NMhPgO0an3mJTcPJVNjNm69eZGXDBcvbAFy4C59tmog-TKN4KyIV3mH6nYvqmcLV8uCtcxY4YcQVKMIHQdlqIE2pQkyy0FHXggdopkmcGBoIXMTEtVjmOnALqv75Fw1fHYNT0YbH5?purpose=fullsize",
+         "markdown": "![How do I obtain an ASIC Extract?  | OKX Australia](https://images.openai.com/static-rsc-4/moiGgXCLB6LOdfd-fjtdUzvNcsGJGvDDDOx5uAOA_m3o9e95B4efZ-3NMhPgO0an3mJTcPJVNjNm69eZGXDBcvbAFy4C59tmog-TKN4KyIV3mH6nYvqmcLV8uCtcxY4YcQVKMIHQdlqIE2pQkyy0FHXggdopkmcGBoIXMTEtVjmOnALqv75Fw1fHYNT0YbH5?purpose=fullsize)"
+        }
+       ]
+      },
+      {
+       "type": "chat_gpt_text",
+       "rank_group": 4,
+       "rank_absolute": 7,
+       "markdown": "\n\n**3\\. ASIC company register and extracts**\n\nVerification and due diligence\n\nUse [ASIC's company information services](https://asic.gov.au/for-business-and-companies/companies/company-officeholder-and-company-address-changes/company-search/)\\.\n\nConfirm the entity's legal name, ACN, registration sta",
+       "sources": [
+        {
+         "type": "chat_gpt_source",
+         "title": "ASIC's company information services",
+         "snippet": null,
+         "domain": "asic.gov.au",
+         "url": "https://asic.gov.au/for-business-and-companies/companies/company-officeholder-and-company-address-changes/company-search/",
+         "thumbnail": null,
+         "source_name": null,
+         "publication_date": null,
+         "markdown": "[ASIC's company information services](https://asic.gov.au/for-business-and-companies/companies/company-officeholder-and-company-address-changes/company-search/)"
+        },
+        {
+         "type": "chat_gpt_source",
+         "title": "Set up company alerts via ASIC",
+         "snippet": null,
+         "domain": "asic.gov.au",
+         "url": "https://asic.gov.au/online-services/search-asic-s-registers/",
+         "thumbnail": null,
+         "source_name": null,
+         "publication_date": null,
+         "markdown": "[Set up company alerts via ASIC](https://asic.gov.au/online-services/search-asic-s-registers/)"
+        },
+        {
+         "type": "chat_gpt_source",
+         "title": "ASIC Published Notices register",
+         "snippet": null,
+         "domain": "publishednotices.asic.gov.au",
+         "url": "https://publishednotices.asic.gov.au/",
+         "thumbnail": null,
+         "source_name": null,
+         "publication_date": null,
+         "markdown": "[ASIC Published Notices register](https://publishednotices.asic.gov.au/)"
+        },
+        {
+         "type": "chat_gpt_source",
+         "title": "Lodging notices for publication on the ASIC Published notices website",
+         "snippet": null,
+         "domain": "www.asic.gov.au",
+         "url": "https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/insolvency-forms-and-published-notices/lodging-notices-for-publication-on-the-asic-published-notices-website?utm_source=chatgpt.com",
+         "thumbnail": null,
+         "source_name": "ASIC",
+         "publication_date": null,
+         "markdown": null
+        },
+        {
+         "type": "chat_gpt_source",
+         "title": "Search ASIC registers",
+         "snippet": null,
+         "domain": "asic.gov.au",
+         "url": "https://asic.gov.au/online-services/search-asic-s-registers/?utm_source=chatgpt.com",
+         "thumbnail": null,
+         "source_name": "ASIC",
+         "publication_date": "2025-06-15 00:00:00 +00:00",
+         "markdown": null
+        },
+        {
+         "type": "chat_gpt_source",
+         "title": "Dealing with insolvent companies",
+         "snippet": null,
+         "domain": "asic.gov.au",
+         "url": "https://asic.gov.au/for-consumers/dealing-with-insolvent-companies/?utm_source=chatgpt.com",
+         "thumbnail": null,
+         "source_name": "ASIC",
+         "publication_date": "2024-12-17 00:00:00 +00:00",
+         "markdown": null
+        },
+        {
+         "type": "chat_gpt_source",
+         "title": "Insolvency",
+         "snippet": null,
+         "domain": "www.asic.gov.au",
+         "url": "https://www.asic.gov.au/regulatory-resources/insolvency?utm_source=chatgpt.com",
+         "thumbnail": null,
+         "source_name": "ASIC",
+         "publication_date": null,
+         "markdown": null
+        }
+       ],
+       "brand_entities": null
+      },
+      {
+       "type": "chat_gpt_table",
+       "rank_group": 1,
+       "rank_absolute": 8,
+       "text": null,
+       "markdown": "| Notice or event | Why it matters |\n|--------|--------|\n| Court winding-up application | Potential early warning of a creditor dispute or impending liquidation |\n| Appointment of a voluntary administrator | Company has entered external administration |\n| Appointment of a liquidator | Winding-up pro",
+       "table": {
+        "table_header": [
+         "Notice or event",
+         "Why it matters"
+        ],
+        "table_content": [
+         [
+          "Court winding-up application",
+          "Potential early warning of a creditor dispute or impending liquidation"
+         ],
+         [
+          "Appointment of a voluntary administrator",
+          "Company has entered external administration"
+         ],
+         [
+          "Appointment of a liquidator",
+          "Winding-up process has commenced"
+         ],
+         [
+          "Appointment of a receiver or controller",
+          "Secured creditor enforcement may be underway"
+         ],
+         [
+          "Small-business restructuring",
+          "A company may be attempting to restructure its debts"
+         ],
+         [
+          "Creditors' meetings and proof-of-debt notices",
+          "May involve deadlines for creditors to act"
+         ],
+         [
+          "Deregistration notices",
+          "The company's registration may be ending"
+         ]
+        ]
+       },
+       "brand_entities": null
+      },
+      {
+       "type": "chat_gpt_text",
+       "rank_group": 5,
+       "rank_absolute": 9,
+       "markdown": "\nASIC's published-notice guidance covers winding-up orders, appointments, creditors' meetings, proofs of debt, and deregistration notices. [www.asic.gov.au](https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/ins",
+       "sources": [
+        {
+         "type": "chat_gpt_source",
+         "title": "Lodging notices for publication on the ASIC Published notices website",
+         "snippet": null,
+         "domain": "www.asic.gov.au",
+         "url": "https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/insolvency-forms-and-published-notices/lodging-notices-for-publication-on-the-asic-published-notices-website?utm_source=chatgpt.com",
+         "thumbnail": null,
+         "source_name": "ASIC",
+         "publication_date": null,
+         "markdown": null
+        },
+        {
+         "type": "chat_gpt_source",
+         "title": "Insolvency",
+         "snippet": null,
+         "domain": "www.asic.gov.au",
+         "url": "https://www.asic.gov.au/regulatory-resources/insolvency?utm_source=chatgpt.com",
+         "thumbnail": null,
+         "source_name": "ASIC",
+         "publication_date": null,
+         "markdown": null
+        },
+        {
+         "type": "chat_gpt_source",
+         "title": "Dealing with insolvent companies",
+         "snippet": null,
+         "domain": "asic.gov.au",
+         "url": "https://asic.gov.au/for-consumers/dealing-with-insolvent-companies/?utm_source=chatgpt.com",
+         "thumbnail": null,
+         "source_name": "ASIC",
+         "publication_date": "2024-12-17 00:00:00 +00:00",
+         "markdown": null
+        }
+       ],
+       "brand_entities": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

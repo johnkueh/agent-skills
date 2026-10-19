@@ -48,7 +48,7 @@ These are the ones that earned a permanent spot in my setup. They lean on real k
 | [`marketing-reddit`](skills/marketing-reddit) | Pull posts, threads, and question clusters from Reddit through a headless browser that gets past the bot challenge. |
 | [`marketing-keyword-data`](skills/marketing-keyword-data) | DataForSEO keyword research — search volume, intent, difficulty, CPC, and suggestions for content planning. |
 | [`marketing-serp`](skills/marketing-serp) | Geo-targeted SERP analysis — who ranks where, content gaps, and features like featured snippets and PAA. |
-| [`marketing-aeo`](skills/marketing-aeo) | Track which AI chatbots (ChatGPT, Perplexity, Google AI Overview, Claude) cite a project, and how that moves. |
+| [`marketing-aeo`](skills/marketing-aeo) | Track whether ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews / AI Mode cite or mention your site for buyer questions, with one DataForSEO key. |
 | [`marketing-ai-crawler`](skills/marketing-ai-crawler) | See which AI bots (GPTBot, ClaudeBot, PerplexityBot, ...) crawl your Vercel sites and which paths they hit. |
 | [`marketing-youtube-transcribe`](skills/marketing-youtube-transcribe) | Get a clean transcript from any YouTube video for research, fact-checking, or content. |
 | [`marketing-youtube-mine`](skills/marketing-youtube-mine) | Mine YouTube comments for unanswered questions, clustered — drop-in compatible with `marketing-reddit`'s output for SEO loops. |

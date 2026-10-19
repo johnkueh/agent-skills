@@ -1,0 +1,191 @@
+{
+ "version": "0.1.20260917",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "19.2384 sec.",
+ "cost": 0.004,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "00000000-0000-0000-0000-000000000000",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "19.1933 sec.",
+   "cost": 0.004,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "ai_mode",
+    "live",
+    "advanced"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "live",
+    "se": "google",
+    "se_type": "ai_mode",
+    "keyword": "how to monitor company insolvency notices in Australia",
+    "location_code": 2036,
+    "language_code": "en",
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "how to monitor company insolvency notices in Australia",
+     "type": "ai_mode",
+     "se_domain": "google.com",
+     "location_code": 2036,
+     "language_code": "en",
+     "check_url": "https://www.google.com/search?q=how%20to%20monitor%20company%20insolvency%20notices%20in%20Australia&hl=en&gl=AU&udm=50&uule=w+CAIQIFISCd_Fh2cH_SsrEVITW5WhZ4JT",
+     "datetime": "2026-10-19 21:08:46 +00:00",
+     "spell": null,
+     "refinement_chips": null,
+     "item_types": [
+      "ai_overview"
+     ],
+     "se_results_count": 0,
+     "items_count": 1,
+     "items": [
+      {
+       "type": "ai_overview",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "page": 1,
+       "position": "left",
+       "xpath": "/html[1]/body[1]/div[2]/div[1]/div[9]/div[1]/section[1]/div[1]/div[1]/div[3]/div[4]/div[1]/div[2]/div[1]/div[3]",
+       "markdown": "Monitoring company insolvency and external administration notices in Australia involves `using a mix of official government registers, corporate databases, and automated alert services`.\n\nThe primary methods and tools available to track and monitor these notices include:\n\n1. **ASIC Published Notices Website** \n\t- **What it is:** The official portal hosted by the Australian Securities and Investments Commission where all formal corporate insolvency, external administration, and deregistration notices are lodged under the Corporations Act.\n\t- **How to use it:** You can search and browse notices free of charge without registering by visiting the [ASIC Published Notices Website](https://publishednotices.asic.gov.au/) . It covers records from July 1, 2012, onwards (replacing old newspaper and Gazette print notices).\n\t- **Limitation:** It is a manual search registry rather than an automated push-notification service for specific watchlists.[[1]](https://publishednotices.asic.gov.au/)[[2]](https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices)\n2. **ASIC Corporate Connect / ASIC Registers Search** \n\t- **What it is:** The primary registry database for company status.\n\t- **How to use it:** Use the [ASIC Regulators and Registers](https://asic.gov.au/) portal to look up a specific company name or ACN. Basic information (like whether a company is registered, struck off, or under external administration/liquidation) is free, though downloading historical documents or specific appointment forms (like Form 505 for administrator appointments) incurs a small fee.[[1]](https://ggadvisory.com.au/company-liquidation/check-if-a-company-is-in-liquidation/)\n3. **Commercial Insolvency Alert & Watchlist Services** \n\t- **What it is:** Third-party aggregator platforms built specifically to provide real-time automated tracking and email alerts.\n\t- **How to use it:** Dedicated platforms like Australian Insolvency Notices allow you to add specific ACNs or company names to a digital watchlist, sending automated alerts within minutes of a notice or external administration appointment being published.\n\t- **Alternative Providers:** Major credit reporting bureaus and business intelligence platforms (such as CreditorWatch, Equifax, or illion) also offer continuous portfolio monitoring that triggers alerts if a monitored business enters administration, defaults, or undergoes court actions.[[1]](https://www.insolvencynotices.com.au/)\n\nWould you like recommendations on **free versus paid monitoring tools** , or are you looking to track a **specific company or portfolio** right now?",
+       "items": [
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "Monitoring company insolvency and external administration notices in Australia involves using a mix of official government registers, corporate databases, and automated alert services.",
+         "markdown": "Monitoring company insolvency and external administration notices in Australia involves `using a mix of official government registers, corporate databases, and automated alert services`.",
+         "links": null,
+         "images": null,
+         "references": null
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "The primary methods and tools available to track and monitor these notices include:",
+         "markdown": "The primary methods and tools available to track and monitor these notices include:",
+         "links": null,
+         "images": null,
+         "references": null
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "ASIC Published Notices Website What it is: The official portal hosted by the Australian Securities and Investments Commission where all formal corporate insolvency, external administration, and deregistration notices are lodged under the Corporations Act. How to use it: You can search and browse notices free of charge without registering by visiting the ASIC Published Notices Website. It covers records from July 1, 2012, onwards (replacing old newspaper and Gazette print notices). Limitation: It is a manual search registry rather than an automated push-notification service for specific watchlists. ASIC Corporate Connect / ASIC Registers Search What it is: The primary registry database for company status. How to use it: Use the ASIC Regulators and Registers portal to look up a specific company name or ACN. Basic information (like whether a company is registered, struck off, or under external administration/liquidation) is free, though downloading historical documents or specific appointment forms (like Form 505 for administrator appointments) incurs a small fee. Commercial Insolvency Alert & Watchlist Services What it is: Third-party aggregator platforms built specifically to provide real-time automated tracking and email alerts. How to use it: Dedicated platforms like Australian Insolvency Notices allow you to add specific ACNs or company names to a digital watchlist, sending automated alerts within minutes of a notice or external administration appointment being published. Australian Insolvency Notices Alternative Providers: Major credit reporting bureaus and business intelligence platforms (such as CreditorWatch, Equifax, or illion) also offer continuous portfolio monitoring that triggers alerts if a monitored business enters administration, defaults, or undergoes court actions.",
+         "markdown": "1. **ASIC Published Notices Website** \n\t- **What it is:** The official portal hosted by the Australian Securities and Investments Commission where all formal corporate insolvency, external administration, and deregistration notices are lodged under the Corporations Act.\n\t- **How to use it:** You can search and browse notices free of charge without registering by visiting the [ASIC Published Notices Website](https://publishednotices.asic.gov.au/) . It covers records from July 1, 2012, onwards (replacing old newspaper and Gazette print notices).\n\t- **Limitation:** It is a manual search registry rather than an automated push-notification service for specific watchlists.[[1]](https://publishednotices.asic.gov.au/)[[2]](https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices)\n2. **ASIC Corporate Connect / ASIC Registers Search** \n\t- **What it is:** The primary registry database for company status.\n\t- **How to use it:** Use the [ASIC Regulators and Registers](https://asic.gov.au/) portal to look up a specific company name or ACN. Basic information (like whether a company is registered, struck off, or under external administration/liquidation) is free, though downloading historical documents or specific appointment forms (like Form 505 for administrator appointments) incurs a small fee.[[1]](https://ggadvisory.com.au/company-liquidation/check-if-a-company-is-in-liquidation/)\n3. **Commercial Insolvency Alert & Watchlist Services** \n\t- **What it is:** Third-party aggregator platforms built specifically to provide real-time automated tracking and email alerts.\n\t- **How to use it:** Dedicated platforms like Australian Insolvency Notices allow you to add specific ACNs or company names to a digital watchlist, sending automated alerts within minutes of a notice or external administration appointment being published.\n\t- **Alternative Providers:** Major credit reporting bureaus and business intelligence platforms (such as CreditorWatch, Equifax, or illion) also offer continuous portfolio monitoring that triggers alerts if a monitored business enters administration, defaults, or undergoes court actions.[[1]](https://www.insolvencynotices.com.au/)",
+         "links": [
+          {
+           "type": "link_element",
+           "title": "ASIC Published Notices Website",
+           "description": null,
+           "url": "https://publishednotices.asic.gov.au/",
+           "domain": "publishednotices.asic.gov.au"
+          },
+          {
+           "type": "link_element",
+           "title": "ASIC Regulators and Registers",
+           "description": null,
+           "url": "https://asic.gov.au/",
+           "domain": "asic.gov.au"
+          }
+         ],
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "ASIC",
+           "domain": "publishednotices.asic.gov.au",
+           "url": "https://publishednotices.asic.gov.au/",
+           "title": "Published Notices - ASIC",
+           "text": "Public searching is available without registration via the browse/search tab for notices published"
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "ASIC",
+           "domain": "www.asic.gov.au",
+           "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices",
+           "title": "Insolvency notices - ASIC",
+           "text": "You can search and browse insolvency and deregistration notices on the ASIC-sponsored published notices website. The website only ..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Greengate Advisory",
+           "domain": "ggadvisory.com.au",
+           "url": "https://ggadvisory.com.au/company-liquidation/check-if-a-company-is-in-liquidation/",
+           "title": "How to Check if a Company Is in Liquidation",
+           "text": "Step 1: search ASIC's Published notices website Step 2: check the company on ASIC's companies register Search the company by name,"
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "InsolvencyNotices.com.au",
+           "domain": "www.insolvencynotices.com.au",
+           "url": "https://www.insolvencynotices.com.au/",
+           "title": "Australian Insolvency Notices & Company Monitoring ...",
+           "text": "Most notices trigger alerts within minutes of being published, Search for a company, add it to your watchlist, and we will start m..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "Would you like recommendations on free versus paid monitoring tools, or are you looking to track a specific company or portfolio right now?",
+         "markdown": "Would you like recommendations on **free versus paid monitoring tools** , or are you looking to track a **specific company or portfolio** right now?",
+         "links": null,
+         "images": null,
+         "references": null
+        }
+       ],
+       "references": [
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "ASIC",
+         "domain": "publishednotices.asic.gov.au",
+         "url": "https://publishednotices.asic.gov.au/",
+         "title": "Published Notices - ASIC",
+         "text": "Public searching is available without registration via the browse/search tab for notices published"
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "ASIC",
+         "domain": "www.asic.gov.au",
+         "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices",
+         "title": "Insolvency notices - ASIC",
+         "text": "You can search and browse insolvency and deregistration notices on the ASIC-sponsored published notices website. The website only holds notices published from 1 Ju..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "InsolvencyNotices.com.au",
+         "domain": "www.insolvencynotices.com.au",
+         "url": "https://www.insolvencynotices.com.au/",
+         "title": "Australian Insolvency Notices & Company Monitoring ...",
+         "text": "Most notices trigger alerts within minutes of being published, Search for a company, add it to your watchlist, and we will start monitoring notices and company cha..."
+        }
+       ],
+       "rectangle": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
