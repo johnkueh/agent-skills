@@ -75,8 +75,8 @@ These are the ones that earned a permanent spot in my setup. They lean on real k
 | [`media-icon-search`](skills/media-icon-search) | Find the right icon across Lucide, Phosphor, Tabler, Heroicons, and HugeIcons by describing it, and get the exact React import back. |
 | [`media-image-gen`](skills/media-image-gen) | Generate and edit assets with native Codex Images 2.5 on the included plan, with reference images, batch runs and exact aspect ratios. |
 | [`media-video-gen`](skills/media-video-gen) | Generate cinematic videos with Veo 3.1 (text/image→video) — pairs with a still, quotes exact per-second cost up front, true-loop + web MP4/WebM/poster output. |
-| [`brand-design`](skills/brand-design) | A house UI/UX playbook for reviewing app and web screens — typography, spacing, dark mode, motion, the "looks AI-generated" smell test. |
-| [`brand-copy`](skills/brand-copy) | Write, edit, and humanize interface, landing-page, and marketing copy. |
+| [`brand-design`](skills/brand-design) | Design and review app and web screens: layout, typography, color and contrast, motion, accessibility, and one consolidated interface review. |
+| [`brand-copy`](skills/brand-copy) | Write and edit interface, landing-page, and marketing copy, with an unslop pass that removes AI tells. |
 
 ### Mac hygiene
 

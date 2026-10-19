@@ -15,12 +15,12 @@
     },
     {
       "name": "brand-copy",
-      "description": "Write and edit product and marketing copy, including interface strings, landing pages, headlines, CTAs, emails, release notes, and de-slopping an existing draft. Use for brand voice and conversion copy, not personal essays or product-behavior decisions. Triggers on \"write the copy\", \"landing page copy\", \"fix this CTA\", \"rewrite this headline\", \"humanize this\", \"remove AI tells\", \"error message\", \"empty state\", and \"make this sound less generic\".",
+      "description": "Write and edit product and marketing copy, including interface strings, landing pages, headlines, CTAs, emails, release notes, guides, and de-slopping an existing draft. Use for brand voice, interface writing, and conversion copy, not personal essays or product-behavior decisions. Triggers on \"write the copy\", \"landing page copy\", \"fix this CTA\", \"rewrite this headline\", \"unslop\", \"humanize this\", \"remove AI tells\", \"error message\", \"empty state\", and \"make this sound less generic\".",
       "source": "./plugins/brand-copy"
     },
     {
       "name": "brand-design",
-      "description": "Design and review polished UI/UX using task-focused design principles. Use for app or web screens, dashboards, layouts, components, typography, color, spacing, dark mode, motion, mobile patterns, or generic-looking UI.",
+      "description": "Design, build, and review polished UI/UX: screens, dashboards, layouts, components, typography, color, contrast, spacing, dark mode, motion, icons, accessibility, mobile patterns, or generic-looking UI. Includes a consolidated interface review.",
       "source": "./plugins/brand-design"
     },
     {
