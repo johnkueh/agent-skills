@@ -1,0 +1,144 @@
+{
+ "version": "0.1.20260917",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "7.5104 sec.",
+ "cost": 0.002,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "00000000-0000-0000-0000-000000000000",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "7.4492 sec.",
+   "cost": 0.002,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "organic",
+    "live",
+    "advanced"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "live",
+    "se": "google",
+    "se_type": "organic",
+    "keyword": "how to monitor company insolvency notices in Australia",
+    "location_code": 2036,
+    "language_code": "en",
+    "load_async_ai_overview": true,
+    "depth": 10,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "how to monitor company insolvency notices in Australia",
+     "type": "organic",
+     "se_domain": "google.com",
+     "location_code": 2036,
+     "language_code": "en",
+     "check_url": "https://www.google.com/search?q=how%20to%20monitor%20company%20insolvency%20notices%20in%20Australia&hl=en&gl=AU&ie=UTF-8&uule=w+CAIQIFISCd_Fh2cH_SsrEVITW5WhZ4JT",
+     "datetime": "2026-10-19 21:08:35 +00:00",
+     "spell": null,
+     "refinement_chips": null,
+     "item_types": [
+      "organic",
+      "related_searches"
+     ],
+     "se_results_count": 107,
+     "pages_count": 1,
+     "items_count": 2,
+     "items": [
+      {
+       "type": "organic",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "page": 1,
+       "position": "left",
+       "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]",
+       "domain": "publishednotices.asic.gov.au",
+       "title": "Published Notices - ASIC",
+       "url": "https://publishednotices.asic.gov.au/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://publishednotices.asic.gov.au",
+       "website_name": "ASIC",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Conduct a search ... If you only want to search the publication website, you don't need to register; just click on the browse/search tab and start searching. Note ... Read more",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": null,
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://publishednotices.asic.gov.au/#:~:text=Conduct%20a%20search&text=If%20you%20only%20want%20to,(when%20the%20website%20commenced%20operation).",
+         "domain": "publishednotices.asic.gov.au"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null,
+       "rectangle": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 2,
+       "rank_absolute": 2,
+       "page": 1,
+       "position": "left",
+       "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]",
+       "domain": "www.insolvencynotices.com.au",
+       "title": "Australian Insolvency Notices & Company Monitoring ...",
+       "url": "https://www.insolvencynotices.com.au/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.insolvencynotices.com.au",
+       "website_name": "InsolvencyNotices.com.au",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "We monitor ASIC notices, appointments, court actions and company changes in real time and alert you the moment something happens.",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "We monitor ASIC notices, appointments, court actions and company changes"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null,
+       "rectangle": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

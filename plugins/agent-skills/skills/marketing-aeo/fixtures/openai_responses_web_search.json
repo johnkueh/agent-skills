@@ -1,0 +1,314 @@
+{
+ "object": "response",
+ "created_at": 1792444250,
+ "status": "completed",
+ "background": false,
+ "completed_at": 1792444267,
+ "error": null,
+ "frequency_penalty": 0.0,
+ "incomplete_details": null,
+ "instructions": null,
+ "max_output_tokens": null,
+ "max_tool_calls": null,
+ "model": "gpt-5-mini-2025-08-07",
+ "moderation": null,
+ "output": [
+  {
+   "id": "redacted",
+   "type": "reasoning",
+   "content": [],
+   "summary": []
+  },
+  {
+   "id": "redacted",
+   "type": "web_search_call",
+   "status": "completed",
+   "action": {
+    "type": "search",
+    "queries": [
+     "ASIC insolvency notices company external admin appointments ASIC Gazette",
+     "Australian insolvency notices where to find AFSA personal insolvency NPII",
+     "how to monitor company insolvency notices Australia subscribe ASIC Gazette RSS email alerts"
+    ],
+    "query": "ASIC insolvency notices company external admin appointments ASIC Gazette",
+    "sources": [
+     {
+      "type": "url",
+      "url": "https://www.asic.gov.au/online-services/online-services-information-and-support/company-alert-service"
+     },
+     {
+      "type": "url",
+      "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices"
+     },
+     {
+      "type": "url",
+      "url": "https://www.afsa.gov.au/online-services-help/bankruptcy-register-search"
+     },
+     {
+      "type": "url",
+      "url": "https://asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/"
+     },
+     {
+      "type": "url",
+      "url": "https://www.asic.gov.au/newsroom/subscribe"
+     },
+     {
+      "type": "url",
+      "url": "https://services.afsa.gov.au/brs/search"
+     },
+     {
+      "type": "url",
+      "url": "https://www.afsa.gov.au/professionals/resource-hub/practice-guidance/national-personal-insolvency-index"
+     },
+     {
+      "type": "url",
+      "url": "https://www.asic.gov.au/gazettes"
+     },
+     {
+      "type": "url",
+      "url": "https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/external-administration-controller-appointments-and-schemes-of-arrangement-most-commonly-lodged-forms/flowchart-5-administrator-in-a-voluntary-administration"
+     },
+     {
+      "type": "url",
+      "url": "https://www.austrac.gov.au/subscribing-media-release-alerts"
+     },
+     {
+      "type": "url",
+      "url": "https://download.asic.gov.au/media/0pnfqheo/a46_24.pdf"
+     },
+     {
+      "type": "url",
+      "url": "https://asic.gov.au/online-services/asic-portals/liquidators/"
+     },
+     {
+      "type": "url",
+      "url": "https://www.afsa.gov.au/"
+     },
+     {
+      "type": "url",
+      "url": "https://www.legislation.gov.au/C2004A00818/2024-12-11/2024-12-11/text/1/pdf/7"
+     },
+     {
+      "type": "url",
+      "url": "https://download.asic.gov.au/media/lg0pbbwl/b12.pdf"
+     },
+     {
+      "type": "url",
+      "url": "https://publishednotices.asic.gov.au/media/10635/faqs-creating-quick_guide_to_publishing_notices.pdf"
+     },
+     {
+      "type": "url",
+      "url": "https://download.asic.gov.au/media/1cbgo24l/b26-special-gazette.pdf"
+     },
+     {
+      "type": "url",
+      "url": "https://www.confirm.citec.com.au/citecConfirm/elearning/corporate/guides/confirm_national_bankruptcy_guide.pdf"
+     },
+     {
+      "type": "url",
+      "url": "https://www.reddit.com/r/AusFinance/comments/id4rew"
+     },
+     {
+      "type": "url",
+      "url": "https://www.reddit.com/r/AustralianAccounting/comments/1c12e2t"
+     },
+     {
+      "type": "url",
+      "url": "https://www.reddit.com/r/AskAnAustralian/comments/1w6lmck/how_are_australian_employees_supposed_to_recover/"
+     },
+     {
+      "type": "url",
+      "url": "https://www.reddit.com/r/AusFinance/comments/1dottr5"
+     },
+     {
+      "type": "url",
+      "url": "https://en.wikipedia.org/wiki/Australian_Financial_Security_Authority"
+     },
+     {
+      "type": "url",
+      "url": "https://www.reddit.com/r/ausstocks/comments/1b0npcb"
+     },
+     {
+      "type": "url",
+      "url": "https://www.reddit.com/r/ausstocks/comments/uvznwj"
+     },
+     {
+      "type": "url",
+      "url": "https://www.reddit.com/r/AusFinance/comments/12j6gf0"
+     },
+     {
+      "type": "url",
+      "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices?utm_source=openai"
+     },
+     {
+      "type": "url",
+      "url": "https://www.asic.gov.au/online-services/online-services-information-and-support/company-alert-service?utm_source=openai"
+     },
+     {
+      "type": "url",
+      "url": "https://services.afsa.gov.au/brs/search?utm_source=openai"
+     },
+     {
+      "type": "url",
+      "url": "https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/external-administration-controller-appointments-and-schemes-of-arrangement-most-commonly-lodged-forms/flowchart-5-administrator-in-a-voluntary-administration?utm_source=openai"
+     }
+    ]
+   }
+  },
+  {
+   "id": "redacted",
+   "type": "reasoning",
+   "content": [],
+   "summary": []
+  },
+  {
+   "id": "redacted",
+   "type": "message",
+   "status": "completed",
+   "content": [
+    {
+     "type": "output_text",
+     "annotations": [
+      {
+       "type": "url_citation",
+       "end_index": 688,
+       "start_index": 551,
+       "title": "Insolvency notices | ASIC",
+       "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 986,
+       "start_index": 850,
+       "title": "Company alert service | ASIC",
+       "url": "https://www.asic.gov.au/online-services/online-services-information-and-support/company-alert-service?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 1260,
+       "start_index": 1177,
+       "title": "Bankruptcy Register Search | AFSA",
+       "url": "https://services.afsa.gov.au/brs/search?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 1783,
+       "start_index": 1646,
+       "title": "Insolvency notices | ASIC",
+       "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 2132,
+       "start_index": 1996,
+       "title": "Company alert service | ASIC",
+       "url": "https://www.asic.gov.au/online-services/online-services-information-and-support/company-alert-service?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 2438,
+       "start_index": 2355,
+       "title": "Bankruptcy Register Search | AFSA",
+       "url": "https://services.afsa.gov.au/brs/search?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 2791,
+       "start_index": 2654,
+       "title": "Insolvency notices | ASIC",
+       "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 3963,
+       "start_index": 3827,
+       "title": "Company alert service | ASIC",
+       "url": "https://www.asic.gov.au/online-services/online-services-information-and-support/company-alert-service?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 5255,
+       "start_index": 4923,
+       "title": "Flowchart 5: Administrator in a voluntary administration | ASIC",
+       "url": "https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/external-administration-controller-appointments-and-schemes-of-arrangement-most-commonly-lodged-forms/flowchart-5-administrator-in-a-voluntary-administration?utm_source=openai"
+      }
+     ],
+     "logprobs": [],
+     "text": "Short answer: use ASIC’s Published Notices site (insolvency notices + ASIC Gazette) and ASIC’s Company Alert/subscribe services, monitor AFSA’s Bankruptcy Register/NPII for personal insolvencies, and (optionally) add commercial credit-data feeds or automated web alerts. Below are practical steps, sources, and quick implementation options.\n\nKey official sources (use these first)\n- ASIC — Published insolvency notices (search/browse the published notices site and the ASIC Gazette). External-administration and winding-up notices are published here. ([asic.gov.au](https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices?utm_source=openai))  \n- ASIC — Company Alert service and email subscriptions (you can receive email alerts for changes to specific companies and subscribe to ASIC news categories). ([asic.gov.au](https://www.asic.gov.au/online-services/online-services-information-and-support/company-alert-service?utm_source=openai))  \n- AFSA — Bankruptcy Register Search / National Personal Insolvency Index (NPII) — for individual/personal insolvencies. (Use AFSA if you need bankruptcies or personal insolvency records.) ([services.afsa.gov.au](https://services.afsa.gov.au/brs/search?utm_source=openai))\n\nConcrete monitoring plan\n1. Primary monitoring (official notices)\n   - Use the ASIC Published Notices site (publishednotices.asic.gov.au). Browse or search for company name, ACN/ABN, or filter by notice type (appointment of administrator, liquidation, deregistration, creditors’ meetings). External administrators must publish notices (usually within 3 business days of appointment). ([asic.gov.au](https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices?utm_source=openai))\n   - Subscribe to ASIC email alerts: create an account where available, use the Company Alert service for particular companies, and subscribe to ASIC’s insolvency/announcements RSS or email topics where offered. ([asic.gov.au](https://www.asic.gov.au/online-services/online-services-information-and-support/company-alert-service?utm_source=openai))\n\n2. Personal insolvency (if relevant)\n   - Use AFSA’s Bankruptcy Register Search / NPII for monitoring individuals connected with a company (directors, guarantors). AFSA has online searches and guidance for professionals. ([services.afsa.gov.au](https://services.afsa.gov.au/brs/search?utm_source=openai))\n\n3. Court and government sources\n   - For court-ordered wind-ups or public examinations, check Federal and state court daily listings and ASIC’s guidance on court applications (some documents are lodged with ASIC). ([asic.gov.au](https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices?utm_source=openai))\n\n4. Commercial/third‑party feeds (for scale or alerting)\n   - Consider commercial credit-data providers (Dun & Bradstreet, Equifax, Experian) or insolvency-data services that provide real-time feeds, bulk data, or API access if you need enterprise-scale monitoring or historical trend data.\n   - Many law/insolvency firms and business-data vendors also surface daily insolvency lists and offer email or API alerts.\n\nPractical implementation options (quick to advanced)\n- Manual (free / low effort):\n  - Visit publishednotices.asic.gov.au daily and run the same search filters (e.g., status = “in external administration” or notice type = “liquidator appointed”).\n  - Create Google Alerts for specific company names + terms (administrator, liquidation, winding up, liquidation notice). Not as authoritative as ASIC but useful as a supplement.\n\n- Semi-automated (moderate effort):\n  - Use ASIC’s Company Alert/email subscription for specific companies. Subscribe to ASIC newsroom/insolvency categories for policy and high‑level updates. ([asic.gov.au](https://www.asic.gov.au/online-services/online-services-information-and-support/company-alert-service?utm_source=openai))\n  - Configure a simple script or monitoring tool (e.g., Python with requests + BeautifulSoup or a site-change watcher) to check ASIC’s published-notices search results for keywords/ACNs and send email/webhook alerts. (Make sure to respect ASIC’s terms of use and rate limits.)\n\n- Fully automated / enterprise:\n  - Buy API/data feeds from commercial providers or subscribe to a credit bureau / insolvency-data service that offers real-time push notifications, webhooks, or daily CSVs.\n  - Integrate AFSA/BRS checks into onboarding or credit‑decision workflows for director/guarantor checks.\n\nWhat to watch for and timing\n- Notices you’ll commonly want: appointment of voluntary administrator, appointment of liquidator, meeting to consider a deed of company arrangement (DOCA), winding-up orders, deregistration notices, and creditors’ meetings. These are typically published soon after the event (e.g., administrators usually publish within 3 business days). ([asic.gov.au](https://www.asic.gov.au/for-finance-professionals/registered-liquidators/your-ongoing-obligations-and-compliance-as-a-registered-liquidator/external-administration-controller-appointments-and-schemes-of-arrangement-most-commonly-lodged-forms/flowchart-5-administrator-in-a-voluntary-administration?utm_source=openai))\n- If you’re monitoring many companies, use ACNs/ABNs as they’re unique identifiers and avoid name collisions.\n\nLegal / compliance considerations\n- Use official registers (ASIC/AFSA) for legally reliable information. Commercial and news alerts are useful for early warning but verify with ASIC/AFSA before taking action.\n- Be careful with personal data and privacy rules when automating searches involving individuals.\n\nHelpful next steps I can do for you\n- Set up sample search terms or filters for the ASIC Published Notices site (tell me how many companies/which ACNs).  \n- Draft a simple Python script or workflow (or a Google Sheet + IMPORTXML approach) to poll the published-notices search and email you results.  \n- Recommend commercial providers or estimate costs if you need enterprise monitoring for hundreds or thousands of companies.\n\nWould you like me to:\n- 1) show the exact Published Notices search URL/filters to use,  \n- 2) draft a small script to poll ASIC and email alerts, or  \n- 3) recommend commercial data providers (D&B, Equifax, etc.)?"
+    }
+   ],
+   "role": "assistant"
+  }
+ ],
+ "parallel_tool_calls": true,
+ "presence_penalty": 0.0,
+ "previous_response_id": null,
+ "prompt_cache_retention": "in_memory",
+ "reasoning": {
+  "context": "current_turn",
+  "effort": "low",
+  "mode": "standard",
+  "summary": null
+ },
+ "service_tier": "default",
+ "store": true,
+ "temperature": 1.0,
+ "text": {
+  "format": {
+   "type": "text"
+  },
+  "verbosity": "medium"
+ },
+ "tool_choice": "auto",
+ "tool_usage": {
+  "image_gen": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 0
+   },
+   "total_tokens": 0
+  },
+  "web_search": {
+   "num_requests": 1
+  }
+ },
+ "tools": [
+  {
+   "type": "web_search",
+   "return_token_budget": "default",
+   "search_content_types": [
+    "text"
+   ],
+   "search_context_size": "medium",
+   "user_location": {
+    "type": "approximate",
+    "city": null,
+    "country": "US",
+    "region": null,
+    "timezone": null
+   }
+  }
+ ],
+ "top_logprobs": 0,
+ "top_p": 1.0,
+ "truncation": "disabled",
+ "usage": {
+  "input_tokens": 8853,
+  "input_tokens_details": {
+   "cache_write_tokens": 0,
+   "cached_tokens": 0
+  },
+  "output_tokens": 1666,
+  "output_tokens_details": {
+   "reasoning_tokens": 384
+  },
+  "total_tokens": 10519
+ },
+ "metadata": {}
+}

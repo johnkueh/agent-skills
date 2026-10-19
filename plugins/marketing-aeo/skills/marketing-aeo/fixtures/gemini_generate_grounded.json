@@ -1,0 +1,29 @@
+{
+  "_fixture_note": "Shape from the Gemini API grounding docs (generateContent + google_search); values are illustrative, not a recorded response.",
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          { "text": "You can monitor insolvency notices on the ASIC Published Notices website, " },
+          { "text": "or use a commercial alert service such as Example Alerts." }
+        ]
+      },
+      "finishReason": "STOP",
+      "groundingMetadata": {
+        "webSearchQueries": ["monitor company insolvency notices Australia", "ASIC published notices alerts"],
+        "searchEntryPoint": { "renderedContent": "<div></div>" },
+        "groundingChunks": [
+          { "web": { "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AAA111", "title": "asic.gov.au" } },
+          { "web": { "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/BBB222", "title": "example-alerts.com" } },
+          { "web": { "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AAA111", "title": "asic.gov.au" } }
+        ],
+        "groundingSupports": [
+          { "segment": { "startIndex": 0, "endIndex": 73, "text": "You can monitor insolvency notices on the ASIC Published Notices website," }, "groundingChunkIndices": [0] }
+        ]
+      }
+    }
+  ],
+  "usageMetadata": { "promptTokenCount": 12, "candidatesTokenCount": 40, "thoughtsTokenCount": 0, "totalTokenCount": 52 },
+  "modelVersion": "gemini-3.5-flash-lite"
+}

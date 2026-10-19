@@ -1,0 +1,196 @@
+{
+ "version": "0.1.20260917",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "7.1563 sec.",
+ "cost": 0.023064,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "00000000-0000-0000-0000-000000000000",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "7.1413 sec.",
+   "cost": 0.023064,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "ai_optimization",
+    "claude",
+    "llm_responses",
+    "live"
+   ],
+   "data": {
+    "api": "ai_optimization",
+    "function": "llm_responses",
+    "se": "claude",
+    "user_prompt": "how to monitor company insolvency notices in Australia",
+    "model_name": "claude-haiku-4-5",
+    "web_search": true
+   },
+   "result": [
+    {
+     "model_name": "claude-haiku-4-5-20251001",
+     "input_tokens": 9724,
+     "output_tokens": 548,
+     "reasoning_tokens": 0,
+     "web_search": true,
+     "money_spent": 0.022464,
+     "datetime": "2026-10-19 21:08:35 +00:00",
+     "items": [
+      {
+       "type": "message",
+       "sections": [
+        {
+         "type": "text",
+         "text": "I'll search for information on how to monitor company insolvency notices in Australia.",
+         "annotations": null
+        }
+       ]
+      },
+      {
+       "type": "message",
+       "sections": [
+        {
+         "type": "text",
+         "text": "Here are the main ways to monitor company insolvency notices in Australia:\n\n## Official ASIC Source\n\n",
+         "annotations": null
+        },
+        {
+         "type": "text",
+         "text": "All notices relating to the appointment of an external administrator (Liquidator, Administrator, Receiver/Receiver and Manager) to a company are published on the Insolvency Notices Website maintained by ASIC at www.insolvencynotices.asic.gov.au",
+         "annotations": [
+          {
+           "title": "How can I check if a company has gone into liquidation?",
+           "url": "https://arita.com.au/ARITA/ARITA/Insolvency_help/Frequently_Asked_Questions/How_can_I_check_if_a_company_has_gone_into_liquidation.aspx",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": ". ",
+         "annotations": null
+        },
+        {
+         "type": "text",
+         "text": "You can search the website by company name or ACN to check if a company has gone into liquidation, and you do not need to be registered or pay a fee to search",
+         "annotations": [
+          {
+           "title": "How can I check if a company has gone into liquidation?",
+           "url": "https://arita.com.au/ARITA/ARITA/Insolvency_help/Frequently_Asked_Questions/How_can_I_check_if_a_company_has_gone_into_liquidation.aspx",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": ".\n\n## Key Methods\n\n1. **ASIC Published Notices Website**: ",
+         "annotations": null
+        },
+        {
+         "type": "text",
+         "text": "ASIC Published Notices and the ASIC Connect website remain the primary and most reliable sources of up-to-date information",
+         "annotations": [
+          {
+           "title": "How to check if a company is in liquidation in Australia",
+           "url": "https://worrells.net.au/resources/news/how-to-check-if-a-company-is-in-liquidation-in-australia",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": ".\n\n2. **Alert Services**: ",
+         "annotations": null
+        },
+        {
+         "type": "text",
+         "text": "The website www.insolvencynotices.com.au allows you to view all insolvency notices created by ASIC, set up alerts, and search for companies of interest, all at no cost",
+         "annotations": [
+          {
+           "title": "asicpublishednotices",
+           "url": "https://asicpublishednotices.au/",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": ".\n\n3. **Third-Party Aggregators**: ",
+         "annotations": null
+        },
+        {
+         "type": "text",
+         "text": "ASIC publishes free searchable insolvency notices, and several third-party tools aggregate that data into browsable formats",
+         "annotations": [
+          {
+           "title": "How to Search Sydney Company Liquidation Records",
+           "url": "https://www.wynnadvisory.com.au/list-of-australian-companies-in-liquidation/",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": ". These tools can be useful if you need to monitor specific sectors or regions more efficiently.\n\n4. **Company Extracts**: ",
+         "annotations": null
+        },
+        {
+         "type": "text",
+         "text": "Information regarding a company's status can also be obtained by getting a company search from the ASIC register at www.asic.gov.au",
+         "annotations": [
+          {
+           "title": "How can I check if a company has gone into liquidation?",
+           "url": "https://arita.com.au/ARITA/ARITA/Insolvency_help/Frequently_Asked_Questions/How_can_I_check_if_a_company_has_gone_into_liquidation.aspx",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": ".\n\n## Best Practice\n\n",
+         "annotations": null
+        },
+        {
+         "type": "text",
+         "text": "Because a company's status can change quickly, it is good practice to recheck ASIC records whenever significant decisions are being made",
+         "annotations": [
+          {
+           "title": "How to check if a company is in liquidation in Australia",
+           "url": "https://worrells.net.au/resources/news/how-to-check-if-a-company-is-in-liquidation-in-australia",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": ".",
+         "annotations": null
+        }
+       ]
+      }
+     ],
+     "fan_out_queries": [
+      "monitor company insolvency notices Australia"
+     ]
+    }
+   ]
+  }
+ ]
+}

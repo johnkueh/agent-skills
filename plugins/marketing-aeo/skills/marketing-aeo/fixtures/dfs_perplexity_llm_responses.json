@@ -1,0 +1,128 @@
+{
+ "version": "0.1.20260917",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "3.1348 sec.",
+ "cost": 0.005912,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "00000000-0000-0000-0000-000000000000",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "3.1192 sec.",
+   "cost": 0.005912,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "ai_optimization",
+    "perplexity",
+    "llm_responses",
+    "live"
+   ],
+   "data": {
+    "api": "ai_optimization",
+    "function": "llm_responses",
+    "se": "perplexity",
+    "user_prompt": "how to monitor company insolvency notices in Australia",
+    "model_name": "sonar"
+   },
+   "result": [
+    {
+     "model_name": "sonar",
+     "input_tokens": 16,
+     "output_tokens": 296,
+     "reasoning_tokens": 0,
+     "web_search": true,
+     "money_spent": 0.005312,
+     "datetime": "2026-10-19 21:08:31 +00:00",
+     "items": [
+      {
+       "type": "message",
+       "sections": [
+        {
+         "type": "text",
+         "text": "To monitor company insolvency notices in Australia:\n\n1. **Search ASIC’s Published notices website** by the company’s legal name or ACN. It contains notices of external-administration appointments—including liquidators, administrators and receivers—published from 1 July 2012 onward.[1][4]\n2. **Set up ASIC Company Alert** for ongoing monitoring. It can email you about external-administration notices, changes to officeholders or company details, deregistration applications, status changes and documents lodged with ASIC.[2]\n3. **Run an ASIC company register search** when a notice appears. This provides more detailed company information, although searches generally require registration with a search provider and payment.[1]\n4. **Check court and creditor notices** if legal action or winding-up proceedings are a concern. ASIC’s notice search may not capture every early warning before an appointment is made.\n5. **Use a commercial monitoring service** if you need automatic watchlists, court monitoring or near-real-time alerts across many companies. These services typically aggregate ASIC notices and other public records, so verify important alerts against ASIC’s official records.[3]\n\nFor a practical setup, record each supplier or customer’s **legal name, ACN and trading names**, add the company to ASIC Company Alert, and review alerts promptly. An ASIC notice confirms that a formal step has occurred; it does not by itself establish the likely dividend or the company’s full financial position.",
+         "annotations": [
+          {
+           "title": "How can I check if a company has gone into liquidation?",
+           "url": "https://arita.com.au/ARITA/ARITA/Insolvency_help/Frequently_Asked_Questions/How_can_I_check_if_a_company_has_gone_into_liquidation.aspx",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          },
+          {
+           "title": "ASIC Corporate Insolvency Update – Issue 37",
+           "url": "https://www.asic.gov.au/about-asic/corporate-publications/newsletters/asic-corporate-insolvency-update/asic-corporate-insolvency-update-issue-37",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          },
+          {
+           "title": "Company Archive - Page 697",
+           "url": "https://insolvencynotices.com.au/archive/archive_697.html",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          },
+          {
+           "title": "Insolvency | ASIC",
+           "url": "https://www.asic.gov.au/insolvency",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          },
+          {
+           "title": "Company Archive - Page 409",
+           "url": "https://insolvencynotices.com.au/archive/archive_409.html",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          },
+          {
+           "title": "Company Archive - Page 18",
+           "url": "https://insolvencynotices.com.au/archive/archive_18.html",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          },
+          {
+           "title": "Company Archive - Page 661",
+           "url": "https://insolvencynotices.com.au/archive/archive_661.html",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          },
+          {
+           "title": "Insolvency",
+           "url": "https://www.asic.gov.au/regulatory-resources/insolvency",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          },
+          {
+           "title": "Insolvency notices",
+           "url": "https://www.asic.gov.au/regulatory-resources/insolvency/more-insolvency-information/insolvency-notices",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          },
+          {
+           "title": "Company Archive - Page 111",
+           "url": "https://insolvencynotices.com.au/archive/archive_111.html",
+           "start_index": null,
+           "end_index": null,
+           "text": null
+          }
+         ]
+        }
+       ]
+      }
+     ],
+     "fan_out_queries": null
+    }
+   ]
+  }
+ ]
+}
