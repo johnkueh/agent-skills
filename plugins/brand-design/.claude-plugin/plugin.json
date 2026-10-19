@@ -1,7 +1,7 @@
 {
   "name": "brand-design",
-  "version": "2.2.0",
-  "description": "Design and review polished UI/UX using task-focused design principles. Use for app or web screens, dashboards, layouts, components, typography, color, spacing, dark mode, motion, mobile patterns, or generic-looking UI.",
+  "version": "2.3.0",
+  "description": "Design, build, and review polished UI/UX: screens, dashboards, layouts, components, typography, color, contrast, spacing, dark mode, motion, icons, accessibility, mobile patterns, or generic-looking UI. Includes a consolidated interface review.",
   "author": {
     "name": "John Kueh",
     "url": "https://github.com/johnkueh"
