@@ -5,7 +5,7 @@ description: "Read, search, and send WhatsApp messages with wacli. Use to find a
 
 # WhatsApp with wacli
 
-[`wacli`](https://github.com/steipete/wacli) pairs to the user's WhatsApp as a
+[`wacli`](https://github.com/openclaw/wacli) pairs to the user's WhatsApp as a
 linked device, syncs messages into a local SQLite store (`~/.wacli` on macOS,
 `~/.local/state/wacli` on Linux), and reads from that store.
 
@@ -25,12 +25,25 @@ do not run `wacli auth` again; that creates another linked device. On a shared
 machine every agent uses the same session and store.
 
 ```bash
-brew install steipete/tap/wacli
+brew install openclaw/tap/wacli              # formerly steipete/tap/wacli
 wacli auth                                   # QR → phone → Linked Devices
 wacli sync --once --idle-exit 30s            # initial catch-up
 ```
 
-Never commit the store directory. It holds session keys and messages.
+When the user can't scan a terminal QR (remote or headless machine), pair by phone
+number instead. `wacli auth --phone +<country code><number>` prints an 8-character
+code; the user enters it under Linked devices → Link a device → "Link with phone
+number instead". Relay the code at once and keep `auth` running; it expires within
+minutes. Never guess the number.
+
+Messages only arrive while a sync is connected, so a store meant for search should
+run one supervised follower (launchd, systemd) with
+`wacli sync --follow --presence-mode quiet`. Quiet mode keeps the linked device from
+showing as online, so the user's phone keeps its notifications.
+
+Pair on one long-lived machine and keep the store there. Never commit, copy or restore
+the store directory onto another machine: it holds session keys and messages, the keys
+move forward on every connection, and two copies of one device break each other.
 
 ## Freshness and the store lock
 
