@@ -1,6 +1,6 @@
 {
   "name": "marketing-aeo",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Track whether AI answer engines (ChatGPT, Perplexity, Gemini, Claude, Google AI Overview, Google AI Mode) cite or mention a site for a set of buyer questions, with citation rates over time, own vs competitor domains, and which URLs got cited. One DataForSEO key covers every default surface; OpenAI, Gemini, and Anthropic APIs are optional extras. Triggers on \"AEO\", \"GEO\", \"AI search visibility\", \"are we cited in ChatGPT\", \"does Perplexity mention us\", \"AI Overview citations\", \"track AI answers for these queries\", \"who does ChatGPT recommend instead of us\", \"LLM visibility report\".",
   "author": {
     "name": "John Kueh",

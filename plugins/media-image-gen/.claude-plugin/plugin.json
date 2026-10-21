@@ -1,6 +1,6 @@
 {
   "name": "media-image-gen",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Generate and edit visual assets with Codex Images 2.5 on the included ChatGPT plan. Inside Codex use the built-in image tool; elsewhere use this skill's CLI for generate, edit, reference images, batch scripts and exact aspect ratios.",
   "author": {
     "name": "John Kueh",
