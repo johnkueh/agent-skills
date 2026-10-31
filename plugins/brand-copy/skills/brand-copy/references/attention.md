@@ -10,17 +10,16 @@ else. Write for that decision, not for a reader who has already committed.
 
 ## The budget
 
-- **First glance, about 15 tokens (10 to 12 words).** The hook, headline,
-  cover slide, subject line, or first line of a skill. If these are not worth
-  reading, nothing after them gets read.
-- **Then about 50 tokens at a time (35 to 40 words).** A slide, a short
-  paragraph, a page section. Each chunk is a fresh decision. A strong opening
+- **A glance first.** The hook, headline, cover slide, subject line, or first
+  line of a skill. If that is not worth reading, nothing after it gets read.
+- **Then a short stretch at a time.** A slide, a short paragraph, a page
+  section. At the end of each, the reader decides again. A strong opening
   does not carry a weak middle.
 - **Length is earned.** Writers with years of useful work can ask for a long
   read. A new account, product, or page gets the short version. When in
   doubt, cut length before cutting value.
 
-## What counts as a valuable token
+## What earns the next stretch
 
 - **Usable now:** something the reader can save, follow, copy, or act on. A
   full recipe, a checkable number, a step, a price, a setting, a template.
@@ -29,7 +28,7 @@ else. Write for that decision, not for a reader who has already committed.
   written.
 - **About them:** their situation, their problem, in their words.
 
-Tokens that spend attention without paying it back: setup and throat-clearing,
+Words that spend attention without paying it back: setup and throat-clearing,
 restating the hook, credentials before value, "in this post", transitions,
 recaps, and reassurances nobody asked for.
 
@@ -37,14 +36,14 @@ recaps, and reassurances nobody asked for.
 
 - **Lead with the payoff.** Put the most useful thing in the first glance, not
   the last slide or the bottom of the page.
-- **One payload per chunk.** Every slide or section delivers one usable thing.
-  A chunk with nothing to use gets cut or merged into its neighbour.
+- **One payload per stretch.** Every slide or section delivers one usable thing.
+  A stretch with nothing to use gets cut or merged into its neighbour.
 - **Give them something to keep.** A thing the reader can save beats a list of
   things they would have to look up. A carousel naming five dinners gives
   nothing to save; one dinner with its full recipe on a slide and in the
   caption gives a reason to save the post.
 - **Substance before polish.** Grammar, structure, and style only matter once
-  the tokens are worth reading. A polished post with nothing in it still loses.
+  the words are worth reading. A polished post with nothing in it still loses.
   Keep the house style; just never let polish stand in for substance.
 
 ## By surface
@@ -64,7 +63,7 @@ recaps, and reassurances nobody asked for.
 
 ## Self-review
 
-Split the draft into its first glance and then 50-token chunks. For each one,
-ask: would a stranger who owes me nothing keep going after this? If the answer
-is not an easy yes, rewrite or cut that chunk. You will usually know without
-counting.
+Read the draft as its first glance and then stretch by stretch. After each
+one, ask: would a stranger who owes me nothing keep going after this? If the
+answer is not an easy yes, rewrite or cut that stretch. You will know in your
+gut.

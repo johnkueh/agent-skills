@@ -30,7 +30,7 @@ understand what happens next.
 - Anything a stranger has to choose to keep reading: carousels, social posts,
   landing pages, emails, articles, or skills and docs others load. Read
   [references/attention.md](references/attention.md) and self-review against
-  its budget.
+  it.
 
 Load interface and landing-page guidance together only when the request
 genuinely crosses both surfaces. Visual treatment, wrapping, contrast, and
@@ -101,7 +101,7 @@ skill is coordinating the work, use its format instead.
 ## Final check
 
 - Does every claim have support?
-- Do the first few words pay off, and does every chunk after them earn the next?
+- Do the first few words pay off, and does every stretch after them earn the next?
 - Can the reader understand the action or outcome on first read?
 - Does the copy use one term for each concept?
 - Is the tone appropriate to the stakes?
